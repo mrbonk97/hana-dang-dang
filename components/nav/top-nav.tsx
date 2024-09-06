@@ -16,11 +16,16 @@ export const Topnav = () => {
         </nav>
       </div>
       <div className="flex gap-2">
-        <Button className="rounded-full" variant={"outline"}>
-          로그인
+        <Button className="rounded-full" variant={"outline"} asChild>
+          <Link href={"/sign-in"}>로그인</Link>
         </Button>
-        <Button className="rounded-full pl-5 flex gap-1 justify-center items-center">
-          회원가입 <ChevronRight size={16} />
+        <Button
+          className="rounded-full pl-5 flex gap-1 justify-center items-center"
+          asChild
+        >
+          <Link href={"/sign-up"}>
+            회원가입 <ChevronRight size={16} />
+          </Link>
         </Button>
       </div>
     </header>

@@ -74,7 +74,7 @@ const Section2 = () => {
             className="py-10 w-80 rounded-full"
             asChild
           >
-            <Link href={"/recommend/chat"}>
+            <Link href={"/recommend/preference"}>
               <span className="text-2xl font-bold opacity-70">추천받기</span>
             </Link>
           </Button>
