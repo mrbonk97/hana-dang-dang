@@ -118,3 +118,13 @@ body,
 html {
   scroll-behavior: smooth;
 }
+
+@font-face {
+  font-family: "Toss-Face-Font-Mac";
+  font-weight: normal;
+  src: url("/fonts/TossFaceFontMac.ttf") format("truetype");
+}
+
+.emoji {
+  font-family: "Toss-Face-Font-Mac";
+}

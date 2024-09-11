@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import { Topnav } from "@/components/nav/top-nav";
+import QueryProvider from "@/tanstack-query/query-provider";
+import { Leftnav } from "@/components/nav/left-nav";
+import { Leftnav2 } from "@/components/nav/left-nav-2";
 
 const inter = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -17,9 +20,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={inter.className}>
-        <Topnav />
-        {children}
+      <body className={inter.className + " min-h-[600px]"}>
+        <QueryProvider>
+          <Topnav />
+          <Leftnav />
+          <Leftnav2 />
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );

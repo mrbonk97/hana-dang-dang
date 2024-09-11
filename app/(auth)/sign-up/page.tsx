@@ -28,7 +28,7 @@ const SignUpPage = () => {
       <section className="max-w-[450px] w-full space-y-2">
         <DrawerTerms>
           <Button className="py-10 w-full text-xl rounded-xl">
-            주식+중개형 ISA+CMA 계좌 개설
+            주식+중개형 ISA 계좌 개설
           </Button>
         </DrawerTerms>
       </section>

@@ -16,14 +16,17 @@ export const IndexSection = ({ mode }: SectionProps) => {
           <section className="flex gap-10">
             <Card title="코스피" />
             <Card title="나스닥" />
+            <Card title="나스닥" />
           </section>
           <section className="flex gap-10">
             <Card title="코스피" />
             <Card title="코스닥" />
+            <Card title="나스닥" />
           </section>
           <section className="flex gap-10">
             <Card title="나스닥" />
             <Card title="S&P500" />
+            <Card title="나스닥" />
           </section>
         </div>
       </div>

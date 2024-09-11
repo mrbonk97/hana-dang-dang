@@ -1,3 +1,4 @@
+"use client";
 import {
   Drawer,
   DrawerContent,
@@ -7,18 +8,16 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Checkbox } from "@/components/ui/checkbox";
 
 import { Button } from "../ui/button";
-import { LOAN_TERM } from "@/constants";
-import Link from "next/link";
-import { useState } from "react";
 import { Badge } from "../ui/badge";
+import { useRouter } from "next/navigation";
 
 interface TermsDrawerProps {
   children: React.ReactNode;
 }
 export const DrawerTerms = ({ children }: TermsDrawerProps) => {
+  const router = useRouter();
   return (
     <Drawer>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
@@ -65,8 +64,11 @@ export const DrawerTerms = ({ children }: TermsDrawerProps) => {
         </div>
 
         <DrawerFooter className="mt-5 w-full flex-row justify-center">
-          <Button className="py-10 px-6 max-w-96 w-full text-lg" asChild>
-            <Link href={"/sign-up/p1"}>전체 동의하고 시작하기</Link>
+          <Button
+            className="py-10 px-6 max-w-96 w-full text-lg"
+            onClick={() => router.replace("/sign-up/p1")}
+          >
+            전체 동의하고 시작하기
           </Button>
         </DrawerFooter>
       </DrawerContent>
