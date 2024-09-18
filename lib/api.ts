@@ -39,13 +39,6 @@ export const DailyStockApi = (
 export const KospiIndexApi = (): Promise<AxiosResponse<IndexType[]>> =>
   api.get("/indexes/0001");
 
-export const IndexApi = (
-  code: string
-): Promise<AxiosResponse<SimpleIndexType>> => api.get(`/indexes/${code}`);
-
-export const IndexApiV2 = (code: string): Promise<AxiosResponse<IndexType[]>> =>
-  api.get(`/indexes/v2/${code}`);
-
 export const RecentNewsApi = (): Promise<AxiosResponse<NewsType[]>> =>
   api.get("/news/recent");
 

@@ -13,3 +13,5 @@ type T1 = {
 
 export const getIndexListApi = (): Promise<AxiosResponse<T1>> =>
   api.get("/indexes");
+
+export const getIndexDetailApi = (code: string) => api.get(`/indexes/${code}`);

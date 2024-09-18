@@ -16,29 +16,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { MainCarousel } from "./_component/main-carousel";
 
 const MainPage = () => {
   return (
     <main className="min-h-full pt-14">
-      <section className="p-[10%] min-h-[700px] flex items-center justify-between gap-10 bg-purple-100">
-        <hgroup>
-          <h2 className="text-6xl font-bold opacity-80 leading-[1.45]">
-            하나 어린이 적립식 <br />
-            특판RP 연7%
-          </h2>
-          <h3 className="mt-5 text-3xl font-medium opacity-60">
-            세전, 최초 매수일로부터 12개월
-          </h3>
-        </hgroup>
-        <Image
-          src={"/vercel.svg"}
-          width={600}
-          height={600}
-          alt="product1"
-          objectFit="contain"
-          className="w-1/2"
-        />
-      </section>
+      <MainCarousel />
       <section className="border-y h-14 py-5 flex items-center justify-center text-sm gap-10 opacity-70">
         <div className="flex items-center">
           <strong>공지사항</strong>
@@ -52,10 +35,10 @@ const MainPage = () => {
         </div>
       </section>
       <section className="p-10 min-h-[800px] flex items-center justify-center gap-20">
-        <hgroup className="text-6xl font-bold opacity-70 space-y-3">
+        <hgroup className="text-6xl font-bold opacity-80 space-y-3">
           <h1>국내 유일한</h1>
           <h1>증권 + 배당 관리</h1>
-          <h1 className="pb-2">하나 배당당입니다.</h1>
+          <h1 className="pb-5">하나 배당당입니다.</h1>
           <Button className="rounded-full py-8 px-16 text-lg" asChild>
             <Link href={"/stocks"}>시작하기</Link>
           </Button>
