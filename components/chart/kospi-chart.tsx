@@ -3,7 +3,14 @@ import dynamic from "next/dynamic";
 import { IndexApi, KospiIndexApi } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { GraphSkeleton } from "../skeleton/graph-skeleton";
 
 interface IndexChartProps {
   title: string;
@@ -25,8 +32,7 @@ export const KospiChart = ({ title, code }: IndexChartProps) => {
     setIsOk(true);
   }, [query.isSuccess]);
 
-  if (!isOk) return null;
-  if (query.data == undefined) return null;
+  if (!isOk || query.data == undefined) return <GraphSkeleton title={title} />;
 
   const jisu = query.data.data.bstp_nmix_prpr;
   const date = query.data.data.stckBsopDate;
@@ -43,14 +49,11 @@ export const KospiChart = ({ title, code }: IndexChartProps) => {
   const color = i1 < i2 ? "#ec417a" : "#3182F6";
 
   return (
-    <Card className="h-full w-full">
+    <Card className="h-full w-full bg-secondary">
       <CardHeader>
-        <CardTitle className="font-bold flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="opacity-80">{title}</span>
-            <span className="mt-1 emoji text-2xl">🇰🇷</span>
-          </div>
-          <div className="flex flex-col items-end">
+        <CardTitle className="font-bold opacity-70">{title}</CardTitle>
+        <CardDescription>
+          {/* <div className="flex flex-col items-end">
             <span
               className={`opacity-80
               ${i1 < i2 ? "text-rose-500" : "text-blue-500"}`}
@@ -63,8 +66,8 @@ export const KospiChart = ({ title, code }: IndexChartProps) => {
             >
               ({(i2 - i1).toFixed(2)})
             </span>
-          </div>
-        </CardTitle>
+          </div> */}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Chart
@@ -93,10 +96,21 @@ export const KospiChart = ({ title, code }: IndexChartProps) => {
             stroke: {
               curve: "smooth",
             },
+            fill: {
+              type: "gradient",
+              gradient: {
+                shadeIntensity: 1,
+                inverseColors: false,
+                opacityFrom: 0.45,
+                opacityTo: 0.05,
+                stops: [20, 100, 100, 100],
+              },
+            },
           }}
           series={series}
-          type="line"
+          type="area"
           width="100%"
+          height="70%"
         />
       </CardContent>
     </Card>

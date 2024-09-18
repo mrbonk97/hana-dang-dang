@@ -1,37 +1,127 @@
+"use client";
 import Link from "next/link";
 import { Separator } from "../ui/separator";
+import { useQuery } from "@tanstack/react-query";
+import { StockRankApi } from "@/lib/api";
+import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { ChevronsLeft } from "lucide-react";
 
 export const Leftnav2 = () => {
+  const [date, setDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setDate(new Date());
+    const timer = setInterval(() => setDate(new Date()), 5000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  const query = useQuery({
+    queryKey: ["stock-rank"],
+    queryFn: StockRankApi,
+    refetchInterval: 50000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  });
+
   return (
-    <aside className="z-50 fixed left-20 top-14 p-5 h-full w-80 border-r bg-background">
-      <h4 className="font-bold opacity-70">실시간 차트</h4>
-      <p className="text-sm font-bold opacity-60">오늘 13:22 기준</p>
-      <Separator className="my-2 w-full" />
-      <ul className="space-y-2 overflow-y-auto">
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
+    <aside className="z-50 fixed left-16 top-14 py-3 h-full w-80 border-r bg-background">
+      <div className="px-5 flex justify-between items-center">
+        <hgroup>
+          <h4 className="font-bold opacity-70">실시간 차트</h4>
+          {date != null && (
+            <>
+              <p className="text-sm font-bold opacity-60">
+                오늘 {date.getHours()}:{date.getMinutes()}:
+                {date.getSeconds() < 10
+                  ? "0" + date.getSeconds()
+                  : date.getSeconds()}{" "}
+                기준
+              </p>
+            </>
+          )}
+        </hgroup>
+        <Button variant={"ghost"} className="p-0 rounded-full h-10 w-10 flex2">
+          <ChevronsLeft className="text-c1-300 hover:bg-secondary" />
+        </Button>
+      </div>
+      <Separator className="mt-4 mb-2 ml-5 w-[calc(100%-40px)]" />
+
+      <ul className="pl-5 pr-3 pb-28 h-full space-y-2 overflow-y-auto">
+        {query.isPending && (
+          <>
+            <ListSkeleton />
+            <ListSkeleton />
+            <ListSkeleton />
+          </>
+        )}
+        {query.isSuccess &&
+          query.data.data.output.map((item, idx) => (
+            <List
+              key={item.hts_kor_isnm}
+              title={item.hts_kor_isnm}
+              code={item.mksc_shrn_iscd}
+              rank={idx + 1}
+              price={item.stck_prpr}
+              prdy_vrss={item.prdy_vrss}
+              prdy_ctrt={item.prdy_ctrt}
+            />
+          ))}
       </ul>
     </aside>
   );
 };
 
-export const List = () => {
+interface ListProps {
+  title: string;
+  code: string;
+  rank: number;
+  price: string;
+  prdy_vrss: string; // 전일 대비
+  prdy_ctrt: string; // 전일 대비율
+}
+
+const List = ({
+  title,
+  code,
+  rank,
+  price,
+  prdy_vrss,
+  prdy_ctrt,
+}: ListProps) => {
   return (
     <li>
       <Link
-        href={"/stocks/123456"}
-        className="py-4 px-3 rounded-lg font-bold flex justify-between hover:bg-c1-100 duration-150"
+        href={`/stocks/${code}`}
+        className="py-4 px-3 rounded-lg font-bold flex justify-between items-center hover:bg-c1-100 duration-150 text-sm"
       >
-        <div className="opacity-60">
-          <span className="text-c1-300">1</span>
-          <span className="ml-2">삼성전자</span>
+        <div className="opacity-60 w-40 overflow-hidden whitespace-nowrap text-ellipsis">
+          <span className="text-c1-300">{rank}</span>
+          <span className="ml-3">{title}</span>
         </div>
-        <span className="opacity-70">65,427원</span>
+        <div className="flex flex-col items-end">
+          <span className="opacity-70">{price}원</span>
+          <span
+            className={`opacity-70 text-xs font-medium text-right
+              ${parseInt(prdy_vrss) < 0 && "text-blue-500"}
+              ${parseInt(prdy_vrss) > 0 && "text-rose-500"}`}
+          >
+            {prdy_vrss}원({Math.abs(parseFloat(prdy_ctrt))}%)
+          </span>
+        </div>
       </Link>
+    </li>
+  );
+};
+
+const ListSkeleton = () => {
+  return (
+    <li className="py-1 flex justify-between gap-2 animate-pulse">
+      <div className="bg-secondary h-10 w-10 rounded-full flex-shrink-0" />
+      <div className="bg-secondary h-10 w-full rounded-xl" />
     </li>
   );
 };

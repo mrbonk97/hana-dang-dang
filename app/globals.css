@@ -125,6 +125,38 @@ html {
   src: url("/fonts/TossFaceFontMac.ttf") format("truetype");
 }
 
-.emoji {
-  font-family: "Toss-Face-Font-Mac";
+@font-face {
+  font-family: "NotoSansKr";
+  font-weight: normal;
+  src: url("/fonts/NotoSansKR-VariableFont_wght.ttf") format("truetype");
+}
+
+.noto_sans {
+  font-family: "NotoSanskr";
+}
+
+/* Chrome, Whale, Edge */
+
+/* ::-webkit-scrollbar {
+  width: 8px;
+} */
+
+/* Handle */
+/* ::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: rgb(228 228 231);
+} */
+
+@keyframes loop {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.loop {
+  animation: loop 180s linear infinite;
 }

@@ -2,9 +2,15 @@
 import {
   AccountType,
   IndexType,
+  NewsType,
   SimpleIndexType,
-  SimpleStockInfo,
+  StockInfoType,
+  StockCurrentPriceType,
+  StockRankResponseType,
+  StockRankType,
+  StockWithPriceType,
   UserType,
+  Index3Type,
 } from "@/type";
 import axios, { AxiosResponse } from "axios";
 
@@ -23,13 +29,12 @@ export const signInApi = (
 ): Promise<signInResponse> =>
   api.post("/users/sign-in", { username, password });
 
-export const stockListAPi = () => api.get("/stocks");
+export const stockListAPi = (): Promise<AxiosResponse<StockWithPriceType[]>> =>
+  api.get("/stocks");
 
-export const DailyStockApi = (code: string) => api.get(`/daily-price/${code}`);
-
-export const StockInfoApi = (
+export const DailyStockApi = (
   code: string
-): Promise<AxiosResponse<SimpleStockInfo>> => api.get(`/stocks/${code}`);
+): Promise<AxiosResponse<Index3Type[]>> => api.get(`/daily-price/${code}`);
 
 export const KospiIndexApi = (): Promise<AxiosResponse<IndexType[]>> =>
   api.get("/indexes/0001");
@@ -37,3 +42,15 @@ export const KospiIndexApi = (): Promise<AxiosResponse<IndexType[]>> =>
 export const IndexApi = (
   code: string
 ): Promise<AxiosResponse<SimpleIndexType>> => api.get(`/indexes/${code}`);
+
+export const IndexApiV2 = (code: string): Promise<AxiosResponse<IndexType[]>> =>
+  api.get(`/indexes/v2/${code}`);
+
+export const RecentNewsApi = (): Promise<AxiosResponse<NewsType[]>> =>
+  api.get("/news/recent");
+
+export const StockRankApi = (): Promise<AxiosResponse<StockRankResponseType>> =>
+  api.get("/han-tu/rank");
+
+export const FillAccountBalanceApi = (accountNo: string, amount: number) =>
+  api.put(`/account/${accountNo}/fill`, { amount });

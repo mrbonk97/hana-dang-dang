@@ -59,7 +59,7 @@ const SignInPage = () => {
   useEffect(() => {
     if (mutation.isSuccess) {
       signIn(mutation.data.data.user, mutation.data.data.account);
-      router.push("/main");
+      router.push("/");
     }
   }, [mutation.isSuccess]);
 

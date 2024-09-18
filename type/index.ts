@@ -27,7 +27,7 @@ export type DailyStockInfoType = {
   acml_prtt_rate: number;
 };
 
-export type SimpleStockInfo = {
+export type StockInfoType = {
   admn_item_yn: string;
   bfdy_clpr: string;
   clpr_chng_dt: string;
@@ -89,7 +89,7 @@ export type IndexType = {
   id: number;
   code: string;
   fullCode: string;
-  stckBsopDate: string;
+  stck_bsop_date: string;
   acml_tr_pbmn: number;
   acml_vol: string;
   bstp_nmix_hgpr: number;
@@ -99,7 +99,167 @@ export type IndexType = {
   mod_yn: string;
 };
 
+export type Index2Type = {
+  acml_tr_pbmn: string;
+  acml_vol: string;
+  bstp_cls_code: string;
+  bstp_nmix_prdy_ctrt: string;
+  bstp_nmix_prdy_vrss: string;
+  bstp_nmix_prpr: string;
+  hts_kor_isnm: string;
+  prdy_vrss_sign: string;
+};
+
+export type Index3Type = {
+  acml_tr_pbmn: string;
+  acml_vol: string;
+  code: string;
+  fid_cond_mkrt_div_code: string;
+  flng_cls_code: string;
+  id: string;
+  mod_yn: string;
+  prdy_vrss: string;
+  prdy_vrss_sign: string;
+  prtt_rate: string;
+  revl_issu_reas: string;
+  stck_bsop_date: string;
+  stck_clpr: string;
+  stck_hgpr: string;
+  stck_lwpr: string;
+  stck_oprc: string;
+};
+
 export type SimpleIndexType = {
   stckBsopDate: string[];
   bstp_nmix_prpr: number[];
+};
+
+export type NewsType = {
+  id: number;
+  title: string;
+  content: string;
+  imageUrl: string;
+  originalUrl: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type StockRankResponseType = {
+  rt_cd: string;
+  msg_cd: string;
+  msg1: string;
+  output: StockRankType[];
+};
+
+export type StockRankType = {
+  hts_kor_isnm: string;
+  mksc_shrn_iscd: string;
+  data_rank: string;
+  stck_prpr: string;
+  prdy_vrss_sign: string;
+  prdy_vrss: string;
+  prdy_ctrt: string;
+  acml_vol: string;
+  prdy_vol: string;
+  lstn_stcn: string;
+  avrg_vol: string;
+  n_befr_clpr_vrss_prpr_rate: string;
+  vol_inrt: string;
+  vol_tnrt: string;
+  nday_vol_tnrt: string;
+  avrg_tr_pbmn: string;
+  tr_pbmn_tnrt: string;
+  nday_tr_pbmn_tnrt: string;
+  acml_tr_pbmn: string;
+};
+
+export type StockWithPriceType = {
+  code: string;
+  prdtAbrvName: string;
+  idxBztpMclsCdName: string;
+  stckClpr: number;
+  prdyVrss: number;
+  acmlVol: number;
+  prdyVrssSign: number;
+};
+
+export type StockCurrentPriceType = {
+  iscd_stat_cls_code: string;
+  marg_rate: string;
+  rprs_mrkt_kor_name: string;
+  bstp_kor_isnm: string;
+  temp_stop_yn: string;
+  oprc_rang_cont_yn: string;
+  clpr_rang_cont_yn: string;
+  crdt_able_yn: string;
+  grmn_rate_cls_code: string;
+  elw_pblc_yn: string;
+  stck_prpr: string;
+  prdy_vrss: string;
+  prdy_vrss_sign: string;
+  prdy_ctrt: string;
+  acml_tr_pbmn: string;
+  acml_vol: string;
+  prdy_vrss_vol_rate: string;
+  stck_oprc: string;
+  stck_hgpr: string;
+  stck_lwpr: string;
+  stck_mxpr: string;
+  stck_llam: string;
+  stck_sdpr: string;
+  wghn_avrg_stck_prc: string;
+  hts_frgn_ehrt: string;
+  frgn_ntby_qty: string;
+  pgtr_ntby_qty: string;
+  pvt_scnd_dmrs_prc: string;
+  pvt_frst_dmrs_prc: string;
+  pvt_pont_val: string;
+  pvt_frst_dmsp_prc: string;
+  pvt_scnd_dmsp_prc: string;
+  dmrs_val: string;
+  dmsp_val: string;
+  cpfn: string;
+  rstc_wdth_prc: string;
+  stck_fcam: string;
+  stck_sspr: string;
+  aspr_unit: string;
+  hts_deal_qty_unit_val: string;
+  lstn_stcn: string;
+  hts_avls: string;
+  per: string;
+  pbr: string;
+  vol_tnrt: string;
+  eps: string;
+  bps: string;
+  d250_hgpr: string;
+  d250_hgpr_date: string;
+  d250_hgpr_vrss_prpr_rate: string;
+  d250_lwpr: string;
+  d250_lwpr_date: string;
+  d250_lwpr_vrss_prpr_rate: string;
+  stck_dryy_hgpr: string;
+  dryy_hgpr_vrss_prpr_rate: string;
+  dryy_hgpr_date: string;
+  stck_dryy_lwpr: string;
+  dryy_lwpr_vrss_prpr_rate: string;
+  dryy_lwpr_date: string;
+  w52_hgpr: string;
+  w52_hgpr_vrss_prpr_ctrt: string;
+  w52_hgpr_date: string;
+  w52_lwpr: string;
+  w52_lwpr_vrss_prpr_ctrt: string;
+  w52_lwpr_date: string;
+  whol_loan_rmnd_rate: string;
+  ssts_yn: string;
+  stck_shrn_iscd: string;
+  fcam_cnnm: string;
+  cpfn_cnnm: string;
+  frgn_hldn_qty: string;
+  vi_cls_code: string;
+  ovtm_vi_cls_code: string;
+  last_ssts_cntg_qty: string;
+  invt_caful_yn: string;
+  mrkt_warn_cls_code: string;
+  short_over_yn: string;
+  sltr_yn: string;
 };

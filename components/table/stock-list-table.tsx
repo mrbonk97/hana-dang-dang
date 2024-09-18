@@ -40,41 +40,61 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SimpleStockInfo } from "@/type";
+import { SimpleStockInfo, StockWithPriceType } from "@/type";
 import { useRouter } from "next/navigation";
 
-export const columns: ColumnDef<SimpleStockInfo>[] = [
+export const columns: ColumnDef<StockWithPriceType>[] = [
   {
-    accessorKey: "heart",
-    header: "좋아요",
-    cell: ({ row }) => (
-      <div className="w-12 flex-grow-0 opacity-50">
-        <HeartIcon fill="black" />
-      </div>
-    ),
-  },
-  {
-    accessorKey: "number",
+    accessorKey: "순번",
     header: "번호",
     cell: ({ row }) => {
       console.log(row);
-      return <div className="w-12 flex-grow-0 opacity-50">{row.index + 1}</div>;
+      return <div className="py-2 opacity-80">{row.index + 1}</div>;
     },
   },
   {
-    accessorKey: "prdt_abrv_name",
+    accessorKey: "종목명",
     header: "종목명",
     cell: ({ row }) => (
-      <div className="py-2 opacity-80">{row.getValue("prdt_abrv_name")}</div>
+      <div className="py-2 opacity-80">{row.getValue("prdtAbrvName")}</div>
+    ),
+  },
+  {
+    accessorKey: "업종",
+    header: "업종",
+    cell: ({ row }) => (
+      <div className="py-2 opacity-80">{row.getValue("idxBztpMclsCdName")}</div>
+    ),
+  },
+  {
+    accessorKey: "가격",
+    header: "가격",
+    cell: ({ row }) => (
+      <div className="py-2 opacity-80">{row.getValue("stckClpr")}</div>
+    ),
+  },
+  {
+    accessorKey: "전일대비",
+    header: "전일대비",
+    cell: ({ row }) => (
+      <div className="py-2 opacity-80">{row.getValue("prdyVrss")}</div>
+    ),
+  },
+  {
+    accessorKey: "거래량",
+    header: "거래량",
+    cell: ({ row }) => (
+      <div className="py-2 opacity-80">{row.getValue("acmlVol")}</div>
     ),
   },
 ];
 
 interface StockListTableProps {
-  data: SimpleStockInfo[];
+  data: StockWithPriceType[];
 }
 
 export function StockListTable({ data }: StockListTableProps) {
+  console.log(data);
   const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -122,7 +142,7 @@ export function StockListTable({ data }: StockListTableProps) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
-              정렬 <ChevronDown className="ml-2 h-4 w-4" />
+              필터링 <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -199,10 +219,6 @@ export function StockListTable({ data }: StockListTableProps) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
