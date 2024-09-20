@@ -1,3 +1,5 @@
+import { string } from "zod";
+
 export type UserType = {
   id: number;
   name: string;
@@ -262,4 +264,17 @@ export type StockCurrentPriceType = {
   mrkt_warn_cls_code: string;
   short_over_yn: string;
   sltr_yn: string;
+};
+
+export type HogaType = {
+  sell: {
+    price: number;
+    remain: number;
+  }[];
+  buy: {
+    price: number;
+    remain: number;
+  }[];
+  totalSellRemain: number;
+  totalBuyRemain: number;
 };

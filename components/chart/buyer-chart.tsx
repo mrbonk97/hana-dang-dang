@@ -1,16 +1,15 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, Cell, LabelList, XAxis } from "recharts";
-
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
+
 import {
   ChartConfig,
   ChartContainer,
@@ -18,44 +17,53 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-export const description = "A bar chart with negative values";
-
-const chartData = [
-  { month: "외국인", visitors: -10893 },
-  { month: "기관", visitors: 4342 },
-  { month: "개인", visitors: 5367 },
-];
-
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  value: {
+    label: "값",
   },
 } satisfies ChartConfig;
 
-export function BuyerChart() {
+interface BuyerChartProps {
+  b1: number;
+  b2: number;
+  b3: number;
+  marginValue: number;
+}
+export function BuyerChart({ b1, b2, b3, marginValue }: BuyerChartProps) {
+  const chartData = [
+    { buyer: "외국인", value: b1 },
+    { buyer: "기관", value: b2 },
+    { buyer: "개인", value: b3 },
+  ];
+
   return (
     <ChartContainer config={chartConfig}>
-      <BarChart accessibilityLayer data={chartData}>
+      <BarChart
+        accessibilityLayer
+        data={chartData}
+        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+      >
         <CartesianGrid vertical={false} />
         <ChartTooltip
           cursor={false}
           content={<ChartTooltipContent hideLabel hideIndicator />}
         />
-        <Bar dataKey="visitors" barSize={20}>
-          <LabelList position="top" dataKey="month" fillOpacity={1} />
+        <Bar dataKey="value" barSize={80} label={{ position: "bottom" }}>
           {chartData.map((item) => (
             <Cell
-              key={item.month}
+              key={item.buyer}
               fill={
-                item.visitors > 0
-                  ? "hsl(var(--chart-1))"
-                  : "hsl(var(--chart-2))"
+                item.value > 0 ? "hsl(var(--chart-1))" : "hsl(var(--chart-2))"
               }
             />
           ))}
         </Bar>
+        <YAxis
+          type="number"
+          domain={[`dataMin - ${marginValue}`, `dataMax + ${marginValue}`]}
+        />
 
-        <XAxis />
+        <XAxis dataKey={"buyer"} />
       </BarChart>
     </ChartContainer>
   );

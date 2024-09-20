@@ -58,6 +58,11 @@ const SignInPage = () => {
 
   useEffect(() => {
     if (mutation.isSuccess) {
+      localStorage.setItem("user_id", mutation.data.data.user.id.toString());
+      localStorage.setItem(
+        "account_id",
+        mutation.data.data.account.accountNo.toString()
+      );
       signIn(mutation.data.data.user, mutation.data.data.account);
       router.push("/");
     }

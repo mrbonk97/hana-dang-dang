@@ -27,13 +27,11 @@ export const TransactionCard = () => {
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
           <CardTitle>거래내역</CardTitle>
-          <CardDescription>
-            Recent transactions from your store.
-          </CardDescription>
+          <CardDescription>최근 10건에 대한 거래 내역입니다.</CardDescription>
         </div>
         <Button asChild size="sm" className="ml-auto gap-1">
           <Link href="#">
-            View All
+            전체 보기
             <ArrowUpRight className="h-4 w-4" />
           </Link>
         </Button>

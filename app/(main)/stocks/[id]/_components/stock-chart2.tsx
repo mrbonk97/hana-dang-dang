@@ -4,10 +4,19 @@ import { useQuery } from "@tanstack/react-query";
 import { DailyStockInfoType } from "@/type";
 import { DailyStockApi } from "@/lib/api";
 import dynamic from "next/dynamic";
+import { Noto_Sans_KR } from "next/font/google";
+import { timeStamp } from "console";
+import { formatNumber } from "@/lib/utils";
 
 interface StockChartProps {
   id: string;
 }
+
+const inter = Noto_Sans_KR({
+  subsets: ["latin"],
+  display: "swap",
+  adjustFontFallback: false,
+});
 
 export const StockChart2 = ({ id }: StockChartProps) => {
   const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -15,11 +24,12 @@ export const StockChart2 = ({ id }: StockChartProps) => {
   const query = useQuery({
     queryKey: ["daily-price", id],
     queryFn: () => DailyStockApi(id),
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
   });
 
   if (!query.isSuccess) return null;
-
-  console.log(query.data.data);
 
   const d: { x: Date; y: string[] }[] = [];
   query.data.data.map((item) => {
@@ -35,33 +45,6 @@ export const StockChart2 = ({ id }: StockChartProps) => {
     d.push(obj);
   });
 
-  const o = {
-    chart: {
-      height: 350,
-      type: "line",
-    },
-    title: {
-      text: "CandleStick Chart",
-      align: "left",
-    },
-    stroke: {
-      width: [3, 1],
-    },
-    xaxis: {
-      type: "datetime",
-    },
-  };
-
-  query.data.data.map;
-
-  const series = [
-    {
-      name: "candle",
-      type: "candlestick",
-      data: d,
-    },
-  ];
-
   return (
     <div className="mixed-chart">
       {typeof window !== "undefined" && (
@@ -72,8 +55,43 @@ export const StockChart2 = ({ id }: StockChartProps) => {
                 show: false,
               },
             },
+            xaxis: {
+              tickAmount: 10,
+              labels: {
+                hideOverlappingLabels: true,
+                rotate: 0,
+                formatter: (value, timestamp) => {
+                  const date = new Date(value);
+                  const month = String(date.getMonth() + 1).padStart(2, "0"); // 월은 0부터 시작하므로 +1
+                  const day = String(date.getDate()).padStart(2, "0");
+                  const formattedDate = `${month}-${day}`;
+                  return formattedDate;
+                },
+                style: {
+                  colors: "#71717a",
+                  fontFamily: inter.style.fontFamily,
+                  fontWeight: 700,
+                },
+              },
+            },
+            yaxis: {
+              labels: {
+                formatter: (value, timeStamp) => {
+                  return formatNumber(value) + "원";
+                },
+                style: {
+                  colors: "#71717a",
+                  fontFamily: inter.style.fontFamily,
+                  fontWeight: 700,
+                },
+              },
+            },
           }}
-          series={series}
+          series={[
+            {
+              data: d,
+            },
+          ]}
           type="candlestick"
           width="100%"
         />

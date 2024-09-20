@@ -45,9 +45,9 @@ const StockPage = () => {
           </hgroup>
           <div className="mt-5 flex justify-between gap-5">
             <KospiChart title="코스피" code="0001" />
-            <KospiChart title="코스피" code="0001" />
-            <KospiChart title="코스피" code="0001" />
-            <KospiChart title="코스피" code="0001" />
+            <KospiChart title="코스닥" code="1001" />
+            <KospiChart title="코스피200" code="2001" />
+            <KospiChart title="고배당50" code="0163" />
           </div>
         </section>
         <section className="px-10">
@@ -112,23 +112,35 @@ const StockPage = () => {
                 <TabsTrigger value="weekly">주간</TabsTrigger>
               </div>
             </TabsList>
-            <TabsContent value="daily" className="pb-20 w-full">
-              <BuyerChart />
-              <div>
-                <div>
-                  <h4 className="font-bold opacity-70">외국인</h4>
-                  <ul>
-                    <li>Lg전자</li>
-                  </ul>
-                </div>
+            <TabsContent
+              value="daily"
+              className="w-full flex flex-col items-center"
+            >
+              <div className="w-[600px]">
+                <BuyerChart
+                  b1={-10893}
+                  b2={4342}
+                  b3={5367}
+                  marginValue={2000}
+                />
               </div>
             </TabsContent>
-            <TabsContent value="weekly" className="w-full">
-              <BuyerChart />
+            <TabsContent
+              value="weekly"
+              className="w-full flex flex-col items-center"
+            >
+              <div className="w-[600px]">
+                <BuyerChart
+                  b1={-29017}
+                  b2={6386}
+                  b3={20392}
+                  marginValue={5000}
+                />
+              </div>
             </TabsContent>
           </Tabs>
         </section>
-        <section className="pt-5 p-10 flex gap-5">
+        <section className="p-10 flex justify-center gap-5">
           <ThemeChart />
           <Link href={"/stocks/recommend"}>
             <Card className="border flex-shrink-0 w-[17.5rem] h-full hover:bg-secondary duration-300">

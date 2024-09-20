@@ -10,8 +10,7 @@ import { Input } from "../ui/input";
 import { usePathname } from "next/navigation";
 
 export const Topnav = () => {
-  const pn = usePathname();
-  console.log(pn);
+  const pn = usePathname().split("/")[1];
   const selector = createSelectors(store);
   const isLoggedIn = selector.use.isLoggedIn();
 
@@ -29,21 +28,21 @@ export const Topnav = () => {
           </Link>
           <Link
             href={"/stocks"}
-            aria-selected={pn == "/stocks"}
+            aria-selected={pn == "stocks"}
             className="opacity-60 font-medium aria-selected:opacity-80 aria-selected:font-bold hover:opacity-80 hover:font-bold duration-150"
           >
             주식
           </Link>
           <Link
             href={"/profile"}
-            aria-selected={pn == "/profile"}
+            aria-selected={pn == "profile"}
             className="opacity-60 font-medium aria-selected:opacity-80 aria-selected:font-bold hover:opacity-80 hover:font-bold duration-150"
           >
             투자내역
           </Link>
           <Link
             href={"/dividend-lab"}
-            aria-selected={pn == "/dividend-lab"}
+            aria-selected={pn == "dividend-lab"}
             className="opacity-60 font-medium aria-selected:opacity-80 aria-selected:font-bold hover:opacity-80 hover:font-bold duration-150"
           >
             배당 연구소

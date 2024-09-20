@@ -12,8 +12,6 @@ export const Bannner = () => {
     refetchOnReconnect: false,
   });
 
-  console.log(query.data?.data);
-
   return (
     <div className="relative h-12 w-full overflow-hidden bg-slate-100">
       <div className="h-full w-fit flex items-center justify-between gap-20 whitespace-nowrap loop">
