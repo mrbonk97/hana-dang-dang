@@ -15,3 +15,5 @@ export const getIndexListApi = (): Promise<AxiosResponse<T1>> =>
   api.get("/indexes");
 
 export const getIndexDetailApi = (code: string) => api.get(`/indexes/${code}`);
+export const getIndexDetailLongApi = (code: string) =>
+  api.get(`/indexes/long/${code}`);
