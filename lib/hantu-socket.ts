@@ -64,6 +64,7 @@ export const getHantuSocket = ({
       };
 
       socket.current.onmessage = (e) => {
+        console.log(e);
         if (e.data.startsWith("0|H0STCNT0")) {
           const data = decodeStockPrice(e.data);
 

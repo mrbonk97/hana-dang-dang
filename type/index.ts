@@ -87,17 +87,36 @@ export type StockInfoType = {
   tr_stop_yn: string;
 };
 
+export type IndexInfoType = {
+  bstp_nmix_prdy_vrss: string;
+  prdy_vrss_sign: string;
+  bstp_nmix_prdy_ctrt: string;
+  prdy_nmix: string;
+  acml_vol: string;
+  acml_tr_pbmn: string;
+  hts_kor_isnm: string;
+  bstp_nmix_prpr: string;
+  bstp_cls_code: string;
+  prdy_vol: string;
+  bstp_nmix_oprc: string;
+  bstp_nmix_hgpr: string;
+  bstp_nmix_lwpr: string;
+  futs_prdy_oprc: string;
+  futs_prdy_hgpr: string;
+  futs_prdy_lwpr: string;
+};
+
 export type IndexType = {
-  id: number;
+  id: string;
   code: string;
   fullCode: string;
   stck_bsop_date: string;
-  acml_tr_pbmn: number;
+  acml_tr_pbmn: string;
   acml_vol: string;
-  bstp_nmix_hgpr: number;
-  bstp_nmix_lwpr: number;
-  bstp_nmix_oprc: number;
-  bstp_nmix_prpr: number;
+  bstp_nmix_hgpr: string;
+  bstp_nmix_lwpr: string;
+  bstp_nmix_oprc: string;
+  bstp_nmix_prpr: string;
   mod_yn: string;
 };
 

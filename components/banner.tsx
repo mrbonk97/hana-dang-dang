@@ -1,9 +1,14 @@
 "use client";
 
 import { getIndexListApi } from "@/lib/index-api";
+import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 
-export const Bannner = () => {
+interface BannerProps {
+  className?: string;
+}
+
+export const Bannner = ({ className }: BannerProps) => {
   const query = useQuery({
     queryKey: ["indexes"],
     queryFn: getIndexListApi,
@@ -13,7 +18,12 @@ export const Bannner = () => {
   });
 
   return (
-    <div className="relative h-12 w-full overflow-hidden bg-slate-100">
+    <div
+      className={cn(
+        "relative h-12 w-full overflow-hidden bg-slate-100",
+        className
+      )}
+    >
       <div className="h-full w-fit flex items-center justify-between gap-20 whitespace-nowrap loop">
         {query.data?.data.output2.map((item) => (
           <div

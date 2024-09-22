@@ -9,11 +9,11 @@ import {
 import { IndexType } from "@/type";
 
 const chartConfig = {
-  bstp_nmix_prpr: {
+  index_value: {
     label: "지수",
     color: "hsl(var(--chart-1))",
   },
-  cur: {
+  cur_value: {
     label: "현재가",
     color: "hsl(var(--chart-1))",
   },
@@ -21,12 +21,16 @@ const chartConfig = {
 
 interface IndexChartProps {
   data: IndexType[];
+  curValue: string;
 }
 
-export const IndexChart = ({ data }: IndexChartProps) => {
-  const aaa = data.length > 0 ? data[data.length - 1].bstp_nmix_prpr : 0;
+export const IndexChart = ({ data, curValue }: IndexChartProps) => {
   data = data.map((item) => {
-    return { ...item, cur: aaa };
+    return {
+      ...item,
+      index_value: parseFloat(item.bstp_nmix_prpr),
+      cur_value: parseFloat(curValue),
+    };
   });
 
   return (
@@ -44,7 +48,7 @@ export const IndexChart = ({ data }: IndexChartProps) => {
           type="number"
           axisLine={false}
           tickLine={false}
-          domain={[`dataMin - 20`, `dataMax + 20`]}
+          domain={[`auto`, `auto`]}
         />
         <XAxis
           dataKey="stck_bsop_date"
@@ -57,14 +61,14 @@ export const IndexChart = ({ data }: IndexChartProps) => {
           content={<ChartTooltipContent hideLabel />}
         />
         <Line
-          dataKey="bstp_nmix_prpr"
+          dataKey="index_value"
           type="linear"
           stroke="#e11d48"
           strokeWidth={2}
           dot={false}
         />
         <Line
-          dataKey="cur"
+          dataKey="cur_value"
           type="linear"
           stroke="rgba(225,29,72,0.3)"
           strokeWidth={1}
@@ -72,7 +76,6 @@ export const IndexChart = ({ data }: IndexChartProps) => {
           strokeDasharray="5 5"
           opacity={50}
         />
-        <CartesianGrid vertical={false} />
       </LineChart>
     </ChartContainer>
   );
