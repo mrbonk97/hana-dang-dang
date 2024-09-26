@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/tanstack-query/query-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Noto_Sans_KR({
   subsets: ["latin"],
@@ -23,7 +24,10 @@ export default function RootLayout({
     <html lang="ko">
       {/* <body className={"noto_sans"}> */}
       <body className={inter.className}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          {children}
+          <Toaster />
+        </QueryProvider>
       </body>
     </html>
   );

@@ -28,9 +28,6 @@ export const UserAvatar = () => {
         <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={"/profile"}>프로필</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
           <Link href={"/sign-out"}>로그아웃</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

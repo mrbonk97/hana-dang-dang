@@ -2,10 +2,12 @@
 import Link from "next/link";
 import { Separator } from "../ui/separator";
 import { useQuery } from "@tanstack/react-query";
-import { StockRankApi } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ChevronsLeft } from "lucide-react";
+import { getStockListRankApi } from "@/lib/stock-api2";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { formatNumber } from "@/lib/utils";
 
 export const Leftnav2 = () => {
   const [date, setDate] = useState<Date | null>(null);
@@ -20,7 +22,7 @@ export const Leftnav2 = () => {
 
   const query = useQuery({
     queryKey: ["stock-rank"],
-    queryFn: StockRankApi,
+    queryFn: getStockListRankApi,
     refetchInterval: 50000,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
@@ -50,7 +52,7 @@ export const Leftnav2 = () => {
       </div>
       <Separator className="mt-4 mb-2 ml-5 w-[calc(100%-40px)]" />
 
-      <ul className="pl-5 pr-3 pb-28 h-full space-y-2 overflow-y-auto">
+      <ul className="px-2 pb-28 h-full space-y-2 overflow-y-auto">
         {query.isPending && (
           <>
             <ListSkeleton />
@@ -59,7 +61,9 @@ export const Leftnav2 = () => {
           </>
         )}
         {query.isSuccess &&
-          query.data.data.output.map((item, idx) => (
+          query.data != undefined &&
+          query.data.output != undefined &&
+          query.data.output.map((item, idx) => (
             <List
               key={item.hts_kor_isnm}
               title={item.hts_kor_isnm}
@@ -92,24 +96,33 @@ const List = ({
   prdy_vrss,
   prdy_ctrt,
 }: ListProps) => {
+  let imgCode = code;
+  if (imgCode.length == 6) imgCode = imgCode.slice(0, -1) + "0";
+
   return (
     <li>
       <Link
         href={`/stocks/${code}`}
-        className="py-4 px-3 rounded-lg font-bold flex justify-between items-center hover:bg-c1-100 duration-150 text-sm"
+        className="py-4 px-3 rounded-lg font-bold flex justify-between gap-2 items-center hover:bg-c1-100 duration-150 text-xs"
       >
-        <div className="opacity-60 w-40 overflow-hidden whitespace-nowrap text-ellipsis">
+        <div className="flex items-center gap-2">
           <span className="text-c1-300">{rank}</span>
-          <span className="ml-3">{title}</span>
+          <Avatar className="w-8 h-8">
+            <AvatarImage src={`/kospi-icons/${imgCode}.png`} />
+            <AvatarFallback>{title.slice(0, 2)}</AvatarFallback>
+          </Avatar>
+          <span className="opacity-60 overflow-hidden whitespace-nowrap text-ellipsis text-xs">
+            {title}
+          </span>
         </div>
-        <div className="flex flex-col items-end">
-          <span className="opacity-70">{price}원</span>
+        <div className="w-28 flex flex-col items-end">
+          <span className="opacity-70">{formatNumber(price)}원</span>
           <span
             className={`opacity-70 text-xs font-medium text-right
               ${parseInt(prdy_vrss) < 0 && "text-blue-500"}
               ${parseInt(prdy_vrss) > 0 && "text-rose-500"}`}
           >
-            {prdy_vrss}원({Math.abs(parseFloat(prdy_ctrt))}%)
+            {formatNumber(prdy_vrss)}원({Math.abs(parseFloat(prdy_ctrt))}%)
           </span>
         </div>
       </Link>

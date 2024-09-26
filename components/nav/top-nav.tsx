@@ -34,6 +34,13 @@ export const Topnav = () => {
             주식
           </Link>
           <Link
+            href={"/oversea-stocks"}
+            aria-selected={pn == "oversea-stock"}
+            className="opacity-60 font-medium aria-selected:opacity-80 aria-selected:font-bold hover:opacity-80 hover:font-bold duration-150"
+          >
+            미국주식
+          </Link>
+          <Link
             href={"/profile"}
             aria-selected={pn == "profile"}
             className="opacity-60 font-medium aria-selected:opacity-80 aria-selected:font-bold hover:opacity-80 hover:font-bold duration-150"
@@ -46,6 +53,12 @@ export const Topnav = () => {
             className="opacity-60 font-medium aria-selected:opacity-80 aria-selected:font-bold hover:opacity-80 hover:font-bold duration-150"
           >
             배당 연구소
+          </Link>
+          <Link
+            href={"/dividend-lab/onboarding"}
+            className="opacity-60 font-medium aria-selected:opacity-80 aria-selected:font-bold hover:opacity-80 hover:font-bold duration-150"
+          >
+            온보딩
           </Link>
         </nav>
       </div>

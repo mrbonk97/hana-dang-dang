@@ -1,9 +1,18 @@
-import { string } from "zod";
+export type BasicResponseType = {
+  rt_cd: string;
+  msg_cd: string;
+  msg1: string;
+};
 
 export type UserType = {
   id: number;
   name: string;
   username: string;
+  isDividendCreated: boolean;
+  dividendArea: string;
+  dividendGoal: number;
+  dividendPreference: string;
+  dividendRiskType: string;
 };
 
 export type AccountType = {
@@ -194,14 +203,26 @@ export type StockRankType = {
   acml_tr_pbmn: string;
 };
 
-export type StockWithPriceType = {
-  code: string;
-  prdtAbrvName: string;
-  idxBztpMclsCdName: string;
-  stckClpr: number;
-  prdyVrss: number;
-  acmlVol: number;
-  prdyVrssSign: number;
+export type StockType1 = {
+  hts_kor_isnm: string;
+  mksc_shrn_iscd: string;
+  data_rank: string;
+  stck_prpr: string;
+  prdy_vrss_sign: string;
+  prdy_vrss: string;
+  prdy_ctrt: string;
+  acml_vol: string;
+  prdy_vol: string;
+  lstn_stcn: string;
+  avrg_vol: string;
+  n_befr_clpr_vrss_prpr_rate: string;
+  vol_inrt: string;
+  vol_tnrt: string;
+  nday_vol_tnrt: string;
+  avrg_tr_pbmn: string;
+  tr_pbmn_tnrt: string;
+  nday_tr_pbmn_tnrt: string;
+  acml_tr_pbmn: string;
 };
 
 export type StockCurrentPriceType = {

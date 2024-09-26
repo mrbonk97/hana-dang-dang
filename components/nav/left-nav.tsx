@@ -1,9 +1,4 @@
-import {
-  ChartColumnBigIcon,
-  ChartSplineIcon,
-  FlameIcon,
-  HeartIcon,
-} from "lucide-react";
+import { ChartColumnBigIcon, FlameIcon, HeartIcon } from "lucide-react";
 import Link from "next/link";
 import { Separator } from "../ui/separator";
 
@@ -43,6 +38,7 @@ const Card = ({ title, icon }: CardProps) => {
   return (
     <Link
       href={"/my-invest"}
+      scroll={false}
       className="p-1 w-12 flex flex-col items-center justify-evenly opacity-70 duration-150 rounded-lg hover:bg-c2-100 hover:opacity-90"
     >
       {icon}

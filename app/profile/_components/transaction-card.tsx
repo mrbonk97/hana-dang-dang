@@ -20,8 +20,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useQuery } from "@tanstack/react-query";
+import { getRecentTransactionApi } from "@/lib/account-api";
+import { formatNumber } from "@/lib/utils";
 
-export const TransactionCard = () => {
+interface Props {
+  accountId: string;
+}
+
+export const TransactionCard = ({ accountId }: Props) => {
+  const query = useQuery({
+    queryKey: ["history"],
+    queryFn: () => getRecentTransactionApi(accountId),
+  });
+
   return (
     <Card className="xl:col-span-2 border w-full">
       <CardHeader className="flex flex-row items-center">
@@ -40,106 +52,27 @@ export const TransactionCard = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Customer</TableHead>
-              <TableHead className="hidden xl:table-column">Type</TableHead>
-              <TableHead className="hidden xl:table-column">Status</TableHead>
-              <TableHead className="hidden xl:table-column">Date</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
+              <TableHead>거래일자</TableHead>
+              <TableHead>거래유형</TableHead>
+              <TableHead>종목명</TableHead>
+              <TableHead className="text-right">수량</TableHead>
+              <TableHead className="text-right">금액</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell>
-                <div className="font-medium">Liam Johnson</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  liam@example.com
-                </div>
-              </TableCell>
-              <TableCell className="hidden xl:table-column">Sale</TableCell>
-              <TableCell className="hidden xl:table-column">
-                <Badge className="text-xs" variant="outline">
-                  Approved
-                </Badge>
-              </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                2023-06-23
-              </TableCell>
-              <TableCell className="text-right">$250.00</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <div className="font-medium">Olivia Smith</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  olivia@example.com
-                </div>
-              </TableCell>
-              <TableCell className="hidden xl:table-column">Refund</TableCell>
-              <TableCell className="hidden xl:table-column">
-                <Badge className="text-xs" variant="outline">
-                  Declined
-                </Badge>
-              </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                2023-06-24
-              </TableCell>
-              <TableCell className="text-right">$150.00</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <div className="font-medium">Noah Williams</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  noah@example.com
-                </div>
-              </TableCell>
-              <TableCell className="hidden xl:table-column">
-                Subscription
-              </TableCell>
-              <TableCell className="hidden xl:table-column">
-                <Badge className="text-xs" variant="outline">
-                  Approved
-                </Badge>
-              </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                2023-06-25
-              </TableCell>
-              <TableCell className="text-right">$350.00</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <div className="font-medium">Emma Brown</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  emma@example.com
-                </div>
-              </TableCell>
-              <TableCell className="hidden xl:table-column">Sale</TableCell>
-              <TableCell className="hidden xl:table-column">
-                <Badge className="text-xs" variant="outline">
-                  Approved
-                </Badge>
-              </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                2023-06-26
-              </TableCell>
-              <TableCell className="text-right">$450.00</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <div className="font-medium">Liam Johnson</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  liam@example.com
-                </div>
-              </TableCell>
-              <TableCell className="hidden xl:table-column">Sale</TableCell>
-              <TableCell className="hidden xl:table-column">
-                <Badge className="text-xs" variant="outline">
-                  Approved
-                </Badge>
-              </TableCell>
-              <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                2023-06-27
-              </TableCell>
-              <TableCell className="text-right">$550.00</TableCell>
-            </TableRow>
+            {query.data?.map((item) => {
+              return (
+                <TableRow key={item.id}>
+                  <TableCell>{item.createdAt.substring(0, 10)}</TableCell>
+                  <TableCell>매수</TableCell>
+                  <TableCell>{item.stockInfo.prdt_abrv_name}</TableCell>
+                  <TableCell className="text-right">{item.quantity}</TableCell>
+                  <TableCell className="text-right">
+                    {formatNumber(item.price)}원
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </CardContent>

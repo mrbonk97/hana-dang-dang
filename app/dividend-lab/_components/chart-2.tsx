@@ -19,22 +19,20 @@ import {
 } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
 
-export const description = "A pie chart with a label";
-
 const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
+  { stock_name: "JEPI", quantity: 275, fill: "var(--color-chrome)" },
+  { stock_name: "코카콜라", quantity: 200, fill: "var(--color-safari)" },
+  { stock_name: "로레엘", quantity: 187, fill: "var(--color-firefox)" },
+  { stock_name: "삼성전자", quantity: 173, fill: "var(--color-edge)" },
+  { stock_name: "기타", quantity: 90, fill: "var(--color-other)" },
 ];
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  quantity: {
+    label: "수량",
   },
   chrome: {
-    label: "Chrome",
+    label: "jepi",
     color: "hsl(var(--chart-1))",
   },
   safari: {
@@ -57,45 +55,50 @@ const chartConfig = {
 
 export function Chart2() {
   return (
-    <Card className="bg-secondary">
+    <Card className="flex flex-col border w-full max-w-[768px] flex-shrink-0">
       <CardHeader className="opacity-80">
         <CardTitle>포트폴리오</CardTitle>
       </CardHeader>
-      <CardContent className="flex gap-20">
-        <ul className="font-bold flex flex-col justify-center gap-5">
-          <List />
-          <List />
-          <List />
-          <List />
+      <CardContent className="h-full flex items-center justify-between gap-20">
+        <ul className="font-bold">
+          {chartData.map((item) => (
+            <List
+              key={item.stock_name}
+              title={item.stock_name}
+              quantity={item.quantity}
+            />
+          ))}
         </ul>
         <ChartContainer
           config={chartConfig}
-          className="h-96 w-96 [&_.recharts-pie-label-text]:fill-foreground"
+          className="h-80 w-96 [&_.recharts-pie-label-text]:fill-foreground"
         >
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-            <Pie data={chartData} dataKey="visitors" label nameKey="browser" />
+            <Pie
+              data={chartData}
+              dataKey="quantity"
+              label
+              nameKey="stock_name"
+            />
           </PieChart>
         </ChartContainer>
-        <div>
-          <Button className="py-6  w-full leading-relaxed">
-            포트폴리오 <br />
-            점검하기
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );
 }
 
-const List = () => {
+interface ListProps {
+  title: string;
+  quantity: number;
+}
+
+const List = ({ title, quantity }: ListProps) => {
   return (
-    <li className="flex items-center">
-      <DotIcon className="text-c1-300" size={64} />
-      <div>
-        <h4 className="mt-5 opacity-70">삼성전자 (26%)</h4>
-        <div className="text-end opacity-60">321주</div>
-      </div>
+    <li className="flex items-center gap-1">
+      <DotIcon className="text-c1-300" size={40} />
+      <span className="opacity-70">{title}</span>
+      <span className="ml-3 text-end opacity-60">{quantity}주</span>
     </li>
   );
 };

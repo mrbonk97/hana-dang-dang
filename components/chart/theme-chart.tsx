@@ -39,7 +39,7 @@ const chartConfig = {
 
 export function ThemeChart() {
   return (
-    <Card className="border hover:bg-secondary duration-300">
+    <Card className="border duration-300">
       <CardHeader className="opacity-70">
         <CardTitle>업종별 시세</CardTitle>
         <CardDescription className="text-right">

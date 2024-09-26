@@ -9,7 +9,7 @@ export const Logo = () => {
         alt="logo"
         width={32}
         height={32}
-        style={{ width: "auto", height: "100%" }}
+        style={{ width: "32px", height: "32px" }}
       />
       <span className="text-lg font-bold opacity-70">하나당당</span>
     </Link>

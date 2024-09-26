@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { getIndexDetailApi } from "@/lib/index-api";
+import { IndexValueType } from "@/lib/index-api";
 import React, { PureComponent } from "react";
 import {
   AreaChart,
@@ -18,6 +18,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "../ui/chart";
+import Link from "next/link";
+import { formatNumber } from "@/lib/utils";
 
 const chartConfig = {
   bstp_nmix_prpr: {
@@ -27,38 +29,33 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface IndexChartProps {
-  title: string;
-  code: string;
+  info: any;
+  data: IndexValueType[];
 }
 
-export const KospiChart = ({ title, code }: IndexChartProps) => {
-  const query = useQuery({
-    queryKey: ["index", code],
-    queryFn: () => getIndexDetailApi(code),
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
-  const buho2 = query.data?.data.output1.bstp_nmix_prdy_vrss > 0 ? true : false;
-  const buho =
-    query.data?.data.output1.bstp_nmix_prdy_vrss > 0
-      ? "text-rose-500"
-      : "text-blue-500";
-
-  const data = query.isSuccess
-    ? query.data?.data.output2.slice().reverse()
-    : [];
+export const KospiChart = ({ info, data }: IndexChartProps) => {
+  const isUp = info.bstp_nmix_prdy_vrss[0] == "-" ? false : true;
+  const color =
+    info.bstp_nmix_prdy_vrss[0] == "-" ? "text-blue-500" : "text-rose-500";
+  data.reverse();
 
   return (
     <Card className="h-full w-full bg-secondary">
       <CardHeader>
-        <CardTitle className="font-bold opacity-70 flex justify-between">
-          <span>{title}</span>
-          <span className={buho}>
-            {query.data?.data.output1.bstp_nmix_prpr}(
-            {query.data?.data.output1.bstp_nmix_prdy_vrss})
-          </span>
+        <CardTitle>
+          <Link
+            className="font-bold opacity-70 flex justify-between"
+            href={`/indexes/${info.bstp_cls_code}`}
+          >
+            <span>{info.hts_kor_isnm}</span>
+            <div>
+              <div className="text-right">{info.bstp_nmix_prpr}</div>
+              <div className={`text-xs text-right ${color}`}>
+                {info.bstp_nmix_prdy_vrss}(
+                {formatNumber(Math.abs(parseFloat(info.bstp_nmix_prdy_ctrt)))}%)
+              </div>
+            </div>
+          </Link>
         </CardTitle>
       </CardHeader>
       <CardContent className="pl-0 h-32">
@@ -92,9 +89,9 @@ export const KospiChart = ({ title, code }: IndexChartProps) => {
             <Area
               dataKey="bstp_nmix_prpr"
               type="natural"
-              stroke={buho2 ? "#e11d48" : "#3b82f6"}
+              stroke={isUp ? "#e11d48" : "#3b82f6"}
               fillOpacity={0.4}
-              fill={buho2 ? "#f43f5e" : "#93c5fd"}
+              fill={isUp ? "#f43f5e" : "#93c5fd"}
             />
           </AreaChart>
         </ChartContainer>

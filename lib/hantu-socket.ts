@@ -35,6 +35,7 @@ interface Props {
   previousPriceRef: RefObject<HTMLDivElement>;
   highPriceRef: RefObject<HTMLDivElement>;
   lowPriceRef: RefObject<HTMLDivElement>;
+  currentPriceInputRef: RefObject<HTMLInputElement>;
 }
 
 export const getHantuSocket = ({
@@ -50,6 +51,7 @@ export const getHantuSocket = ({
   previousPriceRef,
   highPriceRef,
   lowPriceRef,
+  currentPriceInputRef,
 }: Props) => {
   useEffect(() => {
     const startSocket = () => {
@@ -64,7 +66,7 @@ export const getHantuSocket = ({
       };
 
       socket.current.onmessage = (e) => {
-        console.log(e);
+        // console.log(e);
         if (e.data.startsWith("0|H0STCNT0")) {
           const data = decodeStockPrice(e.data);
 
@@ -79,6 +81,11 @@ export const getHantuSocket = ({
           if (currentPriceRef.current != undefined)
             currentPriceRef.current.innerText =
               formatNumber(parseInt(data.stck_prpr)) + "원";
+
+          if (currentPriceInputRef.current != undefined)
+            currentPriceInputRef.current.value = formatNumber(
+              parseInt(data.stck_prpr)
+            );
 
           if (previousPriceRef.current != undefined) {
             //prettier-ignore

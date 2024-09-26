@@ -1,4 +1,3 @@
-"use client";
 import {
   AccountType,
   IndexType,
@@ -8,7 +7,6 @@ import {
   StockCurrentPriceType,
   StockRankResponseType,
   StockRankType,
-  StockWithPriceType,
   UserType,
   Index3Type,
 } from "@/type";
@@ -29,21 +27,13 @@ export const signInApi = (
 ): Promise<signInResponse> =>
   api.post("/users/sign-in", { username, password });
 
-export const stockListAPi = (): Promise<AxiosResponse<StockWithPriceType[]>> =>
-  api.get("/stocks");
-
-export const DailyStockApi = (
-  code: string
-): Promise<AxiosResponse<Index3Type[]>> => api.get(`/daily-price/${code}`);
+export const stockListAPi = () => api.get("/stocks");
 
 export const KospiIndexApi = (): Promise<AxiosResponse<IndexType[]>> =>
   api.get("/indexes/0001");
 
 export const RecentNewsApi = (): Promise<AxiosResponse<NewsType[]>> =>
   api.get("/news/recent");
-
-export const StockRankApi = (): Promise<AxiosResponse<StockRankResponseType>> =>
-  api.get("/han-tu/rank");
 
 export const FillAccountBalanceApi = (accountNo: string, amount: number) =>
   api.put(`/account/${accountNo}/fill`, { amount });

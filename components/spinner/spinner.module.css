@@ -15,7 +15,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  background: #ff3d00;
+  background: #13be7f;
   width: 16px;
   height: 16px;
   transform: translate(-50%, 50%);
@@ -24,7 +24,7 @@
 .loader::before {
   left: auto;
   right: 0;
-  background: blue;
+  background: #13be7f;
   transform: translate(50%, 100%);
 }
 

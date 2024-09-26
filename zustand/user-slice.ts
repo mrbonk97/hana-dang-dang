@@ -10,6 +10,7 @@ interface UserState {
 interface UserAction {
   signIn: (user: UserType, account: AccountType) => void;
   signOut: () => void;
+  setUser: (user: UserType) => void;
 }
 
 export interface UserSlice extends UserState, UserAction {}
@@ -24,4 +25,5 @@ export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (
   signIn: (user: UserType, account: AccountType) =>
     set({ user: user, account: account, isLoggedIn: true }),
   signOut: () => set({ user: null, isLoggedIn: false }),
+  setUser: (user: UserType) => set({ user: user }),
 });

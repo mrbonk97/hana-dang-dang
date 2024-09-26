@@ -11,8 +11,10 @@ export const addDash = (value: string) => {
   return value.slice(0, 3) + "-" + value.slice(3, 6) + "-" + value.slice(6, 15);
 };
 
-export const formatNumber = (value: undefined | number) => {
+export const formatNumber = (value: undefined | number | string) => {
   if (value == undefined) return "0";
+  if (typeof value == "string")
+    return new Intl.NumberFormat().format(parseInt(value));
   return new Intl.NumberFormat().format(value);
 };
 
@@ -31,6 +33,19 @@ export const HokaConnectMessage = (trId: string, trKey: string) => {
       },
     },
   };
+};
+
+export const getTradeTime = (before: number) => {
+  const today = new Date();
+  const _hour = today.getHours() * 60;
+  const _minute = today.getMinutes();
+
+  let totalMinute = _hour + _minute - before * 30;
+  const hour = Math.floor(totalMinute / 60);
+  const minute = totalMinute % 60;
+
+  if (minute < 10) return `${hour}0${minute}00`;
+  return `${hour}${minute}00`;
 };
 
 export const decodeStockHoka = (data: string): HogaType => {
