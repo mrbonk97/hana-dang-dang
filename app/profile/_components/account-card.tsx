@@ -19,13 +19,7 @@ export const AccountCard = ({ accountId }: Props) => {
     queryFn: () => getAccountDetailApi(accountId),
   });
 
-  let profitPerc = "0";
   let color = "text-rose-500";
-  // prettier-ignore
-  if (isSuccess && data != undefined) {
-    profitPerc = ((data.stockProfit / data.stockInitBalance) * 100).toFixed(2);
-    if(data.stockProfit < 0) color = 'text-blue-500';
-  }
 
   if (isPending || !isSuccess) {
     return (
@@ -93,13 +87,13 @@ export const AccountCard = ({ accountId }: Props) => {
                   </li>
                   <li className="flex justify-between">
                     <span>손익</span>
-                    <span className={color}>
-                      {formatNumber(data.stockProfit)}원
-                    </span>
+                    <span className={color}>{formatNumber(data.profit)}원</span>
                   </li>
                   <li className="flex justify-between">
                     <span>수익률</span>
-                    <span className={color}>{profitPerc}%</span>
+                    <span className={color}>
+                      {data.profitPercentage.toFixed(2)}%
+                    </span>
                   </li>
                 </ul>
               </div>

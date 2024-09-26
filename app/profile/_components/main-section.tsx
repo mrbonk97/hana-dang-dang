@@ -17,13 +17,7 @@ export const MainSection = ({ accountId }: Props) => {
     queryFn: () => getAccountDetailApi(accountId),
   });
 
-  let profitPerc = "0";
   let color = "text-rose-500";
-  // prettier-ignore
-  if (isSuccess && data != undefined) {
-    profitPerc = ((data.stockProfit / data.stockInitBalance) * 100).toFixed(2);
-    if(data.stockProfit < 0) color = 'text-blue-500';
-  }
 
   if (isPending || !isSuccess) {
     return (
@@ -32,6 +26,8 @@ export const MainSection = ({ accountId }: Props) => {
       </section>
     );
   }
+
+  if (data.profitPercentage < 0) color = "text-blue-500";
 
   return (
     <section className="py-10 border-b flex justify-center">
@@ -72,13 +68,13 @@ export const MainSection = ({ accountId }: Props) => {
             <div className="font-medium">
               <h4 className="text-sm text-right opacity-60">손익</h4>
               <p className={`text-lg text-right opacity-80 ${color}`}>
-                {formatNumber(data.stockProfit)}원
+                {formatNumber(data.profit)}원
               </p>
             </div>
             <div className="font-medium">
               <h4 className="text-sm text-right opacity-60">수익률</h4>
               <p className={`text-lg text-right opacity-80 ${color}`}>
-                {profitPerc}%
+                {data.profitPercentage.toFixed(2)}%
               </p>
             </div>
           </div>

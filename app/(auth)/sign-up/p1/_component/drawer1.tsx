@@ -28,7 +28,7 @@ export const Drawer1 = ({ children }: TermsDrawerProps) => {
           <div className="opacity-80">
             <div className="font-bold">위탁계좌란?</div>
             <div className="pl-5">
-              거래소에 상장된 주식을 매매할 수 있느 계좌
+              거래소에 상장된 주식을 매매할 수 있는 계좌
             </div>
             <div className="mt-5 font-bold">투자대상</div>
             <div className="pl-5">

@@ -1,4 +1,5 @@
 import { StockInfoType } from "@/type";
+import axios from "axios";
 
 const BASE_URL = "http://localhost:8080/api";
 
@@ -23,3 +24,6 @@ type T2 = {
 };
 export const getAccountStockApi = (accountId: string): Promise<T2[]> =>
   fetch(`${BASE_URL}/accounts/${accountId}/stocks`).then((res) => res.json());
+
+export const FillAccountBalanceApi = (accountNo: string, amount: number) =>
+  axios.get(`${BASE_URL}/accounts/${accountNo}/fill?amount=${amount}`);

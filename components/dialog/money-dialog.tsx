@@ -13,18 +13,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { FillAccountBalanceApi } from "@/lib/api";
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
+import { FillAccountBalanceApi } from "@/lib/account-api";
 
 export const MoneyDialog = () => {
   const useStore = createSelectors(store);
+  const qc = useQueryClient();
   const account = useStore.use.account();
   const [money, setMoney] = useState<number | null>(null);
   const mutation = useMutation({
     mutationFn: () =>
       FillAccountBalanceApi(account!.accountNo, money == null ? 0 : money),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["profile"] });
+    },
   });
 
   const handleClick = () => {
@@ -108,7 +116,7 @@ export const MoneyDialog = () => {
           </Button>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel className="py-6">취소하기</AlertDialogCancel>
+          <AlertDialogCancel className="py-6">닫기</AlertDialogCancel>
           <Button onClick={handleClick} className="w-full py-6">
             충전하기
           </Button>

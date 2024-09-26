@@ -34,6 +34,3 @@ export const KospiIndexApi = (): Promise<AxiosResponse<IndexType[]>> =>
 
 export const RecentNewsApi = (): Promise<AxiosResponse<NewsType[]>> =>
   api.get("/news/recent");
-
-export const FillAccountBalanceApi = (accountNo: string, amount: number) =>
-  api.put(`/account/${accountNo}/fill`, { amount });

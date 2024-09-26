@@ -12,52 +12,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 import { useQuery } from "@tanstack/react-query";
 import { getAccountStockApi } from "@/lib/account-api";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
-export const description = "A donut chart with text";
-
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-];
-
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
-  },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
-} satisfies ChartConfig;
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { formatNumber } from "@/lib/utils";
 
 interface Props {
   accountId: string;
@@ -71,16 +39,11 @@ export function AccountStockCard({ accountId }: Props) {
     refetchOnWindowFocus: false,
   });
 
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-  }, []);
-
   return (
     <Card className="border w-full">
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
-          <CardTitle>보유종목</CardTitle>
-          <CardDescription>보유하고 계신 종목 비율입니다.</CardDescription>
+          <CardTitle className="opacity-80">보유종목</CardTitle>
         </div>
         <Button asChild size="sm" className="ml-auto gap-1">
           <Link href="#">
@@ -91,80 +54,65 @@ export function AccountStockCard({ accountId }: Props) {
       </CardHeader>
 
       <CardContent className="flex gap-10">
-        <ChartContainer
-          config={chartConfig}
-          className="p-0 m-0 h-96 w-96 flex-shrink-0 aspect-square"
-        >
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Pie
-              data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
-              innerRadius={60}
-              strokeWidth={5}
-            >
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                    return (
-                      <text
-                        x={viewBox.cx}
-                        y={viewBox.cy}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        <tspan
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
-                        >
-                          {totalVisitors.toLocaleString()}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
-                        >
-                          Visitors
-                        </tspan>
-                      </text>
-                    );
-                  }
-                }}
-              />
-            </Pie>
-          </PieChart>
-        </ChartContainer>
-        <ul className="w-full px-5">
-          <li className="grid grid-cols-5 font-bold opacity-80 pb-2">
-            <div className="col-span-1">종목명</div>
-            <div className="col-span-1 text-right">수량</div>
-            <div className="col-span-1 text-right">단위가격</div>
-            <div className="col-span-1 text-right">총 가격</div>
-            <div className="col-span-1 text-right">비율</div>
-          </li>
-          {data?.map((item) => {
-            return (
-              <li className="grid grid-cols-5 font-medium opacity-70">
-                <div className="col-span-1">
-                  {item.stockInfo.prdt_abrv_name}
-                </div>
-                <div className="col-span-1 text-right">{item.quantity}</div>
-                <div className="col-span-1 text-right">
-                  {item.stockInfo.bfdy_clpr}
-                </div>
-                <div className="col-span-1 text-right">
-                  {item.quantity * parseInt(item.stockInfo.bfdy_clpr)}
-                </div>
-                <div className="col-span-1 text-right">100%</div>
-              </li>
-            );
-          })}
-        </ul>
+        <Table>
+          <TableCaption>보유하고 계신 종목 입니다.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>종목명</TableHead>
+              <TableHead className="text-right">수량</TableHead>
+              <TableHead className="text-right">현재 가격</TableHead>
+              <TableHead className="text-right">구매 가격</TableHead>
+              <TableHead className="text-right">총 가격</TableHead>
+              <TableHead className="text-right">수익 금액</TableHead>
+              <TableHead className="text-right">수익률</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data?.map((item) => {
+              const profit =
+                parseInt(item.stockInfo.bfdy_clpr) - item.purchasePrice;
+              const profitPercentage =
+                ((parseInt(item.stockInfo.bfdy_clpr) - item.purchasePrice) /
+                  item.purchasePrice) *
+                100;
+
+              return (
+                <TableRow key={item.id} className="opacity-70 font-medium">
+                  <TableCell>{item.stockInfo.prdt_abrv_name}</TableCell>
+                  <TableCell className="text-right">
+                    {formatNumber(item.quantity)}주
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {formatNumber(item.stockInfo.bfdy_clpr)}원
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {formatNumber(item.purchasePrice)}원
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {formatNumber(
+                      item.quantity * parseInt(item.stockInfo.bfdy_clpr)
+                    )}
+                    원
+                  </TableCell>
+                  <TableCell
+                    className={`text-right ${
+                      profit > 0 ? "text-rose-500" : "text-blue-500"
+                    }`}
+                  >
+                    {formatNumber(profit)}원
+                  </TableCell>
+                  <TableCell
+                    className={`text-right ${
+                      profit > 0 ? "text-rose-500" : "text-blue-500"
+                    }`}
+                  >
+                    {profitPercentage.toFixed(2)}%
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   );

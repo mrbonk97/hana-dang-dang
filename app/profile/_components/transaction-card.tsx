@@ -39,7 +39,7 @@ export const TransactionCard = ({ accountId }: Props) => {
       <CardHeader className="flex flex-row items-center">
         <div className="grid gap-2">
           <CardTitle>거래내역</CardTitle>
-          <CardDescription>최근 10건에 대한 거래 내역입니다.</CardDescription>
+          <CardDescription>최근 7건에 대한 거래 내역입니다.</CardDescription>
         </div>
         <Button asChild size="sm" className="ml-auto gap-1">
           <Link href="#">
@@ -60,7 +60,7 @@ export const TransactionCard = ({ accountId }: Props) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {query.data?.map((item) => {
+            {query.data?.slice(0, 7).map((item) => {
               return (
                 <TableRow key={item.id}>
                   <TableCell>{item.createdAt.substring(0, 10)}</TableCell>
