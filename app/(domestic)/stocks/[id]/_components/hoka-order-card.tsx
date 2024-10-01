@@ -6,8 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { BuyStockApi } from "@/lib/stock-api";
-import { getStockHokaApi } from "@/lib/stock-api2";
+import { BuyStockApi, getStockHokaApi } from "@/lib/stock-api";
 import { formatNumber } from "@/lib/utils";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
@@ -28,7 +27,7 @@ export const HokaOrderCard = ({ code }: Props) => {
   const isLoggedIn = selector.use.isLoggedIn();
   const setPrice = selector.use.setPrice();
 
-  const { data, isSuccess, isPending, isRefetching } = useQuery({
+  const { data, isSuccess, isRefetching } = useQuery({
     queryKey: ["hoka", code],
     queryFn: () => getStockHokaApi(code),
     refetchInterval: 5000,

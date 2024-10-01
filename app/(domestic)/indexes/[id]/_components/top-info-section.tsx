@@ -1,9 +1,25 @@
 import { Separator } from "@/components/ui/separator";
 import { formatNumber } from "@/lib/utils";
-import { IndexInfoType } from "@/type";
 
 interface TopInfoSectionProps {
-  data: IndexInfoType;
+  data: {
+    bstp_nmix_prdy_vrss: string;
+    prdy_vrss_sign: string;
+    bstp_nmix_prdy_ctrt: string;
+    prdy_nmix: string;
+    acml_vol: string;
+    acml_tr_pbmn: string;
+    hts_kor_isnm: string;
+    bstp_nmix_prpr: string;
+    bstp_cls_code: string;
+    prdy_vol: string;
+    bstp_nmix_oprc: string;
+    bstp_nmix_hgpr: string;
+    bstp_nmix_lwpr: string;
+    futs_prdy_oprc: string;
+    futs_prdy_hgpr: string;
+    futs_prdy_lwpr: string;
+  };
 }
 
 export const TopInfoSection = ({ data }: TopInfoSectionProps) => {

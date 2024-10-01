@@ -11,7 +11,7 @@ export const Logo = () => {
         height={32}
         style={{ width: "32px", height: "32px" }}
       />
-      <span className="text-lg font-bold opacity-70">하나당당</span>
+      <span className="font-bold opacity-70">하나배당당</span>
     </Link>
   );
 };

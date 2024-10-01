@@ -31,13 +31,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { StockType1 } from "@/type";
 import { Separator } from "../../../../components/ui/separator";
 import { useRouter } from "next/navigation";
-import { StockListRankType } from "@/lib/stock-api2";
 import { formatNumber } from "@/lib/utils";
+import { StockListRankType } from "@/lib/stock-api";
 
-export const columns: ColumnDef<StockType1>[] = [
+export const columns: ColumnDef<StockListRankType>[] = [
   {
     accessorKey: "hts_kor_isnm",
     header: "주식명",
@@ -105,11 +104,10 @@ export const columns: ColumnDef<StockType1>[] = [
 ];
 
 interface TableProps {
-  data: StockType1[];
+  data: StockListRankType[];
 }
 
 export function StockListTable({ data }: TableProps) {
-  console.log(data);
   const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(

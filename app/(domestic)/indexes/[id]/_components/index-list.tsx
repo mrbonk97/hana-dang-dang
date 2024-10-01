@@ -1,18 +1,11 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { IndexListType } from "@/lib/index-api";
 import { formatNumber } from "@/lib/utils";
-import { Index2Type } from "@/type";
 import Link from "next/link";
 
 interface IndexListCardProps {
-  data: Index2Type[];
+  data: IndexListType[];
 }
 export const IndexListCard = ({ data }: IndexListCardProps) => {
   return (
@@ -40,7 +33,6 @@ export const IndexListCard = ({ data }: IndexListCardProps) => {
                 <ListItem
                   key={item.bstp_cls_code}
                   code={item.bstp_cls_code}
-                  prdr_vrss={item.bstp_nmix_prdy_vrss}
                   prdr_ctcr={item.bstp_nmix_prdy_ctrt}
                   label={item.hts_kor_isnm}
                   value={item.bstp_nmix_prpr}
@@ -56,18 +48,11 @@ export const IndexListCard = ({ data }: IndexListCardProps) => {
 interface ListItemProps {
   code: string;
   label: string;
-  prdr_vrss: string;
   prdr_ctcr: string;
   value: string;
 }
 
-const ListItem = ({
-  code,
-  label,
-  prdr_vrss,
-  prdr_ctcr,
-  value,
-}: ListItemProps) => {
+const ListItem = ({ code, label, prdr_ctcr, value }: ListItemProps) => {
   return (
     <Link
       role="list"

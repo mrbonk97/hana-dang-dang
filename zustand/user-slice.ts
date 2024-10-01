@@ -1,5 +1,29 @@
-import { AccountType, UserType } from "@/type";
 import { StateCreator } from "zustand";
+
+type UserType = {
+  id: number;
+  name: string;
+  mobileNo: string;
+  username: string;
+  password: string;
+  isDividendCreated: boolean;
+  dividendGoal: number;
+  dividendRiskType: string;
+  dividendPreference: string;
+  dividendArea: string;
+};
+
+type AccountType = {
+  accountNo: string;
+  title: string;
+  balance: number;
+  withDrawAmount: number;
+  stockCurrentBalance: number;
+  stockInitBalance: number;
+  totalBalance: number;
+  profit: number;
+  profitPercentage: number;
+};
 
 interface UserState {
   user: UserType | null;

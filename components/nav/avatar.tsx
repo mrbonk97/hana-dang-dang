@@ -14,7 +14,6 @@ import Link from "next/link";
 
 export const UserAvatar = () => {
   const user = createSelectors(store).use.user();
-  console.log(user?.name);
 
   return (
     <DropdownMenu>

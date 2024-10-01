@@ -17,8 +17,6 @@ export const MainSection = ({ accountId }: Props) => {
     queryFn: () => getAccountDetailApi(accountId),
   });
 
-  let color = "text-rose-500";
-
   if (isPending || !isSuccess) {
     return (
       <section className="py-10 h-[337px] border-b flex2">
@@ -27,10 +25,12 @@ export const MainSection = ({ accountId }: Props) => {
     );
   }
 
+  let color = "";
   if (data.profitPercentage < 0) color = "text-blue-500";
+  if (data.profitPercentage > 0) color = "text-rose-500";
 
   return (
-    <section className="py-10 border-b flex justify-center">
+    <section className="py-16 border-b flex justify-center">
       <div className="w-[1000px] flex items-center justify-between gap-20">
         <div className="relative">
           <Button

@@ -5,22 +5,25 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ChevronsLeft } from "lucide-react";
-import { getStockListRankApi } from "@/lib/stock-api2";
+import { getStockListRankApi } from "@/lib/stock-api";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { formatNumber } from "@/lib/utils";
 
 export const Leftnav2 = () => {
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState("");
 
   useEffect(() => {
-    setDate(new Date());
-    const timer = setInterval(() => setDate(new Date()), 5000);
-    return () => {
-      clearInterval(timer);
+    const setTime = () => {
+      const today = new Date();
+      const dateString = `오늘 ${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}기준`;
+      setDate(dateString);
     };
+    setTime();
+    const timer = setInterval(setTime, 5000);
+    return () => clearInterval(timer);
   }, []);
 
-  const query = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ["stock-rank"],
     queryFn: getStockListRankApi,
     refetchInterval: 50000,
@@ -29,22 +32,36 @@ export const Leftnav2 = () => {
     refetchOnMount: false,
   });
 
+  if (!isSuccess || data == undefined || data == null)
+    return (
+      <aside className="z-50 fixed left-16 top-14 py-3 h-full w-80 border-r bg-background">
+        <div className="px-5 flex justify-between items-center">
+          <hgroup>
+            <h4 className="font-bold opacity-70">실시간 차트</h4>
+            <p className="text-sm font-bold opacity-60">{date}</p>
+          </hgroup>
+          <Button
+            variant={"ghost"}
+            className="p-0 rounded-full h-10 w-10 flex2"
+          >
+            <ChevronsLeft className="text-c1-300 hover:bg-secondary" />
+          </Button>
+        </div>
+        <Separator className="mt-4 mb-2 ml-5 w-[calc(100%-40px)]" />
+        <ul className="px-2 pb-28 h-full space-y-2 overflow-y-auto">
+          <ListSkeleton />
+          <ListSkeleton />
+          <ListSkeleton />
+        </ul>
+      </aside>
+    );
+
   return (
     <aside className="z-50 fixed left-16 top-14 py-3 h-full w-80 border-r bg-background">
       <div className="px-5 flex justify-between items-center">
         <hgroup>
           <h4 className="font-bold opacity-70">실시간 차트</h4>
-          {date != null && (
-            <>
-              <p className="text-sm font-bold opacity-60">
-                오늘 {date.getHours()}:{date.getMinutes()}:
-                {date.getSeconds() < 10
-                  ? "0" + date.getSeconds()
-                  : date.getSeconds()}{" "}
-                기준
-              </p>
-            </>
-          )}
+          <p className="text-sm font-bold opacity-60">{date}</p>
         </hgroup>
         <Button variant={"ghost"} className="p-0 rounded-full h-10 w-10 flex2">
           <ChevronsLeft className="text-c1-300 hover:bg-secondary" />
@@ -53,27 +70,17 @@ export const Leftnav2 = () => {
       <Separator className="mt-4 mb-2 ml-5 w-[calc(100%-40px)]" />
 
       <ul className="px-2 pb-28 h-full space-y-2 overflow-y-auto">
-        {query.isPending && (
-          <>
-            <ListSkeleton />
-            <ListSkeleton />
-            <ListSkeleton />
-          </>
-        )}
-        {query.isSuccess &&
-          query.data != undefined &&
-          query.data.output != undefined &&
-          query.data.output.map((item, idx) => (
-            <List
-              key={item.hts_kor_isnm}
-              title={item.hts_kor_isnm}
-              code={item.mksc_shrn_iscd}
-              rank={idx + 1}
-              price={item.stck_prpr}
-              prdy_vrss={item.prdy_vrss}
-              prdy_ctrt={item.prdy_ctrt}
-            />
-          ))}
+        {data.map((item) => (
+          <List
+            key={item.mksc_shrn_iscd}
+            title={item.hts_kor_isnm}
+            code={item.mksc_shrn_iscd}
+            rank={item.data_rank}
+            price={item.stck_prpr}
+            prdy_vrss={item.prdy_vrss}
+            prdy_ctrt={item.prdy_ctrt}
+          />
+        ))}
       </ul>
     </aside>
   );
@@ -82,7 +89,7 @@ export const Leftnav2 = () => {
 interface ListProps {
   title: string;
   code: string;
-  rank: number;
+  rank: string;
   price: string;
   prdy_vrss: string; // 전일 대비
   prdy_ctrt: string; // 전일 대비율

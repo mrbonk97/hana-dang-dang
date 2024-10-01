@@ -1,6 +1,14 @@
-export const Footer = () => {
+import { cn } from "@/lib/utils";
+
+interface Props {
+  className?: string;
+}
+
+export const Footer = ({ className }: Props) => {
   return (
-    <footer className="pt-10 opacity-60 px-20 h-40 w-full text-xs">
+    <footer
+      className={cn("pt-10 opacity-60 px-20 h-40 w-full text-xs", className)}
+    >
       <ul className="text-xs w-full flex justify-between">
         <li>
           <strong>개인정보 처리방침</strong>

@@ -2,18 +2,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { StockRecentPriceType } from "@/lib/stock-api2";
+import { StockRecentPriceType } from "@/lib/stock-api";
 import { formatNumber } from "@/lib/utils";
 
 interface Props {
-  data: StockRecentPriceType;
+  data: StockRecentPriceType[];
 }
+
 export const StockPriceHistoryCard = ({ data }: Props) => {
   return (
     <Card className="w-full">
@@ -36,7 +35,7 @@ export const StockPriceHistoryCard = ({ data }: Props) => {
                 <div className="col-span-1 text-right">최고가</div>
                 <div className="col-span-1 text-right">최저가</div>
               </li>
-              {data.output.map((item, idx) => {
+              {data.map((item, idx) => {
                 return (
                   <li
                     key={"ul01" + idx}
@@ -70,7 +69,7 @@ export const StockPriceHistoryCard = ({ data }: Props) => {
             <div className="col-span-1 text-right">최고가</div>
             <div className="col-span-1 text-right">최저가</div>
           </li>
-          {data.output.slice(1, 4).map((item, idx) => {
+          {data.slice(1, 4).map((item, idx) => {
             return (
               <li
                 key={"ul02" + idx}

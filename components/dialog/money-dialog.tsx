@@ -1,7 +1,6 @@
 "use client";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -13,11 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
 import { useState } from "react";
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
 import { FillAccountBalanceApi } from "@/lib/account-api";
@@ -37,7 +32,6 @@ export const MoneyDialog = () => {
 
   const handleClick = () => {
     if (account == null) return;
-    console.log(account.accountNo, money);
     mutation.mutate();
   };
   return (
@@ -59,8 +53,7 @@ export const MoneyDialog = () => {
           placeholder="금액을 입력해주세요"
           value={money == null ? "" : new Intl.NumberFormat().format(money)}
           onChange={(e) => {
-            console.log(e.target.value);
-            let val = e.target.value.replaceAll(",", "");
+            const val = e.target.value.replaceAll(",", "");
             const fVal = parseInt(val);
             setMoney(fVal);
           }}

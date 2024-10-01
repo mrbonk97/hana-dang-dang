@@ -35,7 +35,7 @@ export const Drawer2 = ({ children }: TermsDrawerProps) => {
             </div>
             <div className="mt-2 pl-5 max-w-xl break-keep">
               미수일 발생 당일까지 미수금을 변제하지 못한 경우, 다음 영업일에
-              "미수금 + 연체이자"만큼 자동으로 반대매매처리
+              &ldquo;미수금 + 연체이자&rdquo;만큼 자동으로 반대매매처리
             </div>
             <div className="mt-2 pl-5 max-w-xl break-keep">
               신용/대출 담보부족 및 만기 미상환 등의 사유로 반대매매가 발생할 수

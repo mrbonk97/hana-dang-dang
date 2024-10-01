@@ -7,10 +7,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { StockOpinionType } from "@/lib/stock-api2";
+import { StockOpinion } from "@/lib/stock-api";
 
 interface Props {
-  data: StockOpinionType;
+  data: StockOpinion[];
 }
 
 export const OpinionCard = ({ data }: Props) => {
@@ -38,7 +38,7 @@ export const OpinionCard = ({ data }: Props) => {
                 <div className="col-span-1">직전 의견</div>
                 <div className="col-span-1">날짜</div>
               </li>
-              {data.output.map((item, idx) => {
+              {data.map((item, idx) => {
                 item.invt_opnn =
                   item.invt_opnn == "BUY" ? "매수" : item.invt_opnn;
                 item.invt_opnn =
@@ -86,10 +86,10 @@ export const OpinionCard = ({ data }: Props) => {
             <div className="col-span-1">의견</div>
             <div className="col-span-1">날짜</div>
           </li>
-          {data.output.length == 0 && (
+          {data.length == 0 && (
             <p className="pt-7 text-center opacity-70 font-medium">의견 없음</p>
           )}
-          {data.output.slice(0, 3).map((item, idx) => {
+          {data.slice(0, 3).map((item, idx) => {
             item.invt_opnn = item.invt_opnn == "BUY" ? "매수" : item.invt_opnn;
             item.invt_opnn = item.invt_opnn == "SELL" ? "매도" : item.invt_opnn;
 

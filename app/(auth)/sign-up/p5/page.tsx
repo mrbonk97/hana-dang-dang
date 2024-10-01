@@ -9,23 +9,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ChevronDown } from "lucide-react";
-import { api } from "@/lib/api";
 import { useState } from "react";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
 import { useRouter } from "next/navigation";
+import { signUpApi } from "@/lib/user-api";
 
 const formSchema = z
   .object({
@@ -79,9 +71,7 @@ const SignUpP5Page = () => {
     setTimeout(() => setIsDuplicate(false), 500);
   };
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("히히요");
     if (isDuplicate == null) {
       setErrorMessage("아이디 중복검사를 해주세요");
       return;
@@ -92,14 +82,14 @@ const SignUpP5Page = () => {
     }
     setErrorMessage("");
 
-    const result = await api.post("/users", {
-      name: name,
-      mobileNo: mobileNo,
-      username: values.username,
-      password: values.password,
-    });
+    const result = await signUpApi(
+      name,
+      mobileNo,
+      values.username,
+      values.password
+    );
 
-    if (result.status == 200) {
+    if (result.status == 200 && window != undefined) {
       sessionStorage.setItem("name", result.data.user.name);
       sessionStorage.setItem("username", result.data.user.username);
       sessionStorage.setItem("account_no", result.data.account.accountNo);

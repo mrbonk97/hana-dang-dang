@@ -46,7 +46,7 @@ const SignUpP2Page = () => {
             setState={setQ3}
           />
           <Button
-            className="mt-5 py-5 w-full"
+            className="mt-5 py-6 w-full"
             disabled={!q1 || !q2 || !q3}
             onClick={() => router.replace("/sign-up/p3")}
           >

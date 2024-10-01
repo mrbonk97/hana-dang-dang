@@ -7,7 +7,6 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 
 interface Props {
-  code: string;
   minuteData: {
     x: Date;
     y: [number, number, number, number];
@@ -18,7 +17,7 @@ interface Props {
   }[];
 }
 
-export const ChartCard = ({ code, minuteData, dailyData }: Props) => {
+export const ChartCard = ({ minuteData, dailyData }: Props) => {
   const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
   const [mode, setMode] = useState("daily");
 
@@ -115,6 +114,14 @@ export const ChartCard = ({ code, minuteData, dailyData }: Props) => {
                   colors: "#71717a",
                   fontWeight: 700,
                 },
+                datetimeFormatter: {
+                  year: "yyyy",
+                  month: "yy.MM",
+                  day: "MM.dd",
+                  hour: "HH:mm",
+                  minute: "HH:mm:ss",
+                  second: "HH:mm:ss",
+                },
               },
               tooltip: {
                 enabled: true,
@@ -122,7 +129,7 @@ export const ChartCard = ({ code, minuteData, dailyData }: Props) => {
             },
             yaxis: {
               labels: {
-                formatter: (value, timeStamp) => {
+                formatter: (value) => {
                   return formatNumber(value) + "원";
                 },
                 style: {

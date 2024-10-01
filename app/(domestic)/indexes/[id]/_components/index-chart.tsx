@@ -6,7 +6,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { IndexType } from "@/type";
 
 const chartConfig = {
   index_value: {
@@ -20,7 +19,16 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface IndexChartProps {
-  data: IndexType[];
+  data: {
+    stck_bsop_date: string;
+    bstp_nmix_prpr: string;
+    bstp_nmix_oprc: string;
+    bstp_nmix_hgpr: string;
+    bstp_nmix_lwpr: string;
+    acml_vol: string;
+    acml_tr_pbmn: string;
+    mod_yn: string;
+  }[];
   curValue: string;
 }
 

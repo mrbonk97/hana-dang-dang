@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,12 +20,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ChevronDown } from "lucide-react";
-import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
-import { addDash } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
+import { sendSmsVerifyApi } from "@/lib/user-api";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -38,9 +37,6 @@ const formSchema = z.object({
   mobile_no: z.string().min(2, {
     message: "전화번호를 정확하게 입력해주세요",
   }),
-  terms: z.boolean().refine((val) => val === true, {
-    message: "필수 뭐시기에 동의해주세요",
-  }),
 });
 
 const formSchema2 = z.object({
@@ -48,6 +44,7 @@ const formSchema2 = z.object({
 });
 
 const SignUpP3Page = () => {
+  const [checked, setChecked] = useState(false);
   const setName = createSelectors(store).use.setName();
   const setMobileNo = createSelectors(store).use.setMobileNo();
   const router = useRouter();
@@ -65,7 +62,6 @@ const SignUpP3Page = () => {
       name: "",
       carrier: "",
       mobile_no: "",
-      terms: false,
     },
   });
 
@@ -78,9 +74,8 @@ const SignUpP3Page = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const rs = await api.post("/sms/verify", { mobile_no: values.mobile_no });
+    const rs = await sendSmsVerifyApi(values.mobile_no);
     if (rs.status === 200) setTimeout(() => setCode(rs.data.code), 500);
-    console.log(rs.data);
   }
 
   // 2. Define a submit handler.
@@ -168,32 +163,23 @@ const SignUpP3Page = () => {
                     )}
                   />
                 </div>
-                <FormField
-                  control={form.control}
-                  name="terms"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="p-4 w-full rounded-lg bg-secondary flex justify-between">
-                        <div className="flex items-center gap-2">
-                          <FormControl className="h-4 w-4">
-                            {/* @ts-ignore */}
-                            <Input type="checkbox" {...field} />
-                          </FormControl>
-                          <FormLabel className="opacity-70">
-                            휴대폰 본인 인증 동의
-                          </FormLabel>
-                        </div>
-                        <ChevronDown className="opacity-50" />
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
+                <div className="p-4 w-full rounded-lg bg-secondary flex justify-between">
+                  <div className="flex items-center gap-2">
+                    <FormControl className="h-4 w-4">
+                      <Checkbox
+                        onCheckedChange={() => setChecked((cur) => !cur)}
+                      />
+                    </FormControl>
+                    <FormLabel className="opacity-70">
+                      휴대폰 본인 인증 동의
+                    </FormLabel>
+                  </div>
+                  <ChevronDown className="opacity-50" />
+                </div>
                 <Button
                   className="py-6 w-full"
                   type="submit"
-                  disabled={form.getValues("terms") == false || code != ""}
+                  disabled={checked == false}
                 >
                   인증번호 받기
                 </Button>

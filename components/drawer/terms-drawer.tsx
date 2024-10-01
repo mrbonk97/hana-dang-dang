@@ -10,9 +10,18 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { Button } from "../ui/button";
-import { LOAN_TERM } from "@/constants";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+const LOAN_TERM = [
+  { id: "term-1", title: "본인확인 동의" },
+  { id: "term-2", title: "하나은행 개인(신용)정보 처리 동의" },
+  { id: "term-3", title: "금융기관 개인(신용)정보 처리 동의" },
+  { id: "term-4", title: "금융기관 대안정보 처리 동의" },
+  { id: "term-6", title: "정부지원 SGI 개인(신용)정보 처리 동의" },
+  { id: "term-7", title: "건강보험공단 정보 가져오기 동의" },
+  { id: "term-8", title: "KCB 신용조회 서비스 이용약관" },
+];
 
 interface TermsDrawerProps {
   children: React.ReactNode;
@@ -35,7 +44,7 @@ export const TermsDrawer = ({ children }: TermsDrawerProps) => {
               <Checkbox
                 id={item.id}
                 onCheckedChange={(e: boolean) => {
-                  let _checked = [...checked];
+                  const _checked = [...checked];
                   _checked[idx] = e;
                   setChecked(_checked);
                 }}

@@ -89,11 +89,9 @@ const MainPage = () => {
           <div className="mt-20 px-[20%] opacity-80">
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1">
-                <AccordionTrigger>
-                  '하나배당당' 이란 무엇인가요?
-                </AccordionTrigger>
+                <AccordionTrigger>하나배당당 이란 무엇인가요?</AccordionTrigger>
                 <AccordionContent>
-                  '하나배당당'은 사용자에게 주식 배당금의 수익을 체계적으로
+                  하나배당당은 사용자에게 주식 배당금의 수익을 체계적으로
                   관리하고 분석할 수 있는 증권 배당 관리 서비스입니다. 사용자는
                   배당금 지급일정을 확인하고, 배당 수익을 추적하며, 투자 성과를
                   분석할 수 있습니다.
@@ -101,10 +99,10 @@ const MainPage = () => {
               </AccordionItem>
               <AccordionItem value="item-2">
                 <AccordionTrigger>
-                  '하나배당당'을 사용하려면 어떻게 해야 하나요?
+                  하나배당당을 사용하려면 어떻게 해야 하나요?
                 </AccordionTrigger>
                 <AccordionContent>
-                  서비스를 이용하려면 먼저 ‘하나배당당’ 웹사이트나 모바일
+                  서비스를 이용하려면 먼저 하나배당당 웹사이트나 모바일
                   애플리케이션에서 회원가입을 하셔야 합니다. 이후, 자신의 투자
                   계좌를 연결하고 배당 관련 정보를 입력하면 서비스를 이용할 수
                   있습니다.
@@ -115,7 +113,7 @@ const MainPage = () => {
                   배당금 지급일정을 어떻게 확인하나요?
                 </AccordionTrigger>
                 <AccordionContent>
-                  로그인 후, 대시보드에서 '배당금 일정' 탭을 클릭하시면, 예정된
+                  로그인 후, 대시보드에서 배당금 일정 탭을 클릭하시면, 예정된
                   배당금 지급일과 관련 정보를 확인할 수 있습니다. 사용자는
                   자신의 포트폴리오에 포함된 주식의 배당금 지급일정을 자동으로
                   업데이트 받을 수 있습니다.
@@ -126,8 +124,8 @@ const MainPage = () => {
                   배당 수익을 어떻게 추적하나요?
                 </AccordionTrigger>
                 <AccordionContent>
-                  ‘하나배당당’의 ‘배당 수익 추적’ 기능을 통해 배당금 지급 내역과
-                  총 수익을 확인할 수 있습니다. 수익 내역은 그래프 및 차트로
+                  하나배당당의 배당 수익 추적 기능을 통해 배당금 지급 내역과 총
+                  수익을 확인할 수 있습니다. 수익 내역은 그래프 및 차트로
                   시각화되어, 한눈에 쉽게 이해할 수 있습니다.
                 </AccordionContent>
               </AccordionItem>
@@ -136,7 +134,7 @@ const MainPage = () => {
                   서비스에 대한 지원은 어떻게 받을 수 있나요?
                 </AccordionTrigger>
                 <AccordionContent>
-                  서비스와 관련된 모든 질문이나 문제는 ‘고객 지원’ 페이지를 통해
+                  서비스와 관련된 모든 질문이나 문제는 고객 지원 페이지를 통해
                   문의하실 수 있습니다. 이메일, 전화, 채팅 지원을 통해 빠르게
                   도움을 드리고 있습니다.
                 </AccordionContent>
@@ -147,7 +145,7 @@ const MainPage = () => {
                 </AccordionTrigger>
                 <AccordionContent>
                   배당금에 대한 세금은 사용자가 직접 세무 관련 자문을 받아야
-                  합니다. ‘하나배당당’은 세금 계산이나 신고 서비스를 제공하지
+                  합니다. 하나배당당은 세금 계산이나 신고 서비스를 제공하지
                   않습니다.
                 </AccordionContent>
               </AccordionItem>
@@ -178,7 +176,7 @@ interface MenuCardProps {
 
 const MenuCard = ({ link, title, description, imgUrl }: MenuCardProps) => {
   return (
-    <Link href={"#"}>
+    <Link href={link}>
       <Card className="relative w-[17.5rem] cursor-pointer group overflow-hidden">
         <CardHeader className="relative z-10">
           <CardTitle className="opacity-70 group-hover:opacity-100 group-hover:text-primary-foreground duration-300">

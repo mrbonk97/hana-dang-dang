@@ -1,8 +1,31 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-export const getAccountDetailApi = (accountId: string) =>
+export const signInApi = (username: string, password: string) =>
+  axios.post(`${BASE_URL}/users/sign-in`, { username, password });
+
+export const signUpApi = (
+  name: string,
+  mobileNo: string,
+  username: string,
+  password: string
+) => axios.post(`${BASE_URL}/users`, { name, mobileNo, username, password });
+
+type AccountDetailType = {
+  accountNo: string;
+  balance: number;
+  profit: number;
+  profitPercentage: number;
+  stockCurrentBalance: number;
+  stockInitBalance: number;
+  title: string;
+  totalBalance: number;
+  withDrawAmount: number;
+};
+
+// prettier-ignore
+export const getAccountDetailApi = (accountId: string): Promise<AccountDetailType> =>
   fetch(`${BASE_URL}/accounts/${accountId}`).then((res) => res.json());
 
 export const registerDividendLabApi = (
@@ -18,3 +41,6 @@ export const registerDividendLabApi = (
     dividendPreference: preference,
     dividendArea: area,
   });
+
+export const sendSmsVerifyApi = (mobileNo: string) =>
+  axios.post(`${BASE_URL}/sms/verify`, { mobile_no: mobileNo });

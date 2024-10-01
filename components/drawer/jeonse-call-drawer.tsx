@@ -3,18 +3,12 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Checkbox } from "@/components/ui/checkbox";
-
 import { Button } from "../ui/button";
-import { LOAN_TERM } from "@/constants";
-import { useState } from "react";
-import Link from "next/link";
 import { PhoneIcon } from "lucide-react";
 
 interface TermsDrawerProps {

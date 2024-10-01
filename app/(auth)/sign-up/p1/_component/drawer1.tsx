@@ -2,20 +2,17 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 
 interface TermsDrawerProps {
   children: React.ReactNode;
 }
+
 export const Drawer1 = ({ children }: TermsDrawerProps) => {
   return (
     <Drawer>

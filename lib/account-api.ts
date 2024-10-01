@@ -1,29 +1,66 @@
-import { StockInfoType } from "@/type";
-import axios from "axios";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-const BASE_URL = "http://localhost:8080/api";
-
-type T1 = {
-  createdAt: string;
+type RecentTransactionType = {
   id: number;
+  amount: number;
+  createdAt: string;
+  dividendType: string | null;
   price: number;
-  quantity: number;
-  stockInfo: StockInfoType;
+  quantity: number | null;
+  stockInfo: {
+    prdt_abrv_name: "현대엘리베이";
+  } | null;
+  transactionType: string;
+  updatedAt: string;
 };
 
 // prettier-ignore
-export const getRecentTransactionApi = (accountId: string) : Promise<T1[]> =>
+export const getRecentTransactionApi = (accountId: string): Promise<RecentTransactionType[]> =>
   fetch(`${BASE_URL}/accounts/${accountId}/recent-activity`).then((res) =>res.json());
 
-type T2 = {
-  id: number;
-  purchasePrice: number;
+export type AccountStockType = {
+  code: string;
+  title: string;
   quantity: number;
-  totalPrice: number;
-  stockInfo: StockInfoType;
+  price: number;
+  purchaseTotalPrice: number;
+  currentPrice: number;
+  currentTotalPrice: number;
+  profit: number;
+  profitPercentage: number;
 };
-export const getAccountStockApi = (accountId: string): Promise<T2[]> =>
+
+// prettier-ignore
+export const getAccountStockApi = (accountId: string) : Promise<AccountStockType[]> =>
   fetch(`${BASE_URL}/accounts/${accountId}/stocks`).then((res) => res.json());
 
+// prettier-ignore
 export const FillAccountBalanceApi = (accountNo: string, amount: number) =>
-  axios.get(`${BASE_URL}/accounts/${accountNo}/fill?amount=${amount}`);
+  fetch(`${BASE_URL}/accounts/${accountNo}/fill?amount=${amount}`);
+
+export type AccountDividendHistoryType = {
+  id: number;
+  transactionType: string;
+  dividendType: string;
+  amount: number;
+  quantity: number | null;
+  price: number;
+  createdAt: string;
+  updatedAt: string;
+  stockInfo: {
+    pdno: string;
+    code: string;
+    prdt_name: string;
+    prdt_abrv_name: string;
+    prdt_eng_abrv_name: string;
+    std_idst_clsf_cd: string | null;
+    std_idst_clsf_cd_name: string | null;
+    idx_bztp_lcls_cd_name: string | null;
+    idx_bztp_mcls_cd_name: string | null;
+    idx_bztp_scls_cd_name: string | null;
+  };
+};
+
+// prettier-ignore
+export const getAccountDividendHistoryApi = async (accountNo: string) : Promise<AccountDividendHistoryType[]> =>
+  await fetch(`${BASE_URL}/accounts/${accountNo}/dividend`).then((res) =>res.json());

@@ -11,8 +11,8 @@ const inter = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "하나증권",
-  description: "하나 증권",
+  title: "하나배당당",
+  description: "배당주 관리 서비스",
 };
 
 export default function RootLayout({
@@ -22,7 +22,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      {/* <body className={"noto_sans"}> */}
       <body className={inter.className}>
         <QueryProvider>
           {children}

@@ -1,22 +1,12 @@
-"use client";
-
-import { getIndexListApi } from "@/lib/index-api";
+import { IndexListType } from "@/lib/index-api";
 import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
 
 interface BannerProps {
+  data: IndexListType[];
   className?: string;
 }
 
-export const Bannner = ({ className }: BannerProps) => {
-  const query = useQuery({
-    queryKey: ["indexes"],
-    queryFn: getIndexListApi,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
+export const Bannner = async ({ data, className }: BannerProps) => {
   return (
     <div
       className={cn(
@@ -25,7 +15,7 @@ export const Bannner = ({ className }: BannerProps) => {
       )}
     >
       <div className="h-full w-fit flex items-center justify-between gap-20 whitespace-nowrap loop">
-        {query.data?.data.output2.map((item) => (
+        {data.map((item) => (
           <div
             key={item.bstp_cls_code}
             className="flex items-center text-sm font-medium opacity-70"
@@ -43,7 +33,7 @@ export const Bannner = ({ className }: BannerProps) => {
           </div>
         ))}
       </div>
-      <div className="absolute w-full pointer-events-none inset-0 bg-gradient-to-r from-90% to-100% from-transparent to-slate-100"></div>
+      <div className="absolute w-full pointer-events-none inset-0 bg-gradient-to-r from-90% to-100% from-transparent to-slate-100" />
     </div>
   );
 };
