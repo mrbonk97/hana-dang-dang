@@ -64,3 +64,36 @@ export type AccountDividendHistoryType = {
 // prettier-ignore
 export const getAccountDividendHistoryApi = async (accountNo: string) : Promise<AccountDividendHistoryType[]> =>
   await fetch(`${BASE_URL}/accounts/${accountNo}/dividend`).then((res) =>res.json());
+
+export type DividendEstimateType = {
+  id: number;
+  code: string;
+  title: string;
+  quantity: number;
+  purchasePrice: number;
+  totalPrice: number;
+  estimateProfit: number;
+  amount: number;
+  percentage: number;
+};
+
+// prettier-ignore
+export const getAccountDividendEstimate = async (accountNo: string): Promise<DividendEstimateType[]> =>
+  await fetch(`${BASE_URL}/accounts/${accountNo}/dividend-estimate`).then((res) => res.json());
+
+export type AccountMonthlyDividendEstimateType = {
+  id: number;
+  code: string;
+  title: string;
+  quantity: number;
+  purchasePrice: number;
+  totalPrice: number;
+  estimateProfit: number;
+  amount: number;
+  percentage: number;
+  declareDate: string;
+};
+
+// prettier-ignore
+export const getAccountMonthlyDividendEstimate = async (accountNo: string): Promise<AccountMonthlyDividendEstimateType[]> =>
+  await fetch(`${BASE_URL}/accounts/${accountNo}/dividend-estimate-monthly`).then((res) => res.json());

@@ -24,6 +24,8 @@ export function DividendCalendar() {
     mutate(date);
   }, []);
 
+  console.log(data);
+
   return (
     <>
       <div className="flex flex-col justify-between gap-5">
@@ -63,6 +65,7 @@ export function DividendCalendar() {
           <div className="col-span-1 text-right">배당률</div>
         </li>
         {isSuccess &&
+          data != undefined &&
           data.map((item) => (
             <li
               key={item.isin_name}

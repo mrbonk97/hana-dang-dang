@@ -11,6 +11,7 @@ import { Chart2 } from "./_components/chart-2";
 import { AccountDividend } from "./_components/account-dividend";
 import { Chart3 } from "./_components/chart-3";
 import { Chart1 } from "./_components/chart-1";
+import Link from "next/link";
 
 interface Props {
   params: {
@@ -69,16 +70,19 @@ const DividendLabDetailPage = async ({ params }: Props) => {
         <Button
           className="p-0 h-80 w-80 flex-shrink-0 justify-between flex flex-col items-center"
           variant={"outline"}
+          asChild
         >
-          <h4 className="pt-10 text-lg font-bold opacity-80">
-            포트폴리오 진단하기
-          </h4>
-          <Image
-            src={"/images/buisness-man.png"}
-            alt="buisness-man"
-            width={192}
-            height={192}
-          />
+          <Link href={"/dividend-lab/diagnosis"}>
+            <h4 className="pt-10 text-lg font-bold opacity-80">
+              포트폴리오 진단하기
+            </h4>
+            <Image
+              src={"/images/buisness-man.png"}
+              alt="buisness-man"
+              width={192}
+              height={192}
+            />
+          </Link>
         </Button>
       </section>
     </main>
