@@ -25,7 +25,7 @@ export const Leftnav2 = () => {
 
   const { data, isSuccess } = useQuery({
     queryKey: ["stock-rank"],
-    queryFn: getStockListRankApi,
+    queryFn: () => getStockListRankApi("vol"),
     refetchInterval: 50000,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
@@ -34,7 +34,7 @@ export const Leftnav2 = () => {
 
   if (!isSuccess || data == undefined || data == null)
     return (
-      <aside className="z-50 fixed left-16 top-14 py-3 h-full w-80 border-r bg-background">
+      <aside className="z-40 fixed left-16 top-14 py-3 h-full w-80 border-r bg-background">
         <div className="px-5 flex justify-between items-center">
           <hgroup>
             <h4 className="font-bold opacity-70">실시간 차트</h4>
@@ -57,7 +57,7 @@ export const Leftnav2 = () => {
     );
 
   return (
-    <aside className="z-50 fixed left-16 top-14 py-3 h-full w-80 border-r bg-background">
+    <aside className="z-40 fixed left-16 top-14 py-3 h-full w-80 border-r bg-background">
       <div className="px-5 flex justify-between items-center">
         <hgroup>
           <h4 className="font-bold opacity-70">실시간 차트</h4>

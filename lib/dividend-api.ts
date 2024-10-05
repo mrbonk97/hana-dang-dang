@@ -49,6 +49,13 @@ export const getBoardMeeting = async (code: string) =>
 export const getRecommendStockApi = async (data: any) =>
   await axios.post(`${BASE_URL}/dividend/recommend`, data);
 
+type SearchStockType = {
+  code: string;
+  prdtAbrvName: string;
+  stckClpr: number;
+  prdyVrss: number;
+};
+
 // prettier-ignore
-export const searchStockApi = async (keyword: string) =>
-  await fetch(`${BASE_URL}/dividend/stocks/search?q=${keyword}`).then((res) => res.json);
+export const searchStockApi = async (keyword: string): Promise<SearchStockType[]> =>
+  await fetch(`${BASE_URL}/stocks/search?keyword=${keyword}`).then((res) => res.json());

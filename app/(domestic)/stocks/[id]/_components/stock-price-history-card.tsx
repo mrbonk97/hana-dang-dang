@@ -1,4 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -16,13 +22,13 @@ interface Props {
 export const StockPriceHistoryCard = ({ data }: Props) => {
   return (
     <Card className="w-full">
-      <CardHeader>
+      <CardHeader className="pb-4">
         <CardTitle className="opacity-80">일자별 시세</CardTitle>
         <Dialog>
-          <DialogTrigger>
-            <CardTitle className="opacity-80 text-right font-medium text-sm">
+          <DialogTrigger asChild>
+            <CardDescription className="text-right cursor-pointer">
               더보기
-            </CardTitle>
+            </CardDescription>
           </DialogTrigger>
           <DialogContent className="w-[600px] max-w-3xl">
             <DialogHeader>
@@ -62,14 +68,14 @@ export const StockPriceHistoryCard = ({ data }: Props) => {
         </Dialog>
       </CardHeader>
       <CardContent>
-        <ul className="space-y-1">
+        <ul className="space-y-1 text-sm">
           <li className="grid grid-cols-4 items-center font-bold opacity-70">
             <div className="col-span-1">날짜</div>
             <div className="col-span-1 text-right">가격</div>
             <div className="col-span-1 text-right">최고가</div>
             <div className="col-span-1 text-right">최저가</div>
           </li>
-          {data.slice(1, 4).map((item, idx) => {
+          {data.slice(1, 5).map((item, idx) => {
             return (
               <li
                 key={"ul02" + idx}

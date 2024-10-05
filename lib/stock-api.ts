@@ -74,24 +74,184 @@ export const getStockRecentPriceApi = (code: string): Promise<StockRecentPriceTy
     .then((res) => res.json())
     .then((res) => res.output);
 
-//prettier-ignore
-export const getStockHokaApi = (code: string) =>
-  fetch(`${BASE_URL}/stocks/${code}/hoka`).then((res) => res.json());
+export type HokaType = {
+  askp1: string;
+  askp2: string;
+  askp3: string;
+  askp4: string;
+  askp5: string;
+  askp6: string;
+  askp7: string;
+  askp8: string;
+  askp9: string;
+  askp10: string;
+  askp_rsqn1: string;
+  askp_rsqn2: string;
+  askp_rsqn3: string;
+  askp_rsqn4: string;
+  askp_rsqn5: string;
+  askp_rsqn6: string;
+  askp_rsqn7: string;
+  askp_rsqn8: string;
+  askp_rsqn9: string;
+  askp_rsqn10: string;
+  askp_rsqn_icdc1: string;
+  askp_rsqn_icdc2: string;
+  askp_rsqn_icdc3: string;
+  askp_rsqn_icdc4: string;
+  askp_rsqn_icdc5: string;
+  askp_rsqn_icdc6: string;
+  askp_rsqn_icdc7: string;
+  askp_rsqn_icdc8: string;
+  askp_rsqn_icdc9: string;
+  askp_rsqn_icdc10: string;
+  aspr_acpt_hour: string;
+  bidp1: string;
+  bidp2: string;
+  bidp3: string;
+  bidp4: string;
+  bidp5: string;
+  bidp6: string;
+  bidp7: string;
+  bidp8: string;
+  bidp9: string;
+  bidp10: string;
+  bidp_rsqn1: string;
+  bidp_rsqn2: string;
+  bidp_rsqn3: string;
+  bidp_rsqn4: string;
+  bidp_rsqn5: string;
+  bidp_rsqn6: string;
+  bidp_rsqn7: string;
+  bidp_rsqn8: string;
+  bidp_rsqn9: string;
+  bidp_rsqn10: string;
+  bidp_rsqn_icdc1: string;
+  bidp_rsqn_icdc2: string;
+  bidp_rsqn_icdc3: string;
+  bidp_rsqn_icdc4: string;
+  bidp_rsqn_icdc5: string;
+  bidp_rsqn_icdc6: string;
+  bidp_rsqn_icdc7: string;
+  bidp_rsqn_icdc8: string;
+  bidp_rsqn_icdc9: string;
+  bidp_rsqn_icdc10: string;
+  new_mkop_cls_code: string;
+  ntby_aspr_rsqn: string;
+  ovtm_total_askp_icdc: string;
+  ovtm_total_askp_rsqn: string;
+  ovtm_total_bidp_icdc: string;
+  ovtm_total_bidp_rsqn: string;
+  total_askp_rsqn: string;
+  total_askp_rsqn_icdc: string;
+  total_bidp_rsqn: string;
+  total_bidp_rsqn_icdc: string;
+};
 
-export type StockListRankType = {
-  data_rank: string;
-  hts_kor_isnm: string;
-  prdy_ctrt: string;
-  prdy_vol: string;
-  prdy_vrss: string;
-  prdy_vrss_sign: string;
-  stck_prpr: string;
-  mksc_shrn_iscd: string;
+type StockHokaApiType = {
+  output1: HokaType;
+  output2: {
+    antc_cnpr: string;
+    antc_cntg_prdy_ctrt: string;
+    antc_cntg_vrss: string;
+    antc_cntg_vrss_sign: string;
+    antc_mkop_cls_code: string;
+    antc_vol: string;
+    stck_hgpr: string;
+    stck_lwpr: string;
+    stck_oprc: string;
+    stck_prpr: string;
+    stck_sdpr: string;
+    stck_shrn_iscd: string;
+    vi_cls_code: string;
+  };
 };
 
 //prettier-ignore
-export const getStockListRankApi = (): Promise<StockListRankType[]> =>
-  fetch(`${BASE_URL}/stocks/rank`).then((res) => res.json()).then((res) => res.output);
+export const getStockHokaApi = (code: string) : Promise<StockHokaApiType> =>
+  fetch(`${BASE_URL}/stocks/${code}/hoka`).then((res) => res.json());
+
+export type StockListRankType = {
+  hts_kor_isnm: string;
+  mksc_shrn_iscd: string;
+  data_rank: string;
+  stck_prpr: string;
+  prdy_vrss_sign: string;
+  prdy_vrss: string;
+  prdy_ctrt: string;
+  acml_vol: string;
+  prdy_vol: string;
+  lstn_stcn: string;
+  avrg_vol: string;
+  n_befr_clpr_vrss_prpr_rate: string;
+  vol_inrt: string;
+  vol_tnrt: string;
+  nday_vol_tnrt: string;
+  avrg_tr_pbmn: string;
+  tr_pbmn_tnrt: string;
+  nday_tr_pbmn_tnrt: string;
+  acml_tr_pbmn: string;
+
+  // 등락률
+  stck_shrn_iscd: string;
+  //        data_rank: string;
+  //        hts_kor_isnm: string;
+  //        stck_prpr: string;
+  //        prdy_vrss: string;
+  //        prdy_vrss_sign: string;
+  //        prdy_ctrt: string;
+  //        acml_vol: string;
+  stck_hgpr: string;
+  hgpr_hour: string;
+  acml_hgpr_date: string;
+  stck_lwpr: string;
+  lwpr_hour: string;
+  acml_lwpr_date: string;
+  lwpr_vrss_prpr_rate: string;
+  dsgt_date_clpr_vrss_prpr_rate: string;
+  cnnt_ascn_dynu: string;
+  hgpr_vrss_prpr_rate: string;
+  cnnt_down_dynu: string;
+  oprc_vrss_prpr_sign: string;
+  oprc_vrss_prpr: string;
+  oprc_vrss_prpr_rate: string;
+  prd_rsfl: string;
+  prd_rsfl_rate: string;
+
+  // 체결강도
+  //        stck_shrn_iscd: string;
+  //        data_rank: string;
+  //        hts_kor_isnm: string;
+  //        stck_prpr: string;
+  //        prdy_vrss: string;
+  //        prdy_vrss_sign: string;
+  //        prdy_ctrt: string;
+  //        acml_vol: string;
+  tday_rltv: string;
+  seln_cnqn_smtn: string;
+  shnu_cnqn_smtn: string;
+
+  // 공매도 순위
+  //        mksc_shrn_iscd: string;
+  //        hts_kor_isnm: string;
+  //        stck_prpr: string;
+  //        prdy_vrss: string;
+  //        prdy_vrss_sign: string;
+  //        prdy_ctrt: string;
+  //        acml_vol: string;
+  //        acml_tr_pbmn: string;
+  ssts_cntg_qty: string;
+  ssts_vol_rlim: string;
+  ssts_tr_pbmn: string;
+  ssts_tr_pbmn_rlim: string;
+  stnd_date1: string;
+  stnd_date2: string;
+  avrg_prc: string;
+};
+
+//prettier-ignore
+export const getStockListRankApi = (type:string): Promise<StockListRankType[]> =>
+  fetch(`${BASE_URL}/stocks/rank?type=${type}`).then((res) => res.json()).then((res) => res.output);
 
 type StockMinutePriceType = {
   output1: {
@@ -143,3 +303,23 @@ export const BuyStockApi = async (
     quantity,
     price,
   });
+
+export type StockListType = {
+  rn: number;
+  prdtAbrvName: string;
+  code: string;
+  stdIdstClsfCdName: string;
+  stckClpr: string;
+  acmlVol: string;
+  acmlTrPbmn: string;
+  prdyVrss: string;
+};
+
+export const getStockListApi = async (
+  page: number
+): Promise<StockListType[]> => {
+  console.log(`${BASE_URL}/stocks?page=${page}`);
+  return await fetch(`${BASE_URL}/stocks?page=${page}`).then((res) =>
+    res.json()
+  );
+};

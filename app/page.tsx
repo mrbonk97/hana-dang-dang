@@ -23,7 +23,7 @@ const MainPage = () => {
   return (
     <>
       <Topnav />
-      <main className="min-h-full pt-14">
+      <main className="min-h-[100vh] pt-14">
         <MainCarousel />
         <section className="border-y h-14 py-5 flex items-center justify-center text-sm gap-10 opacity-70">
           <div className="flex items-center">

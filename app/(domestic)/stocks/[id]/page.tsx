@@ -39,13 +39,12 @@ const covertTime = (ymd: string, hms: string) => {
 
 const StockDetailPage = async ({ params }: Props) => {
   const output = await getStockPriceApi(params.id);
+
   const opinion = await getStockOpinionApi(params.id);
-  const recentPrice = await getStockRecentPriceApi(params.id);
+  const stockPriceHistory = await getStockRecentPriceApi(params.id);
+
   const bannerData = await getIndexListApi();
 
-  const data1 = await getStockMinutePriceApi(params.id, getTradeTime(3));
-  const data2 = await getStockMinutePriceApi(params.id, getTradeTime(2));
-  const data3 = await getStockMinutePriceApi(params.id, getTradeTime(1));
   const data4 = await getStockMinutePriceApi(params.id, getTradeTime(0));
   const dailyData = await getStockPriceDailyApi(params.id);
 
@@ -53,42 +52,6 @@ const StockDetailPage = async ({ params }: Props) => {
     x: Date;
     y: [number, number, number, number];
   }[] = [];
-
-  data1.output2.reverse().map((item) => {
-    minuteData.push({
-      x: covertTime(item.stck_bsop_date, item.stck_cntg_hour),
-      y: [
-        parseFloat(item.stck_oprc),
-        parseFloat(item.stck_hgpr),
-        parseFloat(item.stck_lwpr),
-        parseFloat(item.stck_prpr),
-      ],
-    });
-  });
-
-  data2.output2.reverse().map((item) => {
-    minuteData.push({
-      x: covertTime(item.stck_bsop_date, item.stck_cntg_hour),
-      y: [
-        parseFloat(item.stck_oprc),
-        parseFloat(item.stck_hgpr),
-        parseFloat(item.stck_lwpr),
-        parseFloat(item.stck_prpr),
-      ],
-    });
-  });
-
-  data3.output2.reverse().map((item) => {
-    minuteData.push({
-      x: covertTime(item.stck_bsop_date, item.stck_cntg_hour),
-      y: [
-        parseFloat(item.stck_oprc),
-        parseFloat(item.stck_hgpr),
-        parseFloat(item.stck_lwpr),
-        parseFloat(item.stck_prpr),
-      ],
-    });
-  });
 
   data4.output2.reverse().map((item) => {
     minuteData.push({
@@ -103,7 +66,7 @@ const StockDetailPage = async ({ params }: Props) => {
   });
 
   return (
-    <main className="pt-14 pl-[24rem] h-full flex flex-col justify-between bg-secondary min-h-[900px] min-w-[1800px]">
+    <main className="pt-14 pl-[24rem] min-h-[800px] min-w-[1500px] h-full bg-secondary">
       <UpperInfoSection
         title={data4.output1.hts_kor_isnm}
         curPrice={data4.output1.stck_prpr}
@@ -119,19 +82,20 @@ const StockDetailPage = async ({ params }: Props) => {
         stac={output.stac_month}
         danger={output.mrkt_warn_cls_code}
       />
-      <section className="p-5 h-[calc(100%-8rem)] flex gap-5">
-        <div className="h-full w-1/2 flex justify-between flex-col gap-5">
+      <section className="p-5 h-[calc(100%-8rem)] flex gap-5 justify-between">
+        <div className="w-1/2 flex flex-col justify-between gap-5">
           <ChartCard
             minuteData={minuteData}
             dailyData={dailyData.daily_price}
           />
-          <div className="h-52 flex-shrink-0 flex justify-between gap-5">
+          <div className="flex justify-between gap-5">
             <OpinionCard data={opinion} />
-            <StockPriceHistoryCard data={recentPrice} />
+            <StockPriceHistoryCard data={stockPriceHistory} />
           </div>
         </div>
         <HokaOrderCard code={params.id} />
       </section>
+
       <Bannner data={bannerData} className="bg-background" />
     </main>
   );

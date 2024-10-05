@@ -27,7 +27,7 @@ export const Topnav = () => {
   const account = selector.use.account();
 
   return (
-    <header className="z-40 fixed top-0 left-0 py-2 px-[7%] h-16 w-full border-b flex items-center justify-between bg-background">
+    <header className="z-50 fixed top-0 left-0 py-2 px-[7%] h-14 w-full border-b flex items-center justify-between bg-background">
       <div className="flex items-center gap-20">
         <Logo />
         <nav className="flex gap-10 text-sm font-bold">
