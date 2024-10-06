@@ -8,11 +8,13 @@ import {
 } from "@/components/ui/chart";
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { AccountDividendHistoryType } from "@/lib/account-api";
+import { Spinner } from "@/components/spinner/spinner";
 
 const chartConfig = {
   amount: {
@@ -22,10 +24,28 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface Props {
-  data: AccountDividendHistoryType[];
+  isPending: boolean;
+  isSuccess: boolean;
+  data: AccountDividendHistoryType[] | undefined;
 }
 
-export function Chart1({ data }: Props) {
+export function Chart1({ isPending, isSuccess, data }: Props) {
+  if (isPending || !isSuccess || data == undefined) {
+    return (
+      <Card className="border w-full">
+        <CardHeader>
+          <CardTitle className="opacity-80">월별 배당내역</CardTitle>
+          <CardDescription className="opacity-80">
+            올해 벌어들인 월별 배당금입니다.(단위: 원)
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="h-96 w-full flex2">
+          <Spinner />
+        </CardContent>
+      </Card>
+    );
+  }
+
   const year = new Date("2024-01-01");
   const chartData = [
     { month: "1월", amount: 0 },

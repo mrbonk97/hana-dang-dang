@@ -19,6 +19,7 @@ import { Chart1 } from "./_components/chart-1";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/spinner/spinner";
 import { useEffect } from "react";
+import { Chart3 } from "./_components/chart-3";
 
 const DividendLabPage = () => {
   const router = useRouter();
@@ -84,7 +85,7 @@ const DividendLabPage = () => {
                 남은 기간동안 꾸준하게 배당금을 모아서 목표를 달성해보세요
               </div>
             </hgroup>
-            <Chart5 />
+            <Chart5 goal={user.dividendGoal} totalDividend={5760000} />
           </article>
           <div className="h-full w-full rounded-xl bg-secondary border" />
         </div>
@@ -104,10 +105,18 @@ const DividendLabPage = () => {
           isSuccess={mutate2.isSuccess}
           data={mutate2.data}
         />
-        {/* <Chart1 data={data2} /> */}
+        <Chart1
+          isPending={mutate2.isPending}
+          isSuccess={mutate2.isSuccess}
+          data={mutate2.data}
+        />
       </section>
       <section className="pt-0 p-5 w-full flex justify-between gap-5">
-        {/* <Chart3 data={data2} /> */}
+        <Chart3
+          isPending={mutate2.isPending}
+          isSuccess={mutate2.isSuccess}
+          data={mutate2.data}
+        />
         <Button
           className="p-0 h-80 w-80 flex-shrink-0 justify-between flex flex-col items-center"
           variant={"outline"}
@@ -116,6 +125,23 @@ const DividendLabPage = () => {
           <Link href={"/dividend-lab/diagnosis"}>
             <h4 className="pt-10 text-lg font-bold opacity-80">
               포트폴리오 진단하기
+            </h4>
+            <Image
+              src={"/images/buisness-man.png"}
+              alt="buisness-man"
+              width={192}
+              height={192}
+            />
+          </Link>
+        </Button>
+        <Button
+          className="p-0 h-80 w-80 flex-shrink-0 justify-between flex flex-col items-center"
+          variant={"outline"}
+          asChild
+        >
+          <Link href={"/dividend-lab/diagnosis"}>
+            <h4 className="pt-10 text-lg font-bold opacity-80">
+              종목 추천받기
             </h4>
             <Image
               src={"/images/buisness-man.png"}

@@ -7,12 +7,9 @@ import {
   RadialBarChart,
 } from "recharts";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
+import { formatNumber } from "@/lib/utils";
 
 export const description = "A radial chart with text";
-
-const chartData = [
-  { browser: "누적 배당금", visitors: 572, fill: "var(--color-safari)" },
-];
 
 const chartConfig = {
   visitors: {
@@ -25,7 +22,22 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function Chart5() {
+interface Chart5Props {
+  goal: number;
+  totalDividend: number;
+}
+
+export function Chart5({ goal, totalDividend }: Chart5Props) {
+  const chartData = [
+    {
+      browser: "누적 배당금",
+      visitors: totalDividend,
+      fill: "var(--color-safari)",
+    },
+  ];
+
+  console.log((totalDividend / goal) * 360);
+
   return (
     <ChartContainer
       config={chartConfig}
@@ -34,7 +46,7 @@ export function Chart5() {
       <RadialBarChart
         data={chartData}
         startAngle={0}
-        endAngle={(572 / 800) * 360}
+        endAngle={(totalDividend / goal) * 360}
         innerRadius={80}
         outerRadius={110}
       >
@@ -63,7 +75,8 @@ export function Chart5() {
                       y={viewBox.cy}
                       className="fill-foreground text-2xl font-bold opacity-80"
                     >
-                      {chartData[0].visitors.toLocaleString()} 만원
+                      {formatNumber(Math.floor(chartData[0].visitors / 10000))}
+                      만원
                     </tspan>
                     <tspan
                       x={viewBox.cx}

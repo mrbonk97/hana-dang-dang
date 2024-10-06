@@ -16,6 +16,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { AccountDividendHistoryType } from "@/lib/account-api";
+import { Spinner } from "@/components/spinner/spinner";
 
 export const description = "A radar chart with a legend";
 // 월간 분기별 반기
@@ -34,10 +35,28 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface Props {
-  data: AccountDividendHistoryType[];
+  isPending: boolean;
+  isSuccess: boolean;
+  data: AccountDividendHistoryType[] | undefined;
 }
 
-export function Chart3({ data }: Props) {
+export function Chart3({ isPending, isSuccess, data }: Props) {
+  if (isPending || !isSuccess || data == undefined) {
+    return (
+      <Card className="pr-14 border">
+        <CardHeader className="pb-4">
+          <CardTitle className="opacity-80">배당주 유형 분포</CardTitle>
+          <CardDescription>
+            보유하고 계신 배당주 유형을 보여드립니다.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="h-96 w-96 flex2">
+          <Spinner />
+        </CardContent>
+      </Card>
+    );
+  }
+
   let total = 0;
   let totalF = 0;
 
