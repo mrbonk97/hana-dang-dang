@@ -25,6 +25,8 @@ export const MainSection = ({ accountId }: Props) => {
     );
   }
 
+  console.log(data);
+
   let color = "";
   if (data.profitPercentage < 0) color = "text-blue-500";
   if (data.profitPercentage > 0) color = "text-rose-500";

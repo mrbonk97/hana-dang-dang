@@ -25,6 +25,9 @@ interface Props {
 }
 
 const DividendPage = async ({ params }: Props) => {
+  const imgUrl =
+    params.id.charAt(5) != "0" ? params.id.substring(0, 5) + "0" : params.id;
+
   const data1 = await getDividendStockInfo(params.id);
   const data2 = await getStockInfoApi(params.id);
   const data3 = await getStockPriceApi(params.id);
@@ -42,8 +45,8 @@ const DividendPage = async ({ params }: Props) => {
     { type: "특별", value: 0 },
   ];
 
-  let totalPercentage = 0;
   let count = 0;
+  let totalPercentage = 0;
 
   data1.map((item) => {
     if (item.dividendType == "월간") chartData[0].value++;
@@ -55,8 +58,11 @@ const DividendPage = async ({ params }: Props) => {
     if (item.dividendType == "중간") chartData[6].value++;
     if (item.dividendType == "최종") chartData[7].value++;
     if (item.dividendType == "특별") chartData[8].value++;
-    count++;
-    totalPercentage += item.percentage;
+
+    if (item.lockDate.substring(0, 4) == "2024") {
+      totalPercentage += item.yieldPercentage;
+      count++;
+    }
   });
 
   return (
@@ -64,7 +70,7 @@ const DividendPage = async ({ params }: Props) => {
       <section className="px-5 h-20 w-full border-b flex items-center justify-between bg-background">
         <div className="flex items-center gap-5">
           <Image
-            src={`/kospi-icons/${params.id}.png`}
+            src={`/kospi-icons/${imgUrl}.png`}
             width={64}
             height={64}
             alt={params.id}
@@ -103,7 +109,7 @@ const DividendPage = async ({ params }: Props) => {
             </CardHeader>
             <CardContent>
               <h2 className="text-lg font-medium">
-                <span>연 평균 배당률</span>
+                <span>연간 배당수익률</span>
                 <span className="ml-2 text-3xl font-bold">
                   {(totalPercentage / count).toFixed(2)}%
                 </span>
@@ -111,7 +117,7 @@ const DividendPage = async ({ params }: Props) => {
             </CardContent>
           </Card>
           <DividendType chartData={chartData} />
-          <DividendYear />
+          <DividendYear data={data1} />
         </div>
       </section>
       <section className="pt-0 p-5 flex justify-between gap-5">

@@ -42,5 +42,8 @@ export const registerDividendLabApi = (
     dividendArea: area,
   });
 
-export const sendSmsVerifyApi = (mobileNo: string) =>
-  axios.post(`${BASE_URL}/sms/verify`, { mobile_no: mobileNo });
+export const sendSmsVerifyApi = async (mobileNo: string) =>
+  await axios.post(`${BASE_URL}/sms/verify`, { mobile_no: mobileNo });
+
+export const setGoalApi = async (userId: number, goal: number | string) =>
+  await axios.put(`${BASE_URL}/users/${userId}/set-goal`, { goal: goal });

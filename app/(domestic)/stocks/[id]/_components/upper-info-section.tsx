@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 interface Props {
   title: string;
   curPrice: string;
-  prevPrice: string;
+  prevPrice: number;
   prevPerc: string;
   totalValue: string;
   todayHigh: string;
@@ -38,10 +38,10 @@ export const UpperInfoSection = ({
   danger,
 }: Props) => {
   const [hokaPrice, setHokaPrice] = useState(parseInt(curPrice));
-  const _hokaPrice = createSelectors(store).use.curPrice();
+  const storeCurPrice = createSelectors(store).use.curPrice();
 
-  let color = "text-rose-600";
-  if (prevPrice.charAt(0) == "-") color = "text-blue-600";
+  let color = "text-rose-500";
+  if (hokaPrice < prevPrice) color = "text-blue-500";
 
   if (danger == "00") danger = "정상";
   if (danger == "01") danger = "주의";
@@ -49,9 +49,9 @@ export const UpperInfoSection = ({
   if (danger == "03") danger = "위험";
 
   useEffect(() => {
-    if (_hokaPrice == null) return;
-    setHokaPrice(parseInt(_hokaPrice));
-  }, [_hokaPrice]);
+    if (storeCurPrice == null) return;
+    setHokaPrice(storeCurPrice);
+  }, [storeCurPrice]);
 
   return (
     <section className="px-5 py-2 h-20 border-b flex items-center justify-between bg-background">
@@ -60,8 +60,9 @@ export const UpperInfoSection = ({
         <div className="flex items-end">
           <h2 className="text-lg font-bold">{formatNumber(hokaPrice)}원</h2>
           <span className={`ml-3 mb-[1px] font-medium  ${color}`}>
-            {formatNumber(parseInt(prevPrice))}원(
-            {formatNumber(Math.abs(parseFloat(prevPerc)))}%)
+            {hokaPrice - prevPrice}원(
+            {(Math.abs((prevPrice - hokaPrice) / prevPrice) * 100).toFixed(2)}
+            %)
           </span>
         </div>
       </hgroup>

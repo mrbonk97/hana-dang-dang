@@ -3,9 +3,13 @@ import { DividendCalendar } from "./_components/dividend-calendar";
 import Image from "next/image";
 import { getDividendRank } from "@/lib/dividend-api";
 import { Footer } from "@/components/nav/footer";
+import { NewsSection } from "./_components/news-section";
+import { getTopNewsApi } from "@/lib/news-api";
 
 const DividendPage = async () => {
   const data = await getDividendRank();
+  const newsData = await getTopNewsApi();
+
   return (
     <main className="pl-96 pt-14">
       <hgroup className="p-5">
@@ -17,6 +21,7 @@ const DividendPage = async () => {
       <section className="pt-0 p-5 h-[550px] flex justify-between gap-5 max-w-[1200px]">
         <DividendCalendar />
       </section>
+      <NewsSection data={newsData} />
       <section className="pt-0 p-5 max-w-[1200px]">
         <hgroup className="mt-16">
           <h1 className="text-lg font-bold opacity-80">

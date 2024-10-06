@@ -1,11 +1,11 @@
 import { StateCreator } from "zustand";
 
 interface StockState {
-  curPrice: string | null;
+  curPrice: number | null;
 }
 
 interface StockAction {
-  setPrice: (curPrice: string) => void;
+  setPrice: (curPrice: number) => void;
 }
 
 export interface StockSlice extends StockState, StockAction {}
@@ -14,5 +14,5 @@ export const createStockSlice: StateCreator<StockSlice, [], [], StockSlice> = (
   set
 ) => ({
   curPrice: null,
-  setPrice: (curPrice: string) => set({ curPrice }),
+  setPrice: (curPrice: number) => set({ curPrice }),
 });

@@ -13,19 +13,24 @@ import store from "@/zustand/store";
 import { useMutation } from "@tanstack/react-query";
 import { EclipseIcon, MinusIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface Props {
   code: string;
 }
 
 export const HokaOrderCard = ({ code }: Props) => {
+  const { toast } = useToast();
   const [hokaData, setHokaData] = useState<HokaType | null>(null);
   const [highPrice, setHighPrice] = useState("");
   const [lowPrice, setLowPrice] = useState("");
   const [predictPrice, setPredictPrice] = useState("");
+  const [currentPrice, setCurrentPrice] = useState(-1);
+  const [buyQuantity, setBuyQuantity] = useState(0);
+
   const selector = createSelectors(store).use;
   const account = selector.account();
+  const setPrice = selector.setPrice();
 
   const { mutate } = useMutation({
     mutationFn: () => getStockHokaApi(code),
@@ -35,11 +40,37 @@ export const HokaOrderCard = ({ code }: Props) => {
       setHighPrice(e.output2.stck_hgpr);
       setLowPrice(e.output2.stck_lwpr);
       setPredictPrice(e.output2.antc_cnpr);
+      setCurrentPrice(parseInt(e.output2.stck_prpr));
+      setPrice(parseInt(e.output2.stck_prpr));
     },
   });
 
+  const handleBuy = () => {
+    if (account == null) return;
+    if (account.accountNo == null) return;
+    if (currentPrice == -1) return;
+    if (account.balance < currentPrice * buyQuantity) {
+      toast({
+        variant: "destructive",
+        title: "매수 실패",
+        description: "예수금이 부족합니다.",
+      });
+      return;
+    }
+    buyMutation.mutate();
+  };
+
   const buyMutation = useMutation({
-    mutationFn: () => BuyStockApi(account?.accountNo, code, 0, 0),
+    mutationFn: () =>
+      BuyStockApi(account!.accountNo, code, buyQuantity, currentPrice),
+    onSuccess: (e) => {
+      toast({
+        title: "매수 체결 알림",
+        description: `${formatNumber(e.data.price)}원에 ${formatNumber(
+          e.data.quantity
+        )}주 체결`,
+      });
+    },
   });
 
   useEffect(() => {
@@ -58,7 +89,18 @@ export const HokaOrderCard = ({ code }: Props) => {
         highPrice={highPrice}
         predictPrice={predictPrice}
       />
-      {account == null ? <NotLoggedInOrderCard /> : <LoggedInOrderCard />}
+      {account == null ? (
+        <NotLoggedInOrderCard code={code} />
+      ) : (
+        <LoggedInOrderCard
+          account={account}
+          currentPrice={currentPrice}
+          buyQuantity={buyQuantity}
+          setBuyQuantity={setBuyQuantity}
+          handleBuy={handleBuy}
+          code={code}
+        />
+      )}
     </>
   );
 };
@@ -244,7 +286,25 @@ const MaesuBlock = ({ remain, total }: { remain: string; total: string }) => {
   );
 };
 
-const LoggedInOrderCard = () => {
+interface LoggedInOrderCardProps {
+  account: {
+    balance: number;
+  } | null;
+  currentPrice: number;
+  buyQuantity: number;
+  setBuyQuantity: Dispatch<SetStateAction<number>>;
+  handleBuy: () => void;
+  code: string;
+}
+
+const LoggedInOrderCard = ({
+  account,
+  currentPrice,
+  buyQuantity,
+  setBuyQuantity,
+  handleBuy,
+  code,
+}: LoggedInOrderCardProps) => {
   return (
     <article className="h-full w-1/4 flex flex-col gap-5 justify-between">
       <Tabs defaultValue="buy" className="h-full">
@@ -272,19 +332,26 @@ const LoggedInOrderCard = () => {
 
               {/* 중단 */}
               <div className="relative">
-                <Input className="pl-16 font-bold opacity-80" />
+                <Input
+                  className="pl-16 font-bold opacity-80"
+                  value={buyQuantity}
+                  type="number"
+                  onChange={(e) => setBuyQuantity(parseInt(e.target.value))}
+                />
                 <span className="absolute top-3.5 right-16 text-sm opacity-80 font-medium">
                   주
                 </span>
                 <Button
                   className="top-2 left-2 px-3 absolute rounded-none border-r"
                   variant={"ghost"}
+                  onClick={() => setBuyQuantity((cur) => Math.max(0, cur - 1))}
                 >
                   <MinusIcon className="text-c1-300" size={16} />
                 </Button>
                 <Button
                   className="top-2 right-2 px-3 absolute rounded-none border-l"
                   variant={"ghost"}
+                  onClick={() => setBuyQuantity((cur) => cur + 1)}
                 >
                   <PlusIcon className="text-c1-300" size={16} />
                 </Button>
@@ -297,7 +364,11 @@ const LoggedInOrderCard = () => {
                 >
                   <MinusIcon className="text-c1-300" size={16} />
                 </Button>
-                <Input disabled className="pl-16 font-bold opacity-80" />
+                <Input
+                  disabled
+                  className="pl-16 font-bold opacity-80"
+                  value={formatNumber(currentPrice)}
+                />
                 <span className="absolute top-3.5 right-16 text-sm opacity-60 font-medium">
                   원
                 </span>
@@ -312,10 +383,48 @@ const LoggedInOrderCard = () => {
 
               {/* 3단 */}
               <div className="flex justify-between gap-2">
-                <Button className="w-full py-6">10%</Button>
-                <Button className="w-full py-6">25%</Button>
-                <Button className="w-full py-6">50%</Button>
-                <Button className="w-full py-6">최대</Button>
+                <Button
+                  className="w-full py-6"
+                  onClick={() => {
+                    if (account == undefined || account == null) return;
+                    setBuyQuantity(
+                      Math.floor(account.balance / currentPrice / 10)
+                    );
+                  }}
+                >
+                  10%
+                </Button>
+                <Button
+                  className="w-full py-6"
+                  onClick={() => {
+                    if (account == undefined || account == null) return;
+                    setBuyQuantity(
+                      Math.floor(account.balance / currentPrice / 4)
+                    );
+                  }}
+                >
+                  25%
+                </Button>
+                <Button
+                  className="w-full py-6"
+                  onClick={() => {
+                    if (account == undefined || account == null) return;
+                    setBuyQuantity(
+                      Math.floor(account.balance / currentPrice / 2)
+                    );
+                  }}
+                >
+                  50%
+                </Button>
+                <Button
+                  className="w-full py-6"
+                  onClick={() => {
+                    if (account == undefined || account == null) return;
+                    setBuyQuantity(Math.floor(account.balance / currentPrice));
+                  }}
+                >
+                  최대
+                </Button>
               </div>
               <div>
                 <Separator className="my-5 w-full" />
@@ -323,6 +432,7 @@ const LoggedInOrderCard = () => {
               <Input
                 placeholder="총 금액"
                 readOnly
+                value={formatNumber(buyQuantity * currentPrice) + "원"}
                 className="focus-visible:ring-0 font-bold opacity-80 text-right"
               />
               <div className="pt-1 w-full flex gap-2">
@@ -330,7 +440,11 @@ const LoggedInOrderCard = () => {
                   CMA
                   <br /> 전액매도
                 </Button>
-                <Button variant={"destructive"} className="py-8 w-full">
+                <Button
+                  variant={"destructive"}
+                  className="py-8 w-full"
+                  onClick={handleBuy}
+                >
                   매수 주문
                 </Button>
               </div>
@@ -347,7 +461,7 @@ const LoggedInOrderCard = () => {
         </TabsContent>
       </Tabs>
       <Button className="h-20 text-2xl font-bold" asChild>
-        <Link href={`/dividend`}>
+        <Link href={`/dividend/${code}`}>
           <span className="ml-2">배당 정보</span>
           <EclipseIcon className="ml-5" size={32} />
         </Link>
@@ -356,7 +470,7 @@ const LoggedInOrderCard = () => {
   );
 };
 
-const NotLoggedInOrderCard = () => {
+const NotLoggedInOrderCard = ({ code }: { code: string }) => {
   return (
     <article className="h-full w-1/4 flex flex-col gap-5 justify-between">
       <Tabs defaultValue="buy" className="h-full">
@@ -408,7 +522,7 @@ const NotLoggedInOrderCard = () => {
         </TabsContent>
       </Tabs>
       <Button className="h-20 text-2xl font-bold" asChild>
-        <Link href={`/dividend`}>
+        <Link href={`/dividend/${code}`}>
           <span className="ml-2">배당 정보</span>
           <EclipseIcon className="ml-5" size={32} />
         </Link>

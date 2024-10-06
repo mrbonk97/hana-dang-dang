@@ -2,19 +2,20 @@ import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-type DividendStockInfo = {
+export type DividendHistoryType = {
   id: number;
-  code: string;
   title: string;
-  amount: number;
-  percentage: number;
-  dividendType: string;
-  declareDate: string;
+  code: string;
+  lockDate: string;
   payDate: string;
+  dividendType: string;
+  amount: number;
+  yieldPercentage: number;
+  dividendPercentage: number;
 };
 
 // prettier-ignore
-export const getDividendStockInfo = async (code: string) : Promise<DividendStockInfo[]> =>
+export const getDividendStockInfo = async (code: string) : Promise<DividendHistoryType[]> =>
   await fetch(`${BASE_URL}/dividend/stocks/${code}`).then((res) =>res.json());
 
 export const getDividendRank = async () =>

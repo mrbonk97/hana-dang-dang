@@ -1,30 +1,19 @@
 "use client";
 import { Button } from "../ui/button";
-import { ChevronRight, SearchIcon } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { Logo } from "@/components/logo";
 import Link from "next/link";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
 import { UserAvatar } from "./avatar";
-import { Input } from "../ui/input";
 import { usePathname } from "next/navigation";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../ui/drawer";
+
 import { Search } from "./search";
 
 export const Topnav = () => {
   const pn = usePathname().split("/")[1];
   const selector = createSelectors(store);
   const isLoggedIn = selector.use.isLoggedIn();
-  const account = selector.use.account();
 
   return (
     <header className="z-50 fixed top-0 left-0 py-2 px-[7%] h-14 w-full border-b flex items-center justify-between bg-background">
@@ -53,9 +42,7 @@ export const Topnav = () => {
             배당 정보
           </Link>
           <Link
-            href={`/dividend-lab${
-              account == null ? "" : `/${account?.accountNo}`
-            }`}
+            href={`/dividend-lab`}
             aria-selected={pn == "dividend-lab"}
             className="opacity-60 font-medium aria-selected:opacity-80 aria-selected:font-bold hover:opacity-80 hover:font-bold duration-150"
           >

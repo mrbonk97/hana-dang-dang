@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/table";
 import { formatNumber } from "@/lib/utils";
 import { AccountStockType } from "@/lib/account-api";
+import { Spinner } from "@/components/spinner/spinner";
 
 const colors = [
   "hsl(var(--chart-1))",
@@ -33,10 +34,24 @@ const colors = [
 ];
 
 interface Props {
-  data: AccountStockType[];
+  isPending: boolean;
+  isSuccess: boolean;
+  data: AccountStockType[] | undefined;
 }
 
-export function Chart2({ data }: Props) {
+export function Chart2({ isPending, isSuccess, data }: Props) {
+  if (isPending || !isSuccess || data == undefined)
+    return (
+      <Card className="w-full border">
+        <CardHeader className="opacity-80">
+          <CardTitle>포트폴리오</CardTitle>
+        </CardHeader>
+        <CardContent className="h-[450px] flex2">
+          <Spinner />
+        </CardContent>
+      </Card>
+    );
+
   const extra: AccountStockType = {
     code: "000000",
     title: "기타",

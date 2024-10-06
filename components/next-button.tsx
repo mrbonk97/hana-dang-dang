@@ -4,12 +4,14 @@ interface NextButtonProps {
   text?: string;
   className?: string;
   isDisabled?: boolean;
+  disableText?: string;
   onClick?: () => void;
 }
 export const NextButton = ({
   text = "다음 단계",
   className,
   isDisabled = false,
+  disableText = "선택해주세요",
   onClick,
 }: NextButtonProps) => {
   return (
@@ -23,7 +25,7 @@ export const NextButton = ({
     >
       <div className={`h-[200%] w-full duration-500 ${isDisabled && "-mt-16"}`}>
         <div className="h-1/2 flex2">{text}</div>
-        <div className="h-1/2 flex2">선택해주세요</div>
+        <div className="h-1/2 flex2">{disableText}</div>
       </div>
     </button>
   );

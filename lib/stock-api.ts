@@ -291,12 +291,19 @@ export const StockOpinionApi = async (code: string) =>
 // export const StockRecentPriceApi = async (code: string): Promise<T12> =>
 //   await fetch(`${BASE_URL}/stocks/recent-price/${code}`);
 
+type BuyStockApiResponse = {
+  data: {
+    price: number;
+    quantity: number;
+  };
+};
+
 export const BuyStockApi = async (
   accountId: string,
   stockCode: string,
   quantity: number,
   price: number
-) =>
+): Promise<BuyStockApiResponse> =>
   await axios.post(`${BASE_URL}/stocks/buy`, {
     accountId,
     stockCode,

@@ -15,30 +15,43 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
-export const description = "A line chart with a label";
-
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
+import { DividendHistoryType } from "@/lib/dividend-api";
+import { GitCommitVertical } from "lucide-react";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
+  dividend: {
+    label: "배당금",
+    // color: "hsl(var(--chart-5))",
+    color: "#0ea5e9",
   },
 } satisfies ChartConfig;
 
-export function DividendYear() {
+interface DividendYearProps {
+  data: DividendHistoryType[];
+}
+
+export const DividendYear = ({ data }: DividendYearProps) => {
+  const chartData2 = [
+    { year: 2020, dividend: 0 },
+    { year: 2021, dividend: 0 },
+    { year: 2022, dividend: 0 },
+    { year: 2023, dividend: 0 },
+    { year: 2024, dividend: 0 },
+  ];
+
+  data.forEach((item) => {
+    if (item.lockDate.substring(0, 4) == "2020")
+      chartData2[0].dividend += item.amount;
+    if (item.lockDate.substring(0, 4) == "2021")
+      chartData2[1].dividend += item.amount;
+    if (item.lockDate.substring(0, 4) == "2022")
+      chartData2[2].dividend += item.amount;
+    if (item.lockDate.substring(0, 4) == "2023")
+      chartData2[3].dividend += item.amount;
+    if (item.lockDate.substring(0, 4) == "2024")
+      chartData2[4].dividend += item.amount;
+  });
+
   return (
     <Card className="h-full">
       <CardHeader>
@@ -49,32 +62,42 @@ export function DividendYear() {
         <ChartContainer config={chartConfig} className="h-20 w-full">
           <LineChart
             accessibilityLayer
-            data={chartData}
+            data={chartData2}
             margin={{
               top: 20,
-              left: 12,
-              right: 12,
+              left: 36,
+              right: 36,
             }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="year"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
             <Line
-              dataKey="desktop"
+              dataKey="dividend"
               type="natural"
-              stroke="var(--color-desktop)"
+              stroke="var(--color-dividend)"
               strokeWidth={2}
-              dot={{
-                fill: "var(--color-desktop)",
+              dot={({ cx, cy, payload }) => {
+                const r = 24;
+                return (
+                  <GitCommitVertical
+                    key={payload.month}
+                    x={cx - r / 2}
+                    y={cy - r / 2}
+                    width={r}
+                    height={r}
+                    fill="hsl(var(--background))"
+                    stroke="var(--color-dividend)"
+                  />
+                );
               }}
               activeDot={{
                 r: 6,
@@ -92,4 +115,4 @@ export function DividendYear() {
       </CardContent>
     </Card>
   );
-}
+};

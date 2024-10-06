@@ -66,11 +66,13 @@ const StockDetailPage = async ({ params }: Props) => {
   });
 
   return (
-    <main className="pt-14 pl-[24rem] min-h-[800px] min-w-[1500px] h-full bg-secondary">
+    <main className="pt-14 pl-[24rem] min-h-[900px] min-w-[1500px] h-full bg-secondary">
       <UpperInfoSection
         title={data4.output1.hts_kor_isnm}
         curPrice={data4.output1.stck_prpr}
-        prevPrice={data4.output1.prdy_vrss}
+        prevPrice={
+          parseInt(data4.output1.stck_prpr) - parseInt(data4.output1.prdy_vrss)
+        }
         prevPerc={data4.output1.prdy_ctrt}
         totalValue={output.hts_avls}
         todayHigh={output.stck_hgpr}
