@@ -157,7 +157,7 @@ export function Chart3({ isPending, isSuccess, data }: Props) {
           </li>
           {chartData.map((item) => (
             <li
-              key={item.amount}
+              key={`chart-3-${item.month}`}
               className="p-2 rounded-xl grid grid-cols-3 gap-5 items-center font-medium opacity-70 hover:bg-secondary duration-150"
             >
               <div className="col-span-1 flex gap-5 items-center">

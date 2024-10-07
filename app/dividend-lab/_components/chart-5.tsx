@@ -36,8 +36,6 @@ export function Chart5({ goal, totalDividend }: Chart5Props) {
     },
   ];
 
-  console.log((totalDividend / goal) * 360);
-
   return (
     <ChartContainer
       config={chartConfig}

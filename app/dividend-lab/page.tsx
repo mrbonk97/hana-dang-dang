@@ -124,7 +124,7 @@ const DividendLabPage = () => {
         >
           <Link href={"/dividend-lab/diagnosis"}>
             <h4 className="pt-10 text-lg font-bold opacity-80">
-              포트폴리오 진단하기
+              포트폴리오 조정하기
             </h4>
             <Image
               src={"/images/buisness-man.png"}
@@ -139,7 +139,7 @@ const DividendLabPage = () => {
           variant={"outline"}
           asChild
         >
-          <Link href={"/dividend-lab/diagnosis"}>
+          <Link href={"/dividend/recommend"}>
             <h4 className="pt-10 text-lg font-bold opacity-80">
               종목 추천받기
             </h4>

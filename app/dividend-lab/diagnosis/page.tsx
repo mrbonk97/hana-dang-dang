@@ -6,8 +6,7 @@ import {
 } from "@/lib/account-api";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
-import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import { ArrowBigRight } from "lucide-react";
 import { EstimateTable } from "./_components/estimate-table";
@@ -17,25 +16,28 @@ import { EstimateChart } from "./_components/estimate-chart";
 import { Slider } from "@/components/ui/slider";
 import { TotalEstimateRadial } from "./_components/total-estimate-radial";
 import { useRouter } from "next/navigation";
+import { NotLoggedInCard } from "@/components/not-logged-in-card";
 
 const DiagnosisPage = () => {
   const router = useRouter();
   const [step, setStep] = useState(0);
+  const [total, setTotal] = useState(0);
   const selector = createSelectors(store).use;
   const account = selector.account();
+  const user = selector.user();
   const [chartData, setChartData] = useState([
-    { month: "1월", es: 0, aim: 100, limit: 2000000 },
-    { month: "2월", es: 0, aim: 100, limit: 2000000 },
-    { month: "3월", es: 0, aim: 100, limit: 2000000 },
-    { month: "4월", es: 0, aim: 100, limit: 2000000 },
-    { month: "5월", es: 0, aim: 55, limit: 2000000 },
-    { month: "6월", es: 0, aim: 100, limit: 2000000 },
-    { month: "7월", es: 0, aim: 10, limit: 2000000 },
-    { month: "8월", es: 0, aim: 20, limit: 2000000 },
-    { month: "9월", es: 0, aim: 30, limit: 2000000 },
-    { month: "10월", es: 0, aim: 20, limit: 2000000 },
-    { month: "11월", es: 0, aim: 10, limit: 2000000 },
-    { month: "12월", es: 0, aim: 30, limit: 2000000 },
+    { month: "1월", es: 0, aim: 0, limit: 2000000 },
+    { month: "2월", es: 0, aim: 0, limit: 2000000 },
+    { month: "3월", es: 0, aim: 0, limit: 2000000 },
+    { month: "4월", es: 0, aim: 0, limit: 2000000 },
+    { month: "5월", es: 0, aim: 0, limit: 2000000 },
+    { month: "6월", es: 0, aim: 0, limit: 2000000 },
+    { month: "7월", es: 0, aim: 0, limit: 2000000 },
+    { month: "8월", es: 0, aim: 0, limit: 2000000 },
+    { month: "9월", es: 0, aim: 0, limit: 2000000 },
+    { month: "10월", es: 0, aim: 0, limit: 2000000 },
+    { month: "11월", es: 0, aim: 0, limit: 2000000 },
+    { month: "12월", es: 0, aim: 0, limit: 2000000 },
   ]);
 
   const handleChartData = (idx: number, value: number) => {
@@ -56,35 +58,15 @@ const DiagnosisPage = () => {
     }
   };
 
-  if (account == null)
-    return (
-      <main className="pt-14 pl-16 h-full flex2 flex-col gap-2 font-medium opacity-80">
-        로그인이 필요한 서비스입니다.
-        <Button variant={"link"} asChild>
-          <Link href={"/sign-in"}>로그인</Link>
-        </Button>
-      </main>
-    );
-
-  const query2 = useQuery({
-    queryKey: ["account", "dividend-estimate-monthly", account.accountNo],
-    queryFn: () => getAccountMonthlyDividendEstimate(account.accountNo),
-  });
-
-  const query3 = useQuery({
-    queryKey: ["account", "estimate-profit", account.accountNo],
-    queryFn: () => getAccountDividendEstimate(account.accountNo),
-  });
-
-  let total = 0;
-  if (query3.isSuccess && query3.data != undefined)
-    query3.data.forEach((item) => (total += item.estimateProfit));
-
-  useEffect(() => {
-    if (query2.isSuccess) {
+  const mutation1 = useMutation({
+    mutationFn: (accountNo: string) =>
+      getAccountMonthlyDividendEstimate(accountNo),
+    onSuccess: (e) => {
       const _chartData = [...chartData];
-      query2.data.forEach((item) => {
-        const date = new Date(item.declareDate);
+      let _total = 0;
+      e.forEach((item) => {
+        _total += item.estimateProfit;
+        const date = new Date(item.lockDate);
         if (date.getMonth() == 0) _chartData[0].es += item.estimateProfit;
         if (date.getMonth() == 1) _chartData[1].es += item.estimateProfit;
         if (date.getMonth() == 2) _chartData[2].es += item.estimateProfit;
@@ -100,8 +82,24 @@ const DiagnosisPage = () => {
         if (date.getMonth() == 12) _chartData[12].es += item.estimateProfit;
       });
       setChartData(_chartData);
-    }
-  }, [query2.isSuccess]);
+      setTotal(_total);
+    },
+  });
+
+  const mutation2 = useMutation({
+    mutationFn: (accountNo: string) => getAccountDividendEstimate(accountNo),
+    onSuccess: (e) => {
+      console.log(e);
+    },
+  });
+
+  useEffect(() => {
+    if (account == null) return;
+    mutation1.mutate(account.accountNo);
+    mutation2.mutate(account.accountNo);
+  }, [account]);
+
+  if (account == null || user == null) return <NotLoggedInCard />;
 
   return (
     <main className="pt-14 pl-16 h-full min-h-[900px] min-w-[1500px] w-full relative overflow-hidden">
@@ -147,7 +145,14 @@ const DiagnosisPage = () => {
                   배당금이 없는 달은{" "}
                   {chartData.map((item) => {
                     if (item.es == 0)
-                      return <span className="text-c1-300">{item.month} </span>;
+                      return (
+                        <span
+                          className="text-c1-300"
+                          key={`no-div-${item.month}`}
+                        >
+                          {item.month}{" "}
+                        </span>
+                      );
                   })}
                   입니다.
                 </p>
@@ -172,7 +177,11 @@ const DiagnosisPage = () => {
           ${step == 0 && "left-1/2 -translate-x-1/2"}
           ${step > 0 && "-left-full"}`}
       >
-        <EstimateTable data={query3.data} />
+        <EstimateTable
+          isPending={mutation2.isPending}
+          isSuccess={mutation2.isSuccess}
+          data={mutation2.data}
+        />
       </article>
       <article
         className={`absolute duration-1000
@@ -188,7 +197,7 @@ const DiagnosisPage = () => {
             ${step < 2 ? "left-full" : "left-[1100px]"}
             `}
       >
-        <TotalEstimateRadial data={chartData} goal={8000000} />
+        <TotalEstimateRadial data={chartData} goal={user.dividendGoal} />
         <ul className="space-y-3">
           <List title={"1월"} idx={0} onChange={handleChartData} />
           <List title={"2월"} idx={1} onChange={handleChartData} />

@@ -26,7 +26,7 @@ export const StockRankTable = ({ defaultData }: Props) => {
   const [sortType, setSortType] = useState("vol");
   const [tableData, setTableData] = useState(defaultData);
 
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (type: string) => {
       setSortType(type);
       return getStockListRankApi(type);

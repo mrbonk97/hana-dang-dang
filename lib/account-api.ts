@@ -91,7 +91,7 @@ export type AccountMonthlyDividendEstimateType = {
   estimateProfit: number;
   amount: number;
   percentage: number;
-  declareDate: string;
+  lockDate: string;
 };
 
 // prettier-ignore

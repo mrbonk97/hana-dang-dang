@@ -5,7 +5,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getStockInfoApi, getStockPriceApi } from "@/lib/stock-api";
+import {
+  getStockInfoApi,
+  getStockPriceApi,
+  getStockStabilityApi,
+} from "@/lib/stock-api";
 import Image from "next/image";
 import { DividendHistoryCard } from "./_components/dividend-history";
 import { formatNumber } from "@/lib/utils";
@@ -17,6 +21,10 @@ import { Aperture } from "lucide-react";
 import Link from "next/link";
 import { getBoardMeeting, getDividendStockInfo } from "@/lib/dividend-api";
 import { BoardMeeting } from "./_components/board-meeting";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Bannner } from "@/components/banner";
+import { getIndexListApi } from "@/lib/index-api";
+import { StabilityChart } from "./_components/stability-chart";
 
 interface Props {
   params: {
@@ -32,6 +40,11 @@ const DividendPage = async ({ params }: Props) => {
   const data2 = await getStockInfoApi(params.id);
   const data3 = await getStockPriceApi(params.id);
   const data4 = await getBoardMeeting(params.id);
+
+  const bannerData = await getIndexListApi();
+  const stability = await getStockStabilityApi(params.id);
+
+  console.log(stability);
 
   const chartData = [
     { type: "월간", value: 0 },
@@ -66,7 +79,7 @@ const DividendPage = async ({ params }: Props) => {
   });
 
   return (
-    <main className="pt-14 pl-96 min-h-full bg-secondary">
+    <main className="pt-14 pb-12 pl-96 min-h-full h-full flex flex-col bg-secondary">
       <section className="px-5 h-20 w-full border-b flex items-center justify-between bg-background">
         <div className="flex items-center gap-5">
           <Image
@@ -100,7 +113,122 @@ const DividendPage = async ({ params }: Props) => {
           </div>
         </div>
       </section>
-      <section className="p-5 h-[780px] w-full flex gap-5">
+      <Tabs defaultValue="t1" className="h-full w-full">
+        <TabsList className="px-5 h-14 grid w-full grid-cols-4 rounded-none border-b bg-background">
+          <TabsTrigger
+            value="t1"
+            className="py-2 data-[state=active]:bg-secondary"
+          >
+            배당
+          </TabsTrigger>
+          <TabsTrigger
+            value="t2"
+            className="py-2 data-[state=active]:bg-secondary"
+          >
+            안정성
+          </TabsTrigger>
+          <TabsTrigger
+            value="t3"
+            className="py-2 data-[state=active]:bg-secondary"
+          >
+            t3
+          </TabsTrigger>
+          <TabsTrigger
+            value="t4"
+            className="py-2 data-[state=active]:bg-secondary"
+          >
+            t4
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="t1" className="mt-0">
+          <article className="p-5 h-full w-full flex justify-between gap-5">
+            <DividendHistoryCard data={data1} />
+            <div className="h-full w-full flex flex-col justify-between gap-5">
+              <Card className="bg-c1-300 text-primary-foreground flex-shrink-0">
+                <CardHeader>
+                  <CardTitle>배당 요약</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <h2 className="text-lg font-medium">
+                    <span>연간 배당수익률</span>
+                    <span className="ml-2 text-3xl font-bold">
+                      {(totalPercentage / count).toFixed(2)}%
+                    </span>
+                  </h2>
+                </CardContent>
+              </Card>
+              <DividendType chartData={chartData} />
+              <DividendYear data={data1} />
+            </div>
+          </article>
+        </TabsContent>
+        <TabsContent
+          value="t2"
+          className="mt-0 p-5 h-[calc(100%-3.5rem)] bg-secondary w-full"
+        >
+          <article className="p-5 rounded-xl bg-background h-full w-full">
+            <h4 className="h-8 text-lg font-medium opacity-80">재무안정성</h4>
+            <div className="mt-5 flex gap-5 justify-between">
+              <ul className="flex flex-col gap-5">
+                <li className="p-2 px-10 pb-5 h-32 w-80 flex flex-col justify-center gap-2 rounded-xl bg-secondary">
+                  <span className="font-medium opacity-70">부채비율</span>
+                  <p className="text-3xl font-bold opacity-80">
+                    {stability[0].lblt_rate}%
+                  </p>
+                </li>
+                <li className="p-2 px-10 pb-5 h-32 w-80 flex flex-col justify-center gap-2 rounded-xl bg-secondary">
+                  <span className="font-medium opacity-70">유동비율</span>
+                  <p className="text-3xl font-bold opacity-80">
+                    {stability[0].crnt_rate}%
+                  </p>
+                </li>
+                <li className="p-2 px-10 pb-5 h-32 w-80 flex flex-col justify-center gap-2 rounded-xl bg-secondary">
+                  <span className="font-medium opacity-70">차입금의존도</span>
+                  <p className="text-3xl font-bold opacity-80">
+                    {stability[0].bram_depn}%
+                  </p>
+                </li>
+                <li className="p-2 px-10 pb-5 h-32 w-80 flex flex-col justify-center gap-2 rounded-xl bg-secondary">
+                  <span className="font-medium opacity-70">당좌비율</span>
+                  <p className="text-3xl font-bold opacity-80">
+                    {stability[0].quck_rate}%
+                  </p>
+                </li>
+              </ul>
+              <StabilityChart data={stability} />
+            </div>
+          </article>
+        </TabsContent>
+        <TabsContent
+          value="t3"
+          className="mt-0 h-[calc(100%-3.5rem)] bg-rose-100 w-full"
+        ></TabsContent>
+        <TabsContent
+          value="t4"
+          className="mt-0 h-[calc(100%-3.5rem)] bg-rose-200 w-full"
+        ></TabsContent>
+      </Tabs>
+
+      {/* <DividendHistoryCard data={data1} />
+          <div className="w-full flex flex-col justify-between gap-5">
+            <Card className="bg-c1-300 text-primary-foreground">
+              <CardHeader>
+                <CardTitle>배당 요약</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <h2 className="text-lg font-medium">
+                  <span>연간 배당수익률</span>
+                  <span className="ml-2 text-3xl font-bold">
+                    {(totalPercentage / count).toFixed(2)}%
+                  </span>
+                </h2>
+              </CardContent>
+            </Card>
+            <DividendType chartData={chartData} />
+            <DividendYear data={data1} />
+          </div> */}
+
+      {/* <section className="p-5 h-[780px] w-full flex gap-5">
         <DividendHistoryCard data={data1} />
         <div className="w-full flex flex-col justify-between gap-5">
           <Card className="bg-c1-300 text-primary-foreground">
@@ -157,7 +285,7 @@ const DividendPage = async ({ params }: Props) => {
       <section className="pt-0 p-5 w-full">
         <BoardMeeting data={data4.output1} />
       </section>
-      <Footer />
+      <Footer /> */}
     </main>
   );
 };

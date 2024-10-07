@@ -22,12 +22,12 @@ interface Props {
 
 export const DividendHistoryCard = ({ data }: Props) => {
   return (
-    <Card className="pb-1 h-full flex flex-col w-[600px] overflow-hidden flex-shrink-0">
+    <Card className="pb-1 h-full flex flex-col w-[600px] flex-shrink-0">
       <CardHeader>
         <CardTitle>배당 내역</CardTitle>
         <CardDescription>최근 10년치 배당 데이터입니다.</CardDescription>
       </CardHeader>
-      <CardContent className="overflow-y-auto ">
+      <CardContent className="pr-0 max-h-[590px]">
         <Table>
           <TableHeader>
             <TableRow>

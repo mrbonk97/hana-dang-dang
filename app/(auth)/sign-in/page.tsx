@@ -60,7 +60,7 @@ const SignInPage = () => {
     mutation.mutate(values);
 
   return (
-    <main className="h-full min-h-[700px] flex2 bg-c1-100">
+    <main className="py-20 h-full min-h-[700px] flex2 bg-c1-100">
       <article className="h-[700px] w-[1200px] flex gap-5 rounded-2xl border shadow-xl bg-background">
         <section className="relative p-5 h-full w-1/2 flex flex-col items-center border-r">
           <hgroup className="p-5 w-full">

@@ -47,8 +47,22 @@ export const getDividendCalendar = async (date: string): Promise<DividendCalenda
 export const getBoardMeeting = async (code: string) =>
   await fetch(`${BASE_URL}/dividend/stocks/${code}/meeting`).then((res) => res.json());
 
-export const getRecommendStockApi = async (data: any) =>
-  await axios.post(`${BASE_URL}/dividend/recommend`, data);
+export type RecommendStockType = {
+  code: string;
+  title: string;
+  quantity: number;
+  yearlyProfit: number;
+  yearlyProfitPercentage: number;
+  coverMonth: {
+    amount: number;
+    month: number;
+    percentage: number;
+  }[];
+};
+
+// prettier-ignore
+export const getRecommendStockApi = async (data: string[]): Promise<RecommendStockType[]> =>
+  (await axios.post(`${BASE_URL}/dividend/recommend`, data)).data;
 
 type SearchStockType = {
   code: string;

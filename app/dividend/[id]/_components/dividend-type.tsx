@@ -40,7 +40,7 @@ export function DividendType({ chartData }: Props) {
         <CardDescription>10년치의 배당 유형을 보여드립니다.</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-60 w-full">
+        <ChartContainer config={chartConfig} className="h-40 w-full">
           <BarChart
             accessibilityLayer
             data={chartData}

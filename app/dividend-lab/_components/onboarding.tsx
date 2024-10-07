@@ -6,7 +6,7 @@ import { setGoalApi } from "@/lib/user-api";
 import { formatNumber } from "@/lib/utils";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 interface OnboardingProps {

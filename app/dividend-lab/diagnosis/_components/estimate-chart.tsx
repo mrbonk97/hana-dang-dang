@@ -1,5 +1,5 @@
 "use client";
-import { Bar, BarChart, Line, LineChart, XAxis } from "recharts";
+import { Bar, BarChart, Line, XAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,

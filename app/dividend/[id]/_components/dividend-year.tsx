@@ -53,13 +53,13 @@ export const DividendYear = ({ data }: DividendYearProps) => {
   });
 
   return (
-    <Card className="h-full">
+    <Card>
       <CardHeader>
         <CardTitle>연간 배당률 추이</CardTitle>
         <CardDescription>2020.01.01 ~ 2024.10.05</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-20 w-full">
+        <ChartContainer config={chartConfig} className="h-32 w-full">
           <LineChart
             accessibilityLayer
             data={chartData2}

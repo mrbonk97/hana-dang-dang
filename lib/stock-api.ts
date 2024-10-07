@@ -325,8 +325,28 @@ export type StockListType = {
 export const getStockListApi = async (
   page: number
 ): Promise<StockListType[]> => {
-  console.log(`${BASE_URL}/stocks?page=${page}`);
   return await fetch(`${BASE_URL}/stocks?page=${page}`).then((res) =>
     res.json()
   );
 };
+
+// "stac_yymm": "202406",
+//             "lblt_rate": "76.54",
+//             "bram_depn": "26.58",
+//             "crnt_rate": "152.79",
+//             "quck_rate": "0.00"
+
+export type StockStabilityType = {
+  stac_yymm: string;
+  lblt_rate: string;
+  bram_depn: string;
+  crnt_rate: string;
+  quck_rate: string;
+};
+
+export const getStockStabilityApi = async (
+  code: string
+): Promise<StockStabilityType[]> =>
+  await fetch(`${BASE_URL}/stocks/${code}/stability`)
+    .then((res) => res.json())
+    .then((res) => res.output);

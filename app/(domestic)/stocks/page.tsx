@@ -1,10 +1,8 @@
 import { Bannner } from "@/components/banner";
 import { Footer } from "@/components/nav/footer";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getIndexDataApi, getIndexListApi } from "@/lib/index-api";
 import { getStockListApi, getStockListRankApi } from "@/lib/stock-api";
-import { ChevronRight } from "lucide-react";
 import {
   Card,
   CardContent,

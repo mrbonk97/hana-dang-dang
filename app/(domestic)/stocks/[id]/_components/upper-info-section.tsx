@@ -26,7 +26,6 @@ export const UpperInfoSection = ({
   title,
   curPrice,
   prevPrice,
-  prevPerc,
   totalValue,
   todayHigh,
   todayLow,
