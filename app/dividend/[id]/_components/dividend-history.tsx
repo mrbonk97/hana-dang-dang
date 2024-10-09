@@ -27,7 +27,7 @@ export const DividendHistoryCard = ({ data }: Props) => {
         <CardTitle>배당 내역</CardTitle>
         <CardDescription>최근 10년치 배당 데이터입니다.</CardDescription>
       </CardHeader>
-      <CardContent className="pr-0 max-h-[590px]">
+      <CardContent className="h-[620px]">
         <Table>
           <TableHeader>
             <TableRow>

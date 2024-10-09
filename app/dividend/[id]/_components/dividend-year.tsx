@@ -59,7 +59,7 @@ export const DividendYear = ({ data }: DividendYearProps) => {
         <CardDescription>2020.01.01 ~ 2024.10.05</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-32 w-full">
+        <ChartContainer config={chartConfig} className="h-40 w-full">
           <LineChart
             accessibilityLayer
             data={chartData2}

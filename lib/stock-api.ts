@@ -311,6 +311,19 @@ export const BuyStockApi = async (
     price,
   });
 
+export const OrderStockApi = async (
+  accountId: string,
+  stockCode: string,
+  quantity: number,
+  price: number
+) =>
+  await axios.post(`${BASE_URL}/stocks/order`, {
+    accountId,
+    stockCode,
+    quantity,
+    price,
+  });
+
 export type StockListType = {
   rn: number;
   prdtAbrvName: string;
@@ -348,5 +361,14 @@ export const getStockStabilityApi = async (
   code: string
 ): Promise<StockStabilityType[]> =>
   await fetch(`${BASE_URL}/stocks/${code}/stability`)
+    .then((res) => res.json())
+    .then((res) => res.output);
+
+export type OtherInfoType = {
+  stac_yymm: string;
+  payout_rate: string;
+};
+export const getOtherInfoApi = async (code: string): Promise<OtherInfoType[]> =>
+  await fetch(`${BASE_URL}/stocks/${code}/other`)
     .then((res) => res.json())
     .then((res) => res.output);

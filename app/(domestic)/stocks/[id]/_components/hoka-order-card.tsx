@@ -6,7 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { BuyStockApi, getStockHokaApi, HokaType } from "@/lib/stock-api";
+import {
+  BuyStockApi,
+  getStockHokaApi,
+  HokaType,
+  OrderStockApi,
+} from "@/lib/stock-api";
 import { formatNumber } from "@/lib/utils";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
@@ -14,6 +19,13 @@ import { useMutation } from "@tanstack/react-query";
 import { EclipseIcon, MinusIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Props {
   code: string;
@@ -27,6 +39,8 @@ export const HokaOrderCard = ({ code }: Props) => {
   const [predictPrice, setPredictPrice] = useState("");
   const [currentPrice, setCurrentPrice] = useState(-1);
   const [buyQuantity, setBuyQuantity] = useState(0);
+  const [buyPrice, setBuyPrice] = useState(-1);
+  const [buyType, setBuyType] = useState("marketType");
 
   const selector = createSelectors(store).use;
   const account = selector.account();
@@ -41,6 +55,7 @@ export const HokaOrderCard = ({ code }: Props) => {
       setLowPrice(e.output2.stck_lwpr);
       setPredictPrice(e.output2.antc_cnpr);
       setCurrentPrice(parseInt(e.output2.stck_prpr));
+      if (buyType == "marketType") setBuyPrice(parseInt(e.output2.stck_prpr));
       setPrice(parseInt(e.output2.stck_prpr));
     },
   });
@@ -49,15 +64,29 @@ export const HokaOrderCard = ({ code }: Props) => {
     if (account == null) return;
     if (account.accountNo == null) return;
     if (currentPrice == -1) return;
-    if (account.balance < currentPrice * buyQuantity) {
+    if (
+      buyType == "marketType" &&
+      account.balance < currentPrice * buyQuantity
+    ) {
       toast({
         variant: "destructive",
-        title: "매수 실패",
+        title: "매수 주문 실패",
         description: "예수금이 부족합니다.",
       });
       return;
     }
-    buyMutation.mutate();
+
+    if (buyType == "userType" && account.balance < buyPrice * buyQuantity) {
+      toast({
+        variant: "destructive",
+        title: "매수 주문 실패",
+        description: "예수금이 부족합니다.",
+      });
+      return;
+    }
+
+    if (buyType == "marketType") buyMutation.mutate();
+    if (buyType == "userType") orderMutation.mutate();
   };
 
   const buyMutation = useMutation({
@@ -73,8 +102,19 @@ export const HokaOrderCard = ({ code }: Props) => {
     },
   });
 
+  const orderMutation = useMutation({
+    mutationFn: () =>
+      OrderStockApi(account!.accountNo, code, buyQuantity, buyPrice),
+    onSuccess: (e) => {
+      toast({
+        title: "매수 주문 알림",
+        description: e.data,
+      });
+    },
+  });
+
   useEffect(() => {
-    const fetchHoka = setInterval(mutate, 5000);
+    const fetchHoka = setInterval(mutate, 1000);
     mutate();
     return () => {
       clearInterval(fetchHoka);
@@ -95,8 +135,12 @@ export const HokaOrderCard = ({ code }: Props) => {
         <LoggedInOrderCard
           account={account}
           currentPrice={currentPrice}
+          buyPrice={buyPrice}
+          setBuyPrice={setBuyPrice}
           buyQuantity={buyQuantity}
           setBuyQuantity={setBuyQuantity}
+          buyType={buyType}
+          setBuyType={setBuyType}
           handleBuy={handleBuy}
           code={code}
         />
@@ -293,7 +337,11 @@ interface LoggedInOrderCardProps {
   currentPrice: number;
   buyQuantity: number;
   setBuyQuantity: Dispatch<SetStateAction<number>>;
+  buyPrice: number;
+  setBuyPrice: Dispatch<SetStateAction<number>>;
   handleBuy: () => void;
+  buyType: string;
+  setBuyType: Dispatch<SetStateAction<string>>;
   code: string;
 }
 
@@ -302,6 +350,10 @@ const LoggedInOrderCard = ({
   currentPrice,
   buyQuantity,
   setBuyQuantity,
+  buyPrice,
+  setBuyPrice,
+  buyType,
+  setBuyType,
   handleBuy,
   code,
 }: LoggedInOrderCardProps) => {
@@ -324,7 +376,30 @@ const LoggedInOrderCard = ({
             <CardContent className="space-y-3">
               {/* 상단 */}
               <div className="flex gap-2">
-                <Input value={"시장가"} readOnly />
+                <Select
+                  onValueChange={(e) => {
+                    setBuyType(e);
+                    if (e == "marketType") setBuyPrice(currentPrice);
+                  }}
+                >
+                  <SelectTrigger className="h-[50px] font-medium opacity-80">
+                    <SelectValue placeholder="구매 방식을 선택해주세요" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem
+                      className="h-[50px] font-medium opacity-80"
+                      value="marketType"
+                    >
+                      시장가
+                    </SelectItem>
+                    <SelectItem
+                      className="h-[50px] font-medium opacity-80"
+                      value="userType"
+                    >
+                      지정가
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
                 <Button variant={"outline"} className="py-6">
                   단일가
                 </Button>
@@ -358,24 +433,28 @@ const LoggedInOrderCard = ({
               </div>
               <div className="relative">
                 <Button
-                  disabled
-                  className="top-2 left-2 px-3 absolute rounded-none border-r"
+                  disabled={buyType == "marketType"}
+                  className="z-10 top-2 left-2 px-3 absolute rounded-none border-r"
                   variant={"ghost"}
+                  onClick={() => setBuyPrice((cur) => Math.max(0, cur - 100))}
                 >
                   <MinusIcon className="text-c1-300" size={16} />
                 </Button>
                 <Input
-                  disabled
+                  type="number"
+                  disabled={buyType == "marketType"}
                   className="pl-16 font-bold opacity-80"
-                  value={formatNumber(currentPrice)}
+                  value={buyPrice}
+                  onChange={(e) => setBuyPrice(parseInt(e.target.value))}
                 />
                 <span className="absolute top-3.5 right-16 text-sm opacity-60 font-medium">
                   원
                 </span>
                 <Button
-                  disabled
+                  disabled={buyType == "marketType"}
                   className="top-2 right-2 px-3 absolute rounded-none border-l"
                   variant={"ghost"}
+                  onClick={() => setBuyPrice((cur) => cur + 100)}
                 >
                   <PlusIcon className="text-c1-300" size={16} />
                 </Button>
@@ -444,6 +523,7 @@ const LoggedInOrderCard = ({
                   variant={"destructive"}
                   className="py-8 w-full"
                   onClick={handleBuy}
+                  disabled={buyQuantity == 0 || buyPrice == 0}
                 >
                   매수 주문
                 </Button>

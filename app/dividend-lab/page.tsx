@@ -20,12 +20,15 @@ import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/spinner/spinner";
 import { useEffect } from "react";
 import { Chart3 } from "./_components/chart-3";
+import { usePDF } from "react-to-pdf";
 
 const DividendLabPage = () => {
   const router = useRouter();
   const selector = createSelectors(store).use;
   const account = selector.account();
   const user = selector.user();
+
+  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
 
   const mutate1 = useMutation({
     mutationFn: (accountNo: string) => getAccountStockApi(accountNo),
@@ -58,13 +61,13 @@ const DividendLabPage = () => {
   }
 
   return (
-    <main className="pt-14 pl-16 h-full min-h-[800px] font-bold">
+    <main className="pt-14 pl-16 min-h-[800px] font-bold" ref={targetRef}>
       <section className="pt-2 px-5 flex justify-between items-end">
         <hgroup>
           <h1 className="opacity-70">대시보드</h1>
           <h1 className="text-xl opacity-80">배당연구소</h1>
         </hgroup>
-        <Button className="p-0 m-0 h-9 w-9">
+        <Button className="p-0 m-0 h-9 w-9" onClick={() => toPDF()}>
           <Settings />
         </Button>
       </section>

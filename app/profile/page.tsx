@@ -6,31 +6,25 @@ import { AccountStockCard } from "./_components/account-stock-card";
 import { AccountBalanceGraph } from "./_components/account-balance-graph";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
-import Link from "next/link";
 import { Footer } from "@/components/nav/footer";
-import { Button } from "@/components/ui/button";
-import { BirdIcon } from "lucide-react";
+import { NotLoggedInCard } from "@/components/not-logged-in-card";
+import { BuyStateCard } from "./_components/buy-state-card";
 
 const ProfilePage = () => {
   const selector = createSelectors(store).use;
   const account = selector.account();
 
   if (account == null) {
-    return (
-      <main className="h-full flex2 flex-col gap-5 font-medium opacity-80">
-        <BirdIcon size={96} className="text-c1-300" />
-        <h1>로그인이 필요한 서비스입니다.</h1>
-        <Button variant={"link"} asChild>
-          <Link href={"/sign-in"}>로그인 하러가기</Link>
-        </Button>
-      </main>
-    );
+    return <NotLoggedInCard />;
   }
 
   return (
     <main className="pt-14 pl-16">
       <MainSection accountId={account.accountNo} />
       <div className="pt-16 w-full flex flex-col justify-center items-center">
+        <section className="pt-0 p-10 h-[500px] w-[1200px] flex justify-between gap-10">
+          <BuyStateCard accountId={account.accountNo} />
+        </section>
         <section className="pt-0 p-10 h-[500px] w-[1200px] flex justify-between gap-10">
           <TransactionCard accountId={account.accountNo} />
           <AccountCard accountId={account.accountNo} />

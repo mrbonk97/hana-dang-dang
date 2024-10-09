@@ -30,7 +30,7 @@ export function BoardMeeting({ data }: Props) {
   const latest = new Date(data[0].gen_meet_dt);
   const today = new Date();
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle className="opacity-80">주주총회 일정</CardTitle>
         <CardDescription className="pt-1 text-lg font-medium">

@@ -24,8 +24,6 @@ export function DividendCalendar() {
     mutate(date);
   }, []);
 
-  console.log(data);
-
   return (
     <>
       <div className="flex flex-col justify-between gap-5">
@@ -57,12 +55,12 @@ export function DividendCalendar() {
       <ul className="p-5 h-full w-full overflow-y-auto space-y-0.5 opacity-70 font-medium border rounded-xl overflow-hidden">
         <li className="py-2 grid grid-cols-10 border-b font-bold">
           <div className="col-span-2">종목명</div>
+          <div className="col-span-2">배당락</div>
           <div className="col-span-2">배당일</div>
           <div className="col-span-1">배당종류</div>
           <div className="col-span-1">주식종류</div>
           <div className="col-span-1 text-right">액면가</div>
           <div className="col-span-1 text-right">배당금</div>
-          <div className="col-span-1 text-right">배당률</div>
         </li>
         {isSuccess &&
           data != undefined &&
@@ -74,6 +72,7 @@ export function DividendCalendar() {
               <div className="col-span-2 max-w-40 overflow-hidden text-ellipsis whitespace-nowrap">
                 {item.isin_name}
               </div>
+              <div className="col-span-2">{item.record_date || "-"}</div>
               <div className="col-span-2">{item.divi_pay_dt || "-"}</div>
               <div className="col-span-1">{item.divi_kind || "-"}</div>
               <div className="col-span-1">{item.stk_kind}</div>
@@ -83,7 +82,6 @@ export function DividendCalendar() {
               <div className="col-span-1 text-right">
                 {formatNumber(item.per_sto_divi_amt)}원
               </div>
-              <div className="col-span-1 text-right">{item.divi_rate}%</div>
             </li>
           ))}
         {isSuccess && data != undefined && data.length < 1 && (
