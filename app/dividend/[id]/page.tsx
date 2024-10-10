@@ -17,13 +17,16 @@ import { formatNumber } from "@/lib/utils";
 import { DividendType } from "./_components/dividend-type";
 import { DividendYear } from "./_components/dividend-year";
 import { Button } from "@/components/ui/button";
-import { Aperture } from "lucide-react";
+import { Aperture, GitCompare } from "lucide-react";
 import Link from "next/link";
 import { getBoardMeeting, getDividendStockInfo } from "@/lib/dividend-api";
 import { BoardMeeting } from "./_components/board-meeting";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StabilityChart } from "./_components/stability-chart";
 import { OtherInfoGraph } from "./_components/other-info-graph";
+import { Footer } from "@/components/nav/footer";
+import { Bannner } from "@/components/banner";
+import { getIndexListApi } from "@/lib/index-api";
 
 interface Props {
   params: {
@@ -43,6 +46,7 @@ const DividendPage = async ({ params }: Props) => {
   const otherInfo = await getOtherInfoApi(params.id);
 
   const stability = await getStockStabilityApi(params.id);
+  const bannerData = await getIndexListApi();
 
   const chartData = [
     { type: "월간", value: 0 },
@@ -69,13 +73,13 @@ const DividendPage = async ({ params }: Props) => {
   });
 
   return (
-    <main className="pt-14 pl-96 min-h-full h-full flex flex-col bg-secondary">
-      <section className="px-5 h-20 w-full border-b flex items-center justify-between bg-background">
+    <main className="pt-14 pl-96 min-h-full flex flex-col bg-secondary">
+      <section className="px-5 h-20 w-full border-b flex items-center justify-between bg-background flex-shrink-0">
         <div className="flex items-center gap-5">
           <Image
             src={`/kospi-icons/${imgUrl}.png`}
-            width={64}
-            height={64}
+            width={48}
+            height={48}
             alt={params.id}
             className="rounded-xl overflow-hidden"
           />
@@ -93,171 +97,88 @@ const DividendPage = async ({ params }: Props) => {
           </div>
         </div>
       </section>
-      <Tabs defaultValue="t1" className="h-full w-full">
-        <TabsList className="px-5 h-14 grid w-full grid-cols-4 rounded-none border-b bg-background">
-          <TabsTrigger
-            value="t1"
-            className="py-2 data-[state=active]:bg-secondary"
+
+      <section className="p-10 h-full w-full flex justify-between gap-10">
+        <DividendHistoryCard data={data1} />
+        <div className="h-auto w-full flex flex-col justify-between gap-5">
+          <Card className="bg-c1-300 text-primary-foreground flex-shrink-0">
+            <CardHeader>
+              <CardTitle>배당 요약</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <h2 className="text-lg font-medium">
+                <span>연간 배당수익률</span>
+                <span className="ml-2 text-3xl font-bold">
+                  {data1.length > 0
+                    ? data1[0].yieldPercentage + "%"
+                    : "배당 정보가 없습니다"}
+                </span>
+              </h2>
+            </CardContent>
+          </Card>
+          <DividendType chartData={chartData} />
+          <DividendYear data={data1} />
+        </div>
+      </section>
+
+      <article className="pt-0 p-10 w-full flex justify-between gap-10">
+        <OtherInfoGraph
+          data={
+            params.id == "086790"
+              ? 28.6
+              : otherInfo[0]
+              ? parseInt(otherInfo[0].payout_rate)
+              : 0
+          }
+        />
+        <BoardMeeting data={data4.output1} />
+      </article>
+
+      <section className="p-10 pt-0">
+        <StabilityChart data={stability} />
+      </section>
+      <section className="p-10 pt-0 flex gap-5">
+        <Card className="h-auto w-full">
+          <CardHeader>
+            <CardTitle className="opacity-80">AI요약</CardTitle>
+            <CardDescription>배당 정보를 요약해드립니다.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex gap-10 items-center">
+            <Image
+              src={"/icons/green-robot.png"}
+              width={128}
+              height={128}
+              alt="robot"
+            />
+            <p className="pb-5 max-w-2xl text-sm font-medium leading-relaxed opacity-80">
+              요약하면, 각 기간 동안 동일하게 361원의 분기 배당금이
+              지급되었으며, 연도와 분기별로 배당 수익률은 1.76%에서 2.73%
+              사이에서 변동했습니다. 2020년 이전에는 354원의 배당금이 분기별로
+              지급되었고, 특별 배당이 1,578원 지급된 사례도 있었습니다. 12개월
+              추적 배당 수익률은 2020년 **1.65%**에서 2021년 **4.29%**까지
+              증가했으며, 2022년과 2023년에는 점차 안정적으로 2%대를 유지하고
+              있습니다.
+            </p>
+          </CardContent>
+        </Card>
+        <Button className="ml-5 h-auto w-40 text-lg flex-shrink-0">
+          <Link href={`/stocks/${params.id}`} className="flex flex-col gap-5">
+            <Aperture size={72} />
+            <span>주문하기</span>
+          </Link>
+        </Button>
+        <Button className="h-auto w-40 text-lg flex-shrink-0 bg-blue-500 hover:bg-blue-400">
+          <Link
+            href={`/dividend/compare?e1=${params.id}`}
+            className="flex flex-col gap-5"
           >
-            배당
-          </TabsTrigger>
-          <TabsTrigger
-            value="t2"
-            className="py-2 data-[state=active]:bg-secondary"
-          >
-            안정성
-          </TabsTrigger>
-          <TabsTrigger
-            value="t3"
-            className="py-2 data-[state=active]:bg-secondary"
-          >
-            성장성
-          </TabsTrigger>
-          <TabsTrigger
-            value="t4"
-            className="py-2 data-[state=active]:bg-secondary"
-          >
-            기타
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="t1" className="mt-0 p-0 mb-0 bg-secondary">
-          <article className="p-5 h-full w-full flex justify-between gap-5">
-            <DividendHistoryCard data={data1} />
-            <div className="h-auto w-full flex flex-col justify-between gap-5">
-              <Card className="bg-c1-300 text-primary-foreground flex-shrink-0">
-                <CardHeader>
-                  <CardTitle>배당 요약</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <h2 className="text-lg font-medium">
-                    <span>연간 배당수익률</span>
-                    <span className="ml-2 text-3xl font-bold">
-                      {data1.length > 0
-                        ? data1[0].yieldPercentage + "%"
-                        : "배당 정보가 없습니다"}
-                    </span>
-                  </h2>
-                </CardContent>
-              </Card>
-              <DividendType chartData={chartData} />
-              <DividendYear data={data1} />
-            </div>
-          </article>
-          <article className="pt-0 p-5 w-full flex justify-between gap-5">
-            <OtherInfoGraph data={otherInfo} />
-            <BoardMeeting data={data4.output1} />
-          </article>
-          <article className="pt-0 p-5 flex gap-5">
-            <Card className="h-auto max-w-4xl">
-              <CardHeader>
-                <CardTitle className="opacity-80">AI요약</CardTitle>
-                <CardDescription>배당 정보를 요약해드립니다.</CardDescription>
-              </CardHeader>
-              <CardContent className="flex gap-10 items-center">
-                <Image
-                  src={"/icons/green-robot.png"}
-                  width={128}
-                  height={128}
-                  alt="robot"
-                />
-                <p className="pb-5 max-w-2xl text-sm font-medium leading-relaxed opacity-80">
-                  요약하면, 각 기간 동안 동일하게 361원의 분기 배당금이
-                  지급되었으며, 연도와 분기별로 배당 수익률은 1.76%에서 2.73%
-                  사이에서 변동했습니다. 2020년 이전에는 354원의 배당금이
-                  분기별로 지급되었고, 특별 배당이 1,578원 지급된 사례도
-                  있었습니다. 12개월 추적 배당 수익률은 2020년 **1.65%**에서
-                  2021년 **4.29%**까지 증가했으며, 2022년과 2023년에는 점차
-                  안정적으로 2%대를 유지하고 있습니다.
-                </p>
-              </CardContent>
-            </Card>
-            <Button className="h-auto w-40 text-lg">
-              <Link
-                href={`/stocks/${params.id}`}
-                className="flex flex-col gap-5"
-              >
-                <Aperture size={72} />
-                <span>주문하기</span>
-              </Link>
-            </Button>
-          </article>
-        </TabsContent>
-        <TabsContent
-          value="t2"
-          className="mt-0 p-7 pb-10 h-[calc(100%-3.5rem)] w-full bg-secondary"
-        >
-          <article className="p-5 rounded-xl bg-background h-full w-full">
-            <h4 className="pl-4 my-2 h-8 text-lg font-bold opacity-70">
-              재무안정성
-            </h4>
-            <div className="mt-5 flex gap-5 justify-between">
-              <ul className="flex flex-col gap-5">
-                <li className="p-2 px-10 pb-5 h-32 w-80 flex flex-col justify-center gap-2 rounded-xl bg-secondary">
-                  <span className="font-medium opacity-70">부채비율</span>
-                  <p className="text-3xl font-bold opacity-80">
-                    {stability.length > 0
-                      ? stability[0].lblt_rate + "%"
-                      : "정보 없음"}
-                  </p>
-                </li>
-                <li className="p-2 px-10 pb-5 h-32 w-80 flex flex-col justify-center gap-2 rounded-xl bg-secondary">
-                  <span className="font-medium opacity-70">유동비율</span>
-                  <p className="text-3xl font-bold opacity-80">
-                    {stability.length > 0
-                      ? stability[0].crnt_rate + "%"
-                      : "정보 없음"}
-                  </p>
-                </li>
-                <li className="p-2 px-10 pb-5 h-32 w-80 flex flex-col justify-center gap-2 rounded-xl bg-secondary">
-                  <span className="font-medium opacity-70">차입금의존도</span>
-                  <p className="text-3xl font-bold opacity-80">
-                    {stability.length > 0
-                      ? stability[0].bram_depn + "%"
-                      : "정보 없음"}
-                  </p>
-                </li>
-                <li className="p-2 px-10 pb-5 h-32 w-80 flex flex-col justify-center gap-2 rounded-xl bg-secondary">
-                  <span className="font-medium opacity-70">당좌비율</span>
-                  <p className="text-3xl font-bold opacity-80">
-                    {stability.length > 0
-                      ? stability[0].quck_rate + "%"
-                      : "정보 없음"}
-                  </p>
-                </li>
-              </ul>
-              <StabilityChart data={stability} />
-            </div>
-          </article>
-        </TabsContent>
-        <TabsContent
-          value="t3"
-          className="mt-0 p-7 pb-10 h-[calc(100%-3.5rem)] bg-secondary"
-        >
-          <article className="p-5 rounded-xl bg-background h-full w-full">
-            <h4 className="pl-4 my-2 h-8 text-lg font-bold opacity-70">가치</h4>
-            <ul className="flex flex-col gap-5">
-              <li className="p-2 px-10 pb-5 h-32 w-80 flex flex-col justify-center gap-2 rounded-xl bg-secondary">
-                <span className="font-medium opacity-70">PER</span>
-                <p className="text-3xl font-bold opacity-80">{data3.per}</p>
-              </li>
-              <li className="p-2 px-10 pb-5 h-32 w-80 flex flex-col justify-center gap-2 rounded-xl bg-secondary">
-                <span className="font-medium opacity-70">PBR</span>
-                <p className="text-3xl font-bold opacity-80">{data3.pbr}</p>
-              </li>
-              <li className="p-2 px-10 pb-5 h-32 w-80 flex flex-col justify-center gap-2 rounded-xl bg-secondary">
-                <span className="font-medium opacity-70">결산</span>
-                <p className="text-3xl font-bold opacity-80">
-                  {data3.stac_month}월
-                </p>
-              </li>
-            </ul>
-          </article>
-        </TabsContent>
-        <TabsContent
-          value="t4"
-          className="mt-0 h-[calc(100%-3.5rem)] bg-rose-200 w-full"
-        ></TabsContent>
-      </Tabs>
+            <GitCompare size={72} />
+            <span>비교하기</span>
+          </Link>
+        </Button>
+      </section>
+      <Bannner data={bannerData} className="mt-10 bg-background" />
+      <Footer className="bg-background" />
     </main>
   );
 };

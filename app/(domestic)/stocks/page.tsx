@@ -51,8 +51,45 @@ const StockPage = async () => {
           <KospiChart data={gobaedang} />
         </div>
       </section>
-      <StockRankTable defaultData={rankDefaultData} />
-      <section className="pt-5 p-10 w-[1200px]">
+      <section className="pt-5 p-10 flex gap-10 w-[1200px]">
+        <Card className="border">
+          <CardHeader>
+            <CardTitle>투자자 매매동향</CardTitle>
+            <CardDescription> 2024.09.26. (전일)</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="daily" className="w-full">
+              <TabsList className="flex justify-between">
+                <TabsTrigger className="w-full" value="daily">
+                  일간
+                </TabsTrigger>
+                <TabsTrigger className="w-full" value="weekly">
+                  주간
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="daily">
+                <div className="w-[500px]">
+                  <BuyerChart
+                    b1={-10893}
+                    b2={4342}
+                    b3={5367}
+                    marginValue={2000}
+                  />
+                </div>
+              </TabsContent>
+              <TabsContent value="weekly">
+                <div className="w-[500px]">
+                  <BuyerChart
+                    b1={-29017}
+                    b2={6386}
+                    b3={20392}
+                    marginValue={5000}
+                  />
+                </div>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
         <Card className="border">
           <CardHeader>
             <CardTitle>투자자 매매동향</CardTitle>
@@ -92,7 +129,7 @@ const StockPage = async () => {
           </CardContent>
         </Card>
       </section>
-
+      <StockRankTable defaultData={rankDefaultData} />
       <section className="pt-5 p-10 w-[1200px]">
         <hgroup className="mb-10">
           <h1 className="text-xl font-bold opacity-80">주식 목록</h1>

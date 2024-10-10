@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRecommendStockApi, RecommendStockType } from "@/lib/dividend-api";
 import { formatNumber } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Cog } from "lucide-react";
 import Link from "next/link";
 import { BuyStockDialog } from "./_components/buy-stock-dialog";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
 import { NotLoggedInCard } from "@/components/not-logged-in-card";
+import { useEffect } from "react";
 
 interface Props {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -21,20 +22,22 @@ const DiagnosisResultPage = ({ searchParams }: Props) => {
   const selector = createSelectors(store).use;
   const account = selector.account();
 
-  const { isPending, isSuccess, data } = useQuery({
-    queryKey: ["dividend", "recommend", searchParams],
-    queryFn: () => {
-      if (!searchParams) {
-        throw new Error("파라미터가 없음");
-      }
-
-      if (!Array.isArray(searchParams)) {
-        throw new Error("배열이 아닙니다");
-      }
-
+  const { mutate, isPending, isSuccess, data } = useMutation({
+    mutationFn: () => {
+      if (!searchParams) throw new Error("파라미터가 없음");
+      if (!Array.isArray(searchParams)) throw new Error("파라미터가 없음");
       return getRecommendStockApi(searchParams);
     },
+    onSuccess: (e) => {
+      console.log(e, "성공");
+    },
   });
+
+  useEffect(() => {
+    if (account != null) {
+      mutate();
+    }
+  }, [account]);
 
   if (account == null) return <NotLoggedInCard />;
 

@@ -12,17 +12,17 @@ const DividendPage = async () => {
 
   return (
     <main className="pl-96 pt-14">
-      <hgroup className="p-5">
+      <hgroup className="py-5 p-10">
         <h1 className="text-lg font-bold opacity-80">배당 정보</h1>
         <h2 className="font-medium opacity-70">
           배당에 대한 다양한 정보를 확인해보세요
         </h2>
       </hgroup>
-      <section className="pt-0 p-5 h-[550px] flex justify-between gap-5 max-w-[1200px]">
+      <section className="pt-0 p-10 h-[550px] flex justify-between gap-5 max-w-[1200px]">
         <DividendCalendar />
       </section>
       <NewsSection data={newsData} />
-      <section className="pt-0 p-5 max-w-[1200px]">
+      <section className="pt-0 p-10 max-w-[1200px]">
         <hgroup className="mt-16">
           <h1 className="text-lg font-bold opacity-80">
             배당주 순위

@@ -39,7 +39,7 @@ export const StockRankTable = ({ defaultData }: Props) => {
   });
 
   return (
-    <section className="pt-5 p-10 w-[1200px]">
+    <section className="pt-5 pb-0 p-10 w-[1200px]">
       <hgroup>
         <h1 className="text-xl font-bold opacity-80">실시간 순위</h1>
         <p className="text-sm font-medium opacity-60">

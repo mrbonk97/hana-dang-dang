@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
 
 interface Props {
   code: string;
@@ -551,6 +552,7 @@ const LoggedInOrderCard = ({
 };
 
 const NotLoggedInOrderCard = ({ code }: { code: string }) => {
+  const router = useRouter();
   return (
     <article className="h-full w-1/4 flex flex-col gap-5 justify-between">
       <Tabs defaultValue="buy" className="h-full">
@@ -573,7 +575,17 @@ const NotLoggedInOrderCard = ({ code }: { code: string }) => {
               </p>
               <div className="mt-5 flex2">
                 <Button variant={"link"} asChild>
-                  <Link href={"/sign-in"} className="opacity-70">
+                  <Link
+                    href={"/sign-in"}
+                    className="opacity-70"
+                    onClick={() => {
+                      if (window != undefined)
+                        sessionStorage.setItem(
+                          "return_url",
+                          window.location.href
+                        );
+                    }}
+                  >
                     로그인
                   </Link>
                 </Button>
@@ -592,7 +604,17 @@ const NotLoggedInOrderCard = ({ code }: { code: string }) => {
               </p>
               <div className="mt-5 flex2">
                 <Button variant={"link"} asChild>
-                  <Link href={"/sign-in"} className="opacity-70">
+                  <Link
+                    href={"/sign-in"}
+                    className="opacity-70"
+                    onClick={() => {
+                      if (window != undefined)
+                        sessionStorage.setItem(
+                          "return_url",
+                          window.location.href
+                        );
+                    }}
+                  >
                     로그인
                   </Link>
                 </Button>

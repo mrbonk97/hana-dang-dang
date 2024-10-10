@@ -362,7 +362,20 @@ export const getStockStabilityApi = async (
 ): Promise<StockStabilityType[]> =>
   await fetch(`${BASE_URL}/stocks/${code}/stability`)
     .then((res) => res.json())
-    .then((res) => res.output);
+    .then((res) => res.output)
+    .then((res) => {
+      const res2 = res.map((item: StockStabilityType) => {
+        return {
+          stac_yymm: item.stac_yymm,
+          lblt_rate: parseFloat(item.lblt_rate),
+          bram_depn: parseFloat(item.bram_depn),
+          crnt_rate: parseFloat(item.crnt_rate),
+          quck_rate: parseFloat(item.quck_rate),
+        };
+      });
+
+      return res2;
+    });
 
 export type OtherInfoType = {
   stac_yymm: string;

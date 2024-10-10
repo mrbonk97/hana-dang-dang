@@ -44,7 +44,11 @@ const SignInPage = () => {
     }) => signInApi(username, password),
     onSuccess: (res) => {
       signIn(res.data.user, res.data.account);
-      router.push("/stocks");
+      if (window != undefined) {
+        const url = sessionStorage.getItem("return_url");
+        sessionStorage.removeItem("return_url");
+        router.push(url || "/stocks");
+      } else router.push("/stocks");
     },
   });
 

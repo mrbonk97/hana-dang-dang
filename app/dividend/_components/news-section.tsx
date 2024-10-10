@@ -9,7 +9,7 @@ interface NewsSectionProps {
 
 export const NewsSection = ({ data }: NewsSectionProps) => {
   return (
-    <section className="pt-0 p-5 max-w-[1200px]">
+    <section className="pt-0 pb-5 p-10 max-w-[1200px]">
       <hgroup>
         <h1 className="text-lg font-bold opacity-80">주요 뉴스</h1>
         <div className="w-full font-medium opacity-70 flex justify-between">
@@ -25,7 +25,7 @@ export const NewsSection = ({ data }: NewsSectionProps) => {
             key={`news-${item.id}`}
             title={item.title}
             id={item.id}
-            imageUrl={item.imageUrl}
+            imageUrl={item.imageUrl || "/images/news-placeholder.jpg"}
           />
         ))}
       </div>

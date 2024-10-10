@@ -20,15 +20,12 @@ import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/spinner/spinner";
 import { useEffect } from "react";
 import { Chart3 } from "./_components/chart-3";
-import { usePDF } from "react-to-pdf";
 
 const DividendLabPage = () => {
   const router = useRouter();
   const selector = createSelectors(store).use;
   const account = selector.account();
   const user = selector.user();
-
-  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
 
   const mutate1 = useMutation({
     mutationFn: (accountNo: string) => getAccountStockApi(accountNo),
@@ -61,13 +58,13 @@ const DividendLabPage = () => {
   }
 
   return (
-    <main className="pt-14 pl-16 min-h-[800px] font-bold" ref={targetRef}>
+    <main className="pt-14 pl-16 min-h-[800px] font-bold">
       <section className="pt-2 px-5 flex justify-between items-end">
         <hgroup>
           <h1 className="opacity-70">대시보드</h1>
           <h1 className="text-xl opacity-80">배당연구소</h1>
         </hgroup>
-        <Button className="p-0 m-0 h-9 w-9" onClick={() => toPDF()}>
+        <Button className="p-0 m-0 h-9 w-9">
           <Settings />
         </Button>
       </section>
@@ -114,7 +111,7 @@ const DividendLabPage = () => {
           data={mutate2.data}
         />
       </section>
-      <section className="pt-0 p-5 w-full flex justify-between gap-5">
+      <section className="pt-0 p-5 w-full flex gap-5">
         <Chart3
           isPending={mutate2.isPending}
           isSuccess={mutate2.isSuccess}
@@ -128,23 +125,6 @@ const DividendLabPage = () => {
           <Link href={"/dividend-lab/diagnosis"}>
             <h4 className="pt-10 text-lg font-bold opacity-80">
               포트폴리오 조정하기
-            </h4>
-            <Image
-              src={"/images/buisness-man.png"}
-              alt="buisness-man"
-              width={192}
-              height={192}
-            />
-          </Link>
-        </Button>
-        <Button
-          className="p-0 h-80 w-80 flex-shrink-0 justify-between flex flex-col items-center"
-          variant={"outline"}
-          asChild
-        >
-          <Link href={"/dividend/recommend"}>
-            <h4 className="pt-10 text-lg font-bold opacity-80">
-              종목 추천받기
             </h4>
             <Image
               src={"/images/buisness-man.png"}
