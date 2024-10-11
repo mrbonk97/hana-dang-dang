@@ -224,3 +224,26 @@ input[type="number"] {
 }
 
 /* 좌우로 뒤집는 애니메이션 */
+
+@property --num {
+  syntax: "<integer>";
+  initial-value: 1000000;
+  inherits: false;
+}
+
+.counter {
+  animation: counter 10s ease-in forwards;
+  counter-reset: num var(--num);
+}
+.counter::after {
+  content: counter(num);
+}
+
+@keyframes counter {
+  from {
+    --num: 1071660;
+  }
+  to {
+    --num: 1071668;
+  }
+}

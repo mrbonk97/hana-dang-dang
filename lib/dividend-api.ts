@@ -18,6 +18,10 @@ export type DividendHistoryType = {
 export const getDividendStockInfo = async (code: string) : Promise<DividendHistoryType[]> =>
   await fetch(`${BASE_URL}/dividend/stocks/${code}`).then((res) =>res.json());
 
+// prettier-ignore
+export const getDividendStockInfo2023 = async (code: string) : Promise<DividendHistoryType[]> =>
+  await fetch(`${BASE_URL}/dividend/stocks-2023/${code}`).then((res) =>res.json());
+
 export const getDividendRank = async () =>
   await fetch(`${BASE_URL}/dividend`).then((res) => res.json());
 

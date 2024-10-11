@@ -1,3 +1,4 @@
+import { NewsDialog } from "@/components/dialog/news-dialog";
 import { Button } from "@/components/ui/button";
 import { NewsType } from "@/lib/news-api";
 import Image from "next/image";
@@ -26,6 +27,8 @@ export const NewsSection = ({ data }: NewsSectionProps) => {
             title={item.title}
             id={item.id}
             imageUrl={item.imageUrl || "/images/news-placeholder.jpg"}
+            content={item.content}
+            createdAt={item.createdAt}
           />
         ))}
       </div>
@@ -37,23 +40,32 @@ interface ListProps {
   title: string;
   id: number;
   imageUrl: string;
+  content: string;
+  createdAt: string;
 }
-const List = ({ id, title, imageUrl }: ListProps) => {
+const List = ({ id, title, imageUrl, content, createdAt }: ListProps) => {
   return (
-    <Link
-      href={`/news/${id}`}
-      className="p-2 h-full w-1/4 flex flex-col justify-between gap-2 border rounded-xl group hover:bg-secondary duration-150"
+    <NewsDialog
+      title={title}
+      imageUrl={imageUrl}
+      content={content}
+      createdAt={createdAt}
     >
-      <Image
-        src={imageUrl}
-        alt="news-1"
-        width={256}
-        height={256}
-        className="h-full w-full rounded-xl overflow-hidden object-cover"
-      />
-      <p className="w-60 overflow-hidden text-ellipsis whitespace-nowrap text-center text-xs font-medium opacity-80 group-hover:underline underline-offset-4">
-        {title}
-      </p>
-    </Link>
+      <li
+        role="button"
+        className="p-2 h-full w-1/4 flex flex-col justify-between gap-2 border rounded-xl group hover:bg-secondary duration-150"
+      >
+        <Image
+          src={imageUrl}
+          alt="news-1"
+          width={256}
+          height={256}
+          className="h-full w-full rounded-xl overflow-hidden object-cover"
+        />
+        <p className="w-60 overflow-hidden text-ellipsis whitespace-nowrap text-center text-xs font-medium opacity-80 group-hover:underline underline-offset-4">
+          {title}
+        </p>
+      </li>
+    </NewsDialog>
   );
 };

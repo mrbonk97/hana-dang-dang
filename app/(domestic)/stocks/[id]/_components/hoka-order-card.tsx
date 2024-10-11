@@ -26,7 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRouter } from "next/navigation";
 
 interface Props {
   code: string;
@@ -552,7 +551,6 @@ const LoggedInOrderCard = ({
 };
 
 const NotLoggedInOrderCard = ({ code }: { code: string }) => {
-  const router = useRouter();
   return (
     <article className="h-full w-1/4 flex flex-col gap-5 justify-between">
       <Tabs defaultValue="buy" className="h-full">

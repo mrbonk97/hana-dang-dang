@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRecommendStockApi, RecommendStockType } from "@/lib/dividend-api";
 import { formatNumber } from "@/lib/utils";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Cog } from "lucide-react";
 import Link from "next/link";
 import { BuyStockDialog } from "./_components/buy-stock-dialog";

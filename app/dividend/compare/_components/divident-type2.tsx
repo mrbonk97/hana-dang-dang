@@ -1,6 +1,6 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
 
 import {
   Card,
@@ -15,55 +15,64 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { OtherInfoType } from "@/lib/stock-api";
 
 export const description = "A bar chart with a label";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  value: {
+    label: "value",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
 
 interface Props {
-  data: OtherInfoType[];
+  chartData: {
+    type: string;
+    value: number;
+  }[];
 }
 
-export function OtherBarGraph({ data }: Props) {
+export function DividendType2({ chartData }: Props) {
   return (
-    <Card className="w-full">
+    <Card className="border">
       <CardHeader>
-        <CardTitle className="opacity-80">배당 성향</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>배당 유형</CardTitle>
+        <CardDescription>5년치의 배당 유형을 보여드립니다.</CardDescription>
       </CardHeader>
-      <CardContent className="bg-rose-200">
+      <CardContent>
         <ChartContainer config={chartConfig} className="h-40 w-full">
           <BarChart
             accessibilityLayer
-            data={data}
+            data={chartData}
             margin={{
-              top: 60,
-              bottom: 40,
+              top: 20,
             }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="stac_yymm"
+              dataKey="type"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value.slice(0, 4)}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
             <Bar
-              dataKey="payout_rate"
-              fill="var(--color-desktop)"
+              dataKey="value"
+              fill="var(--color-value)"
               radius={8}
-            ></Bar>
+              barSize={"10%"}
+            >
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Bar>
           </BarChart>
         </ChartContainer>
       </CardContent>

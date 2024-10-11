@@ -21,7 +21,6 @@ import { Aperture, GitCompare } from "lucide-react";
 import Link from "next/link";
 import { getBoardMeeting, getDividendStockInfo } from "@/lib/dividend-api";
 import { BoardMeeting } from "./_components/board-meeting";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StabilityChart } from "./_components/stability-chart";
 import { OtherInfoGraph } from "./_components/other-info-graph";
 import { Footer } from "@/components/nav/footer";

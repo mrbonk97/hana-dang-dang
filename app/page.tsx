@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const MainPage = () => {
   const [step, setStep] = useState(0);
@@ -31,6 +32,13 @@ const MainPage = () => {
               className="-z-10 h-screen w-screen object-cover"
             />
             <Image
+              src={"/images/bg/bg3.jpg"}
+              width={1920}
+              height={1080}
+              alt="bg1"
+              className="-z-10 h-screen w-screen object-cover"
+            />
+            <Image
               src={"/images/bg/bg4.jpg"}
               width={1920}
               height={1080}
@@ -41,47 +49,101 @@ const MainPage = () => {
               src={"/images/bg/bg1.jpg"}
               width={1920}
               height={1080}
-              alt="bg1"
+              alt="bg5"
               className="-z-10 h-screen w-screen object-cover"
             />
           </div>
           <div className="pt-20 px-40 mt-5 w-full flex items-center justify-center gap-20">
             <div
               className={`h-1.5 w-96 duration-300 bg-white ${
-                step <= 0 && "opacity-40"
+                step < 0 && "opacity-40"
               } `}
             />
             <div
-              className={`h-1.5 w-96 duration-300 bg-white ${
-                step <= 0 && "opacity-40"
+              className={`h-1.5 w-96 duration-300 delay-300 bg-white ${
+                step < 1 && "opacity-40"
               } `}
             />
             <div
-              className={`h-1.5 w-96 duration-300 bg-white ${
-                step <= 1 && "opacity-40"
+              className={`h-1.5 w-96 duration-300 delay-400 bg-white ${
+                step < 2 && "opacity-40"
+              } `}
+            />
+            <div
+              className={`h-1.5 w-96 duration-300 delay-400 bg-white ${
+                step < 3 && "opacity-40"
               } `}
             />
           </div>
           <section className="px-32 mt-12 h-[650px] flex justify-between">
-            <div className="h-full flex flex-col gap-16">
+            <div className="h-full flex flex-col gap-10">
               <hgroup className=" text-white">
-                <h1 className="text-6xl font-bold">하나배당당</h1>
+                <h1 className="text-5xl font-bold">하나배당당</h1>
                 <h2 className="mt-3 text-xl font-bold">
                   새롭게 선보이는 증권 & 배당주 서비스
                 </h2>
               </hgroup>
+              <motion.div
+                className={`mt-10 text-4xl font-bold text-primary-foreground 
+                  ${step == 0 ? "block" : "hidden"}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { delay: 0.1, duration: 0.5, type: "spring" },
+                }}
+              >
+                서비스 살펴보기
+              </motion.div>
+              <motion.div
+                className={`mt-10 text-4xl font-bold text-primary-foreground
+                  ${step == 1 ? "block" : "hidden"}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { delay: 0.1, duration: 0.5, type: "spring" },
+                }}
+              >
+                실시간 주식 매매
+              </motion.div>
+              <motion.div
+                className={`mt-10 text-4xl font-bold text-primary-foreground
+                  ${step == 2 ? "block" : "hidden"}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { delay: 0.5, duration: 0.5, type: "spring" },
+                }}
+              >
+                배당주 분석
+              </motion.div>
+              <motion.div
+                className={`mt-10 text-4xl font-bold text-primary-foreground
+                  ${step == 3 ? "block" : "hidden"}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { delay: 0.5, duration: 0.5, type: "spring" },
+                }}
+              >
+                포트폴리오 통계
+              </motion.div>
+
               <button
                 onClick={() => {
-                  if (step == 2)
+                  if (step == 3)
                     router.push("#second", {
                       scroll: true,
                     });
-                  else setStep((cur) => Math.min(2, cur + 1));
+                  else setStep((cur) => Math.min(3, cur + 1));
                 }}
                 className="px-2 pl-10 h-20 w-60 group bg-white hover:bg-c1-300 duration-300 hover:text-white rounded-full text-xl font-bold flex items-center justify-between text-c1-300"
               >
                 다음
-                <div className="h-16 w-16  rounded-full bg-gradient-to-tr from-c1-300 to-blue-400 flex2 text-white">
+                <div className="h-16 w-16 rounded-full bg-gradient-to-tr from-c1-300 to-blue-400 flex2 text-white">
                   <ArrowRight size={32} />
                 </div>
               </button>
@@ -106,6 +168,13 @@ const MainPage = () => {
                   transform: `translateX(${step * -100}%)`,
                 }}
               >
+                <Image
+                  src={"/images/landing/landing7.png"}
+                  alt="landing"
+                  height={915}
+                  width={1500}
+                  quality={100}
+                />
                 <Image
                   src={"/images/landing/landing3.png"}
                   alt="landing"
@@ -165,26 +234,27 @@ const MainPage = () => {
           <div className="-z-10 absolute top-0 left-0 h-screen w-screen bg-gradient-to-tl from-black to-transparent" />
           <article className="mt-40 px-20 flex items-start justify-evenly">
             <div>
-              <hgroup className="p-5 flex flex-col items-start w-[600px] bg-black/50 shadow-lg">
+              <hgroup className="p-5 flex flex-col items-start w-[600px] bg-black/70 shadow-lg">
                 <p className="text-5xl text-white font-bold">
                   매일 업데이트 되는 최신
                 </p>
                 <p className="mt-2 text-5xl text-white font-bold">
                   코스피와 증권 정보
                 </p>
+
                 <p className="mt-10 text-4xl text-c1-300 font-bold">
-                  +1,026,678
+                  +<span className="counter" />
                 </p>
               </hgroup>
               <Button
-                className="mt-14 rounded-full px-10 py-7 text-lg font-bold"
+                className="mt-14 rounded-full px-14 py-8 text-lg font-bold"
                 asChild
               >
-                <Link href={"/sign-in"}>시작하기</Link>
+                <Link href={"/sign-up"}>시작하기</Link>
               </Button>
             </div>
             <ul>
-              <li className="h-52 w-40 flex flex-col justify-center items-center bg-background/80 rounded-xl shadow-lg">
+              <li className="relative h-52 w-40 flex flex-col justify-center items-center bg-background/80 rounded-xl shadow-lg">
                 <Image
                   src={"/kospi-icons/086790.png"}
                   alt="icon"

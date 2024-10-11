@@ -17,8 +17,11 @@ import { Slider } from "@/components/ui/slider";
 import { TotalEstimateRadial } from "./_components/total-estimate-radial";
 import { useRouter } from "next/navigation";
 import { NotLoggedInCard } from "@/components/not-logged-in-card";
+import { AddStockDialog } from "@/components/dialog/add-stock-dialog";
 
 const DiagnosisPage = () => {
+  const [stockList, setStockList] = useState([]);
+
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [total, setTotal] = useState(0);
@@ -198,19 +201,19 @@ const DiagnosisPage = () => {
             `}
       >
         <TotalEstimateRadial data={chartData} goal={user.dividendGoal} />
-        <ul className="space-y-3">
-          <List title={"1월"} idx={0} onChange={handleChartData} />
-          <List title={"2월"} idx={1} onChange={handleChartData} />
-          <List title={"3월"} idx={2} onChange={handleChartData} />
-          <List title={"4월"} idx={3} onChange={handleChartData} />
-          <List title={"5월"} idx={4} onChange={handleChartData} />
-          <List title={"6월"} idx={5} onChange={handleChartData} />
-          <List title={"7월"} idx={6} onChange={handleChartData} />
-          <List title={"8월"} idx={7} onChange={handleChartData} />
-          <List title={"9월"} idx={8} onChange={handleChartData} />
-          <List title={"10월"} idx={9} onChange={handleChartData} />
-          <List title={"11월"} idx={10} onChange={handleChartData} />
-          <List title={"12월"} idx={11} onChange={handleChartData} />
+        <AddStockDialog>
+          <Button className="py-6 w-full">추가하기</Button>
+        </AddStockDialog>
+        <ul className="mt-5 space-y-3 h-[440px] w-full overflow-y-auto">
+          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
+          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
+          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
+          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
+          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
+          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
+          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
+          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
+          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
         </ul>
       </article>
     </main>

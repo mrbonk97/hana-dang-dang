@@ -1,13 +1,117 @@
-{"m1":0,
-"m2":0,
-"m3":0,
-"m4":0,
-"m5":70000
-"m6":0,
-"m7":0,
-"m8":0,
-"m9":0,
-"m10":0,
-"m11":0,
-"m12":0
-}
+const sellOil = [
+  {
+    "id": 5967,
+    "title": "한국쉘석유",
+    "code": "002960",
+    "lockDate": "2024-06-27",
+    "payDate": "2024-08-16",
+    "dividendType": "중간",
+    "amount": 2000,
+    "yieldPercentage": 8.96,
+    "dividendPercentage": 0.67,
+  },
+  {
+    "id": 4988,
+    "title": "한국쉘석유",
+    "code": "002960",
+    "lockDate": "2023-12-27",
+    "payDate": "2024-04-18",
+    "dividendType": "연간",
+    "amount": 25000,
+    "yieldPercentage": 10.29,
+    "dividendPercentage": 11.06,
+  },
+  {
+    "id": 3690,
+    "title": "한국쉘석유",
+    "code": "002960",
+    "lockDate": "2022-12-28",
+    "payDate": "2023-04-20",
+    "dividendType": "연간",
+    "amount": 18000,
+    "yieldPercentage": 7.1,
+    "dividendPercentage": 7.63,
+  },
+  {
+    "id": 1898,
+    "title": "한국쉘석유",
+    "code": "002960",
+    "lockDate": "2021-12-29",
+    "payDate": "2022-04-21",
+    "dividendType": "연간",
+    "amount": 19000,
+    "yieldPercentage": 6.9,
+    "dividendPercentage": 7.28,
+  },
+  {
+    "id": 611,
+    "title": "한국쉘석유",
+    "code": "002960",
+    "lockDate": "2020-12-29",
+    "payDate": "2021-04-22",
+    "dividendType": "연간",
+    "amount": 14000,
+    "yieldPercentage": 4.93,
+    "dividendPercentage": 5.27,
+  },
+]
+
+
+
+const hyundai = [
+    {
+        "id": 5918,
+        "title": "현대엘레베이터",
+        "code": "017800",
+        "lockDate": "2024-06-27",
+        "payDate": "2024-08-02",
+        "dividendType": "중간",
+        "amount": 1500,
+        "yieldPercentage": 11.93,
+        "dividendPercentage": null
+    },
+    {
+        "id": 5056,
+        "title": "현대엘레베이터",
+        "code": "017800",
+        "lockDate": "2023-12-27",
+        "payDate": "2024-04-05",
+        "dividendType": "연간",
+        "amount": 4000,
+        "yieldPercentage": 8.71,
+        "dividendPercentage": null
+    },
+    {
+        "id": 3691,
+        "title": "현대엘레베이터",
+        "code": "017800",
+        "lockDate": "2022-12-28",
+        "payDate": "2023-04-07",
+        "dividendType": "연간",
+        "amount": 500,
+        "yieldPercentage": 1.75,
+        "dividendPercentage": null
+    },
+    {
+        "id": 2131,
+        "title": "현대엘레베이터",
+        "code": "017800",
+        "lockDate": "2021-12-29",
+        "payDate": "2022-04-08",
+        "dividendType": "연간",
+        "amount": 800,
+        "yieldPercentage": 1.91,
+        "dividendPercentage": null
+    },
+    {
+        "id": 1280,
+        "title": "현대엘레베이터",
+        "code": "017800",
+        "lockDate": "2020-12-29",
+        "payDate": "2021-04-08",
+        "dividendType": "연간",
+        "amount": 800,
+        "yieldPercentage": 2.02,
+        "dividendPercentage": null
+    }
+]
