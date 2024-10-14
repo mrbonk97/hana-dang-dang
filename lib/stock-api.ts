@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const BASE_URL = "https://www.our-memory.store/api";
+const BASE_URL = "https://api.hana-dividend.site/api";
 
 //prettier-ignore
 export const getStockInfoApi = async (code: string) =>
