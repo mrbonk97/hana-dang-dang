@@ -4,7 +4,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 //prettier-ignore
 export const getStockInfoApi = async (code: string) =>
-  await fetch(`http://localhost:8080/api/stocks/${code}/info`).then((res) =>res.json());
+  await fetch(`${BASE_URL}/stocks/${code}/info`).then((res) =>res.json());
 
 export type StockPriceType = {
   hts_avls: string;
@@ -22,7 +22,7 @@ export type StockPriceType = {
 
 //prettier-ignore
 export const getStockPriceApi = async (code: string): Promise<StockPriceType> =>
-  await fetch(`http://localhost:8080/api/stocks/${code}/price`)
+  await fetch(`${BASE_URL}/stocks/${code}/price`)
     .then((res) => res.json())
     .then((res) => res.output);
 
@@ -54,12 +54,12 @@ export const getStockPriceListApi = async (data: {
   c5: string;
 }): Promise<StockPriceListType[]> =>
   await fetch(
-    `http://localhost:8080/api/stocks/list-price?c1=${data.c1}&c2=${data.c2}&c3=${data.c3}&c4=${data.c4}&c5=${data.c5}`
+    `${BASE_URL}/stocks/list-price?c1=${data.c1}&c2=${data.c2}&c3=${data.c3}&c4=${data.c4}&c5=${data.c5}`
   ).then((res) => res.json());
 
 //prettier-ignore
 export const getStockPriceDailyApi = async (code: string) =>
-  await fetch(`http://localhost:8080/api/stocks/${code}/daily`).then((res) =>res.json());
+  await fetch(`${BASE_URL}/stocks/${code}/daily`).then((res) =>res.json());
 
 export type StockOpinion = {
   stck_bsop_date: string;
@@ -78,7 +78,7 @@ export type StockOpinion = {
 
 //prettier-ignore
 export const getStockOpinionApi = async (code: string) : Promise<StockOpinion[]> =>
-  await fetch(`http://localhost:8080/api/stocks/${code}/opinion`)
+  await fetch(`${BASE_URL}/stocks/${code}/opinion`)
     .then((res) => res.json())
     .then((res) => res.output);
 
