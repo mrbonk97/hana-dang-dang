@@ -50,6 +50,7 @@ export const HokaOrderCard = ({ code }: Props) => {
     mutationFn: () => getStockHokaApi(code),
     onSuccess: (e) => {
       if (e.output1 == undefined || e.output1 == null) return;
+      console.log(e.output1);
       setHokaData(e.output1);
       setHighPrice(e.output2.stck_hgpr);
       setLowPrice(e.output2.stck_lwpr);
@@ -119,7 +120,7 @@ export const HokaOrderCard = ({ code }: Props) => {
     return () => {
       clearInterval(fetchHoka);
     };
-  }, [mutate]);
+  }, []);
 
   return (
     <>

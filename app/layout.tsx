@@ -22,6 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <meta
+        httpEquiv="Content-Security-Policy"
+        content="upgrade-insecure-requests"
+      ></meta>
       <body className={inter.className}>
         <QueryProvider>
           {children}

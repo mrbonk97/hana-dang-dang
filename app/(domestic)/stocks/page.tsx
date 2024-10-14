@@ -47,7 +47,7 @@ const StockPage = async () => {
         <Card className="border">
           <CardHeader>
             <CardTitle>투자자 매매동향</CardTitle>
-            <CardDescription> 2024.09.26. (전일)</CardDescription>
+            <CardDescription> 2024.10.14. (일주일)</CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="daily" className="w-full">
@@ -61,19 +61,14 @@ const StockPage = async () => {
               </TabsList>
               <TabsContent value="daily">
                 <div className="w-[500px]">
-                  <BuyerChart
-                    b1={-10893}
-                    b2={4342}
-                    b3={5367}
-                    marginValue={2000}
-                  />
+                  <BuyerChart b1={387} b2={387} b3={-4242} marginValue={2000} />
                 </div>
               </TabsContent>
               <TabsContent value="weekly">
                 <div className="w-[500px]">
                   <BuyerChart
                     b1={-29017}
-                    b2={6386}
+                    b2={3421}
                     b3={20392}
                     marginValue={5000}
                   />
@@ -85,7 +80,7 @@ const StockPage = async () => {
         <Card className="border">
           <CardHeader>
             <CardTitle>투자자 매매동향</CardTitle>
-            <CardDescription> 2024.09.26. (전일)</CardDescription>
+            <CardDescription> 2024.10.14. (1개월)</CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="daily" className="w-full">
@@ -100,9 +95,9 @@ const StockPage = async () => {
               <TabsContent value="daily">
                 <div className="w-[500px]">
                   <BuyerChart
-                    b1={-10893}
-                    b2={4342}
-                    b3={5367}
+                    b1={-41067}
+                    b2={15878}
+                    b3={19368}
                     marginValue={2000}
                   />
                 </div>
