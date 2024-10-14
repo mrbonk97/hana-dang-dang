@@ -1,5 +1,5 @@
 // const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const BASE_URL = "https://api.hana-dividend.site/api";
+const BASE_URL = "https://ipa.hana-dividend.site/api";
 
 export type RecentTransactionType = {
   id: number;
