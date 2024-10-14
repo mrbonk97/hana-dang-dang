@@ -180,16 +180,16 @@ const HokaCard = ({
       </CardHeader>
       <div className="pt-2 pb-5 px-5 h-full flex">
         <div className="h-full w-1/3">
-          <MaedoBlock remain={data.askp_rsqn1} total={data.total_askp_rsqn} />
-          <MaedoBlock remain={data.askp_rsqn2} total={data.total_askp_rsqn} />
-          <MaedoBlock remain={data.askp_rsqn3} total={data.total_askp_rsqn} />
-          <MaedoBlock remain={data.askp_rsqn4} total={data.total_askp_rsqn} />
-          <MaedoBlock remain={data.askp_rsqn5} total={data.total_askp_rsqn} />
-          <MaedoBlock remain={data.askp_rsqn6} total={data.total_askp_rsqn} />
-          <MaedoBlock remain={data.askp_rsqn7} total={data.total_askp_rsqn} />
-          <MaedoBlock remain={data.askp_rsqn8} total={data.total_askp_rsqn} />
-          <MaedoBlock remain={data.askp_rsqn9} total={data.total_askp_rsqn} />
           <MaedoBlock remain={data.askp_rsqn10} total={data.total_askp_rsqn} />
+          <MaedoBlock remain={data.askp_rsqn9} total={data.total_askp_rsqn} />
+          <MaedoBlock remain={data.askp_rsqn8} total={data.total_askp_rsqn} />
+          <MaedoBlock remain={data.askp_rsqn7} total={data.total_askp_rsqn} />
+          <MaedoBlock remain={data.askp_rsqn6} total={data.total_askp_rsqn} />
+          <MaedoBlock remain={data.askp_rsqn5} total={data.total_askp_rsqn} />
+          <MaedoBlock remain={data.askp_rsqn4} total={data.total_askp_rsqn} />
+          <MaedoBlock remain={data.askp_rsqn3} total={data.total_askp_rsqn} />
+          <MaedoBlock remain={data.askp_rsqn2} total={data.total_askp_rsqn} />
+          <MaedoBlock remain={data.askp_rsqn1} total={data.total_askp_rsqn} />
           <div className="h-[5%]" />
           <div className="h-[5%]" />
           <div className="h-[5%]" />
@@ -204,34 +204,34 @@ const HokaCard = ({
 
         <div className="h-full w-1/3 border-x">
           <div className="h-[5%] border-y flex2 font-medium text-sm text-rose-500">
-            {formatNumber(data.askp1)}원
-          </div>
-          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
-            {formatNumber(data.askp2)}원
-          </div>
-          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
-            {formatNumber(data.askp3)}원
-          </div>
-          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
-            {formatNumber(data.askp4)}원
-          </div>
-          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
-            {formatNumber(data.askp5)}원
-          </div>
-          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
-            {formatNumber(data.askp6)}원
-          </div>
-          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
-            {formatNumber(data.askp7)}원
-          </div>
-          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
-            {formatNumber(data.askp8)}원
+            {formatNumber(data.askp10)}원
           </div>
           <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
             {formatNumber(data.askp9)}원
           </div>
           <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
-            {formatNumber(data.askp10)}원
+            {formatNumber(data.askp8)}원
+          </div>
+          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
+            {formatNumber(data.askp7)}원
+          </div>
+          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
+            {formatNumber(data.askp6)}원
+          </div>
+          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
+            {formatNumber(data.askp5)}원
+          </div>
+          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
+            {formatNumber(data.askp4)}원
+          </div>
+          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
+            {formatNumber(data.askp3)}원
+          </div>
+          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
+            {formatNumber(data.askp2)}원
+          </div>
+          <div className="h-[5%] border-b flex2 font-medium text-sm text-rose-500">
+            {formatNumber(data.askp1)}원
           </div>
           <div className="h-[5%] border-b flex2 font-medium text-sm text-blue-500">
             {formatNumber(data.bidp1)}원
