@@ -56,8 +56,6 @@ export const TransactionCard = ({ accountId }: Props) => {
                 <TableHead>종목명</TableHead>
                 <TableHead className="text-right">수량</TableHead>
                 <TableHead className="text-right">가격</TableHead>
-                <TableHead className="text-right">수수료</TableHead>
-                <TableHead className="text-right">세금</TableHead>
                 <TableHead className="text-right">정산금액</TableHead>
                 <TableHead className="text-right">거래금액</TableHead>
               </TableRow>
@@ -93,9 +91,6 @@ export const TransactionCard = ({ accountId }: Props) => {
               <TableHead>종목명</TableHead>
               <TableHead className="text-right">수량</TableHead>
               <TableHead className="text-right">가격</TableHead>
-              <TableHead className="text-right">수수료</TableHead>
-              <TableHead className="text-right">세금</TableHead>
-              <TableHead className="text-right">정산금액</TableHead>
               <TableHead className="text-right">거래금액</TableHead>
             </TableRow>
           </TableHeader>
@@ -113,11 +108,6 @@ export const TransactionCard = ({ accountId }: Props) => {
                   <TableCell className="text-right">
                     {item.quantity ? item.quantity : "-"}
                   </TableCell>
-                  <TableCell className="text-right">
-                    {formatNumber(item.price)}원
-                  </TableCell>
-                  <TableCell className="text-right">0원</TableCell>
-                  <TableCell className="text-right">0원</TableCell>
                   <TableCell className="text-right">
                     {formatNumber(item.price)}원
                   </TableCell>

@@ -1,6 +1,6 @@
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-type RecentTransactionType = {
+export type RecentTransactionType = {
   id: number;
   amount: number;
   createdAt: string;
@@ -22,7 +22,7 @@ export type AccountStockType = {
   code: string;
   title: string;
   quantity: number;
-  price: number;
+  purchasePrice: number;
   purchaseTotalPrice: number;
   currentPrice: number;
   currentTotalPrice: number;
@@ -91,7 +91,7 @@ export type AccountMonthlyDividendEstimateType = {
   estimateProfit: number;
   amount: number;
   percentage: number;
-  lockDate: string;
+  payDate: string;
 };
 
 // prettier-ignore

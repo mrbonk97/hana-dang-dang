@@ -13,14 +13,15 @@ import { EstimateTable } from "./_components/estimate-table";
 import { formatNumber } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { EstimateChart } from "./_components/estimate-chart";
-import { Slider } from "@/components/ui/slider";
 import { TotalEstimateRadial } from "./_components/total-estimate-radial";
 import { useRouter } from "next/navigation";
 import { NotLoggedInCard } from "@/components/not-logged-in-card";
 import { AddStockDialog } from "@/components/dialog/add-stock-dialog";
+import { StockDividend2023 } from "@/lib/dividend-api";
+import { Input } from "@/components/ui/input";
 
 const DiagnosisPage = () => {
-  const [stockList, setStockList] = useState([]);
+  const [stockList, setStockList] = useState<StockDividend2023[]>([]);
 
   const router = useRouter();
   const [step, setStep] = useState(0);
@@ -29,35 +30,32 @@ const DiagnosisPage = () => {
   const account = selector.account();
   const user = selector.user();
   const [chartData, setChartData] = useState([
-    { month: "1월", es: 0, aim: 0, limit: 2000000 },
-    { month: "2월", es: 0, aim: 0, limit: 2000000 },
-    { month: "3월", es: 0, aim: 0, limit: 2000000 },
-    { month: "4월", es: 0, aim: 0, limit: 2000000 },
-    { month: "5월", es: 0, aim: 0, limit: 2000000 },
-    { month: "6월", es: 0, aim: 0, limit: 2000000 },
-    { month: "7월", es: 0, aim: 0, limit: 2000000 },
-    { month: "8월", es: 0, aim: 0, limit: 2000000 },
-    { month: "9월", es: 0, aim: 0, limit: 2000000 },
-    { month: "10월", es: 0, aim: 0, limit: 2000000 },
-    { month: "11월", es: 0, aim: 0, limit: 2000000 },
-    { month: "12월", es: 0, aim: 0, limit: 2000000 },
+    { month: "1월", es: 0, aim: 0 },
+    { month: "2월", es: 0, aim: 0 },
+    { month: "3월", es: 0, aim: 0 },
+    { month: "4월", es: 0, aim: 0 },
+    { month: "5월", es: 0, aim: 0 },
+    { month: "6월", es: 0, aim: 0 },
+    { month: "7월", es: 0, aim: 0 },
+    { month: "8월", es: 0, aim: 0 },
+    { month: "9월", es: 0, aim: 0 },
+    { month: "10월", es: 0, aim: 0 },
+    { month: "11월", es: 0, aim: 0 },
+    { month: "12월", es: 0, aim: 0 },
   ]);
-
-  const handleChartData = (idx: number, value: number) => {
-    const _chartData = [...chartData];
-    _chartData[idx].aim = value * 10000;
-    setChartData(_chartData);
-  };
 
   const handleNextButton = () => {
     if (step < 2) setStep((cur) => cur + 1);
     if (step == 2) {
-      let url = "/dividend-lab/diagnosis/result/?";
-      chartData.forEach((item, idx) => {
-        const s = `m${idx + 1}=${item.aim}&`;
-        url = url + s;
+      const url = "/dividend-lab/diagnosis/result";
+
+      let param = "?cur=0";
+      stockList.forEach((item, idx) => {
+        param += "&c" + idx + "=" + item.code;
+        param += "&q" + idx + "=" + item.quantity;
       });
-      router.push(url);
+
+      router.push(url + param);
     }
   };
 
@@ -69,7 +67,7 @@ const DiagnosisPage = () => {
       let _total = 0;
       e.forEach((item) => {
         _total += item.estimateProfit;
-        const date = new Date(item.lockDate);
+        const date = new Date(item.payDate);
         if (date.getMonth() == 0) _chartData[0].es += item.estimateProfit;
         if (date.getMonth() == 1) _chartData[1].es += item.estimateProfit;
         if (date.getMonth() == 2) _chartData[2].es += item.estimateProfit;
@@ -102,6 +100,42 @@ const DiagnosisPage = () => {
     mutation2.mutate(account.accountNo);
   }, [account]);
 
+  useEffect(() => {
+    const _chartData = [
+      { month: "1월", es: chartData[0].es, aim: 0 },
+      { month: "2월", es: chartData[1].es, aim: 0 },
+      { month: "3월", es: chartData[2].es, aim: 0 },
+      { month: "4월", es: chartData[3].es, aim: 0 },
+      { month: "5월", es: chartData[4].es, aim: 0 },
+      { month: "6월", es: chartData[5].es, aim: 0 },
+      { month: "7월", es: chartData[6].es, aim: 0 },
+      { month: "8월", es: chartData[7].es, aim: 0 },
+      { month: "9월", es: chartData[8].es, aim: 0 },
+      { month: "10월", es: chartData[9].es, aim: 0 },
+      { month: "11월", es: chartData[10].es, aim: 0 },
+      { month: "12월", es: chartData[11].es, aim: 0 },
+    ];
+
+    stockList.forEach((item) => {
+      if (isNaN(item.quantity)) return;
+
+      _chartData[0].aim += item.months[0] * item.quantity;
+      _chartData[1].aim += item.months[1] * item.quantity;
+      _chartData[2].aim += item.months[2] * item.quantity;
+      _chartData[3].aim += item.months[3] * item.quantity;
+      _chartData[4].aim += item.months[4] * item.quantity;
+      _chartData[5].aim += item.months[5] * item.quantity;
+      _chartData[6].aim += item.months[6] * item.quantity;
+      _chartData[7].aim += item.months[7] * item.quantity;
+      _chartData[8].aim += item.months[8] * item.quantity;
+      _chartData[9].aim += item.months[9] * item.quantity;
+      _chartData[10].aim += item.months[10] * item.quantity;
+      _chartData[11].aim += item.months[11] * item.quantity;
+    });
+
+    setChartData(_chartData);
+  }, [stockList]);
+
   if (account == null || user == null) return <NotLoggedInCard />;
 
   return (
@@ -115,7 +149,7 @@ const DiagnosisPage = () => {
           ${
             step < 2
               ? "left-1/2 -translate-x-1/2 top-32"
-              : "left-20 translate-x-0 top-[700px]"
+              : "left-20 translate-x-0 top-[650px]"
           }
       
         `}
@@ -190,30 +224,69 @@ const DiagnosisPage = () => {
         className={`absolute duration-1000
             ${step == 0 && "top-[21rem] left-full"}
             ${step == 1 && "top-[21rem] left-[calc(50%+1rem)] -translate-x-1/2"}
-            ${step == 2 && "delay-500 left-28 top-40"}
+            ${step == 2 && "delay-500 left-28 top-32"}
             `}
       >
         <EstimateChart data={chartData} />
       </article>
       <article
-        className={`absolute p-5 pt-0 top-40 h-[700px] w-96 duration-1000 delay-1200 border rounded-xl
-            ${step < 2 ? "left-full" : "left-[1100px]"}
+        className={`absolute p-5 pt-0 top-32 h-[680px] w-[400px] duration-1000 delay-1200 border rounded-xl
+            ${step < 2 ? "left-full" : "left-[1024px]"}
             `}
       >
         <TotalEstimateRadial data={chartData} goal={user.dividendGoal} />
-        <AddStockDialog>
+        <AddStockDialog setState={setStockList}>
           <Button className="py-6 w-full">추가하기</Button>
         </AddStockDialog>
-        <ul className="mt-5 space-y-3 h-[440px] w-full overflow-y-auto">
-          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
-          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
-          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
-          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
-          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
-          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
-          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
-          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
-          <li className="h-32 w-full rounded-xl bg-secondary">삼성</li>
+        <ul className="pb-5 mt-5 space-y-3 h-[360px] w-full overflow-y-auto">
+          {stockList.map((item) => (
+            <li
+              key={item.code}
+              className="p-5 h-40 w-full rounded-xl bg-secondary"
+            >
+              <div className="flex items-start gap-5">
+                <Image
+                  src={`/kospi-icons/${item.code}.png`}
+                  alt={item.code}
+                  width={48}
+                  height={48}
+                  className="mt-1 rounded-xl"
+                />
+                <hgroup>
+                  <p className="text-lg font-bold opacity-80">{item.title}</p>
+                  <p className="text-sm font-bold opacity-80">
+                    배당률 {item.yieldPercentage}%
+                  </p>
+                </hgroup>
+                <p className="font-bold opacity-80">
+                  {isNaN(item.total) ? "0" : formatNumber(item.total)}원
+                </p>
+              </div>
+              <div className="relative">
+                <span className="absolute top-1/2 left-4 -translate-y-1/2 font-bold opacity-70">
+                  수량
+                </span>
+                <Input
+                  type="number"
+                  value={item.quantity}
+                  onChange={(e) => {
+                    const updatedQuantity = parseInt(e.target.value);
+                    const updatedItem = {
+                      ...item,
+                      quantity: updatedQuantity,
+                      total: updatedQuantity * item.months[12],
+                    };
+                    setStockList((cur) =>
+                      cur.map((i) =>
+                        i.code === updatedItem.code ? updatedItem : i
+                      )
+                    );
+                  }}
+                  className="mt-5 bg-background pl-16 font-bold text-zinc-700"
+                />
+              </div>
+            </li>
+          ))}
         </ul>
       </article>
     </main>
@@ -221,25 +294,3 @@ const DiagnosisPage = () => {
 };
 
 export default DiagnosisPage;
-
-interface ListProps {
-  title: string;
-  idx: number;
-  onChange: (idx: number, value: number) => void;
-}
-
-const List = ({ title, idx, onChange }: ListProps) => {
-  return (
-    <li className="flex items-center gap-2">
-      <span className="w-10 flex-shrink-0 font-medium opacity-80 text-right">
-        {title}
-      </span>
-      <Slider
-        defaultValue={[0]}
-        max={200}
-        step={1}
-        onValueCommit={(e) => onChange(idx, e[0])}
-      />
-    </li>
-  );
-};

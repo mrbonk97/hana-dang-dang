@@ -121,49 +121,6 @@ export function AccountBalanceGraph() {
             />
           </AreaChart>
         </ChartContainer>
-        <Separator className="w-full my-5" />
-        <ChartContainer config={chartConfig} className="h-40 w-full">
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Line
-              dataKey="percentage"
-              type="natural"
-              stroke="#0ea5e9"
-              strokeWidth={2}
-              dot={({ cx, cy, payload }) => {
-                const r = 24;
-                return (
-                  <GitCommitVertical
-                    key={payload.month}
-                    x={cx - r / 2}
-                    y={cy - r / 2}
-                    width={r}
-                    height={r}
-                    fill="hsl(var(--background))"
-                    stroke="#0ea5e9"
-                  />
-                );
-              }}
-            />
-          </LineChart>
-        </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start justify-center gap-2 text-sm">
         <div className="w-full flex2 gap-2 font-medium leading-none">

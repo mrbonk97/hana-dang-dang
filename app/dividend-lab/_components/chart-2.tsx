@@ -52,11 +52,13 @@ export function Chart2({ isPending, isSuccess, data }: Props) {
       </Card>
     );
 
+  console.log(data);
+
   const extra: AccountStockType = {
     code: "000000",
     title: "기타",
     quantity: 0,
-    price: 0,
+    purchasePrice: 0,
     purchaseTotalPrice: 0,
     currentPrice: 0,
     currentTotalPrice: 0,
@@ -83,8 +85,8 @@ export function Chart2({ isPending, isSuccess, data }: Props) {
         <CardTitle>포트폴리오</CardTitle>
       </CardHeader>
 
-      <CardContent className="h-full flex items-center justify-between gap-20">
-        <Table className="w-[600px]">
+      <CardContent className="h-full flex items-center justify-between">
+        <Table className="w-full">
           <TableCaption>보유하고 계신 종목 입니다.</TableCaption>
           <TableHeader>
             <TableRow>
@@ -105,7 +107,7 @@ export function Chart2({ isPending, isSuccess, data }: Props) {
                   {formatNumber(item.quantity)}주
                 </TableCell>
                 <TableCell className="text-right">
-                  {formatNumber(item.price)}원
+                  {formatNumber(item.purchasePrice)}원
                 </TableCell>
                 <TableCell className="text-right">
                   {formatNumber(item.currentPrice)}원
@@ -123,7 +125,7 @@ export function Chart2({ isPending, isSuccess, data }: Props) {
                   className={`text-right font-medium
                     ${item.profit > 0 ? "text-rose-600" : "text-blue-600"}`}
                 >
-                  {(item.profitPercentage * 100).toFixed(2)}%
+                  {item.profitPercentage.toFixed(2)}%
                 </TableCell>
               </TableRow>
             ))}

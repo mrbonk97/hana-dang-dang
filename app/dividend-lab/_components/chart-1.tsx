@@ -13,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AccountDividendHistoryType } from "@/lib/account-api";
 import { Spinner } from "@/components/spinner/spinner";
 
 const chartConfig = {
@@ -26,7 +25,10 @@ const chartConfig = {
 interface Props {
   isPending: boolean;
   isSuccess: boolean;
-  data: AccountDividendHistoryType[] | undefined;
+  data: {
+    month: string;
+    amount: number;
+  }[];
 }
 
 export function Chart1({ isPending, isSuccess, data }: Props) {
@@ -46,28 +48,6 @@ export function Chart1({ isPending, isSuccess, data }: Props) {
     );
   }
 
-  const year = new Date("2024-01-01");
-  const chartData = [
-    { month: "1월", amount: 0 },
-    { month: "2월", amount: 0 },
-    { month: "3월", amount: 0 },
-    { month: "4월", amount: 0 },
-    { month: "5월", amount: 0 },
-    { month: "6월", amount: 0 },
-    { month: "7월", amount: 0 },
-    { month: "8월", amount: 0 },
-    { month: "9월", amount: 0 },
-    { month: "10월", amount: 0 },
-    { month: "11월", amount: 0 },
-    { month: "12월", amount: 0 },
-  ];
-
-  data.forEach((item) => {
-    const date = new Date(item.createdAt);
-    if (date < year) return;
-    chartData[date.getMonth() + 1].amount += item.amount;
-  });
-
   return (
     <Card className="border w-full">
       <CardHeader>
@@ -77,7 +57,7 @@ export function Chart1({ isPending, isSuccess, data }: Props) {
         </CardDescription>
       </CardHeader>
       <ChartContainer config={chartConfig} className="h-96 w-full">
-        <BarChart accessibilityLayer data={chartData}>
+        <BarChart accessibilityLayer data={data}>
           <Bar dataKey="amount" fill="var(--color-amount)" radius={4} />
           <XAxis
             tickLine={false}

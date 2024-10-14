@@ -26,6 +26,37 @@ export const getStockPriceApi = async (code: string): Promise<StockPriceType> =>
     .then((res) => res.json())
     .then((res) => res.output);
 
+export type StockPriceListType = {
+  id: 1134035;
+  code: "005930";
+  fid_cond_mkrt_div_code: "J";
+  stck_clpr: "61300";
+  stck_oprc: "61000";
+  stck_hgpr: "61400";
+  stck_lwpr: "60900";
+  acml_vol: "7060190";
+  acml_tr_pbmn: "431170639100";
+  flng_cls_code: "00";
+  prtt_rate: "0.00";
+  mod_yn: "N";
+  prdy_vrss_sign: "3";
+  prdy_vrss: "0";
+  revl_issu_reas: null;
+  title: "삼성전자";
+  stck_bsop_date: "20241004";
+};
+
+export const getStockPriceListApi = async (data: {
+  c1: string;
+  c2: string;
+  c3: string;
+  c4: string;
+  c5: string;
+}): Promise<StockPriceListType[]> =>
+  await fetch(
+    `http://localhost:8080/api/stocks/list-price?c1=${data.c1}&c2=${data.c2}&c3=${data.c3}&c4=${data.c4}&c5=${data.c5}`
+  ).then((res) => res.json());
+
 //prettier-ignore
 export const getStockPriceDailyApi = async (code: string) =>
   await fetch(`http://localhost:8080/api/stocks/${code}/daily`).then((res) =>res.json());
@@ -342,12 +373,6 @@ export const getStockListApi = async (
     res.json()
   );
 };
-
-// "stac_yymm": "202406",
-//             "lblt_rate": "76.54",
-//             "bram_depn": "26.58",
-//             "crnt_rate": "152.79",
-//             "quck_rate": "0.00"
 
 export type StockStabilityType = {
   stac_yymm: string;

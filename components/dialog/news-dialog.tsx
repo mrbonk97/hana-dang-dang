@@ -3,14 +3,11 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Image from "next/image";
 
 interface NewsDialogProps {
@@ -26,7 +23,6 @@ export const NewsDialog = ({
   content,
   imageUrl,
   children,
-  createdAt,
 }: NewsDialogProps) => {
   return (
     <Dialog>

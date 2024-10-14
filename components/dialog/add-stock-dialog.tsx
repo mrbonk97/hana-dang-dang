@@ -9,18 +9,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { getDividendStockInfo2023, searchStockApi } from "@/lib/dividend-api";
+import {
+  getDividendStockInfo2023,
+  searchStockApi,
+  StockDividend2023,
+} from "@/lib/dividend-api";
 import { formatNumber } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { SearchIcon } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
-interface NewsDialogProps {
+interface AddStockDialog {
   children: React.ReactNode;
+  setState: Dispatch<SetStateAction<StockDividend2023[]>>;
 }
 
-export const AddStockDialog = ({ children }: NewsDialogProps) => {
+export const AddStockDialog = ({ children, setState }: AddStockDialog) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [isCompositing, setIsCompositing] = useState(false);
   const { mutate, isPending, isSuccess, data, reset } = useMutation({
     mutationFn: (keyword: string) => searchStockApi(keyword),
@@ -28,14 +34,17 @@ export const AddStockDialog = ({ children }: NewsDialogProps) => {
 
   const mutate2 = useMutation({
     mutationFn: (code: string) => getDividendStockInfo2023(code),
-    onSuccess(data, variables, context) {
-      console.log(data);
+    onSuccess(data) {
+      setState((cur) => [...cur, data]);
+      setIsOpen(false);
     },
   });
 
   return (
-    <Dialog onOpenChange={() => reset()}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={() => reset()}>
+      <DialogTrigger onClick={() => setIsOpen((cur) => !cur)} asChild>
+        {children}
+      </DialogTrigger>
       <DialogContent className="max-w-[1200px]">
         <DialogHeader>
           <DialogTitle>종목 추가하기</DialogTitle>

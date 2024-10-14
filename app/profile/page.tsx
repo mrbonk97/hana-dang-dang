@@ -32,9 +32,6 @@ const ProfilePage = () => {
         <section className="pt-0 p-10 w-full max-w-[1200px]">
           <AccountStockCard accountId={account.accountNo} />
         </section>
-        <section className="pt-0 p-10 w-full max-w-[1200px]">
-          <AccountBalanceGraph />
-        </section>
         <Footer className="mt-20 pb-20 bg-secondary" />
       </div>
     </main>

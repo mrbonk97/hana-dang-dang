@@ -43,7 +43,7 @@ interface ListProps {
   content: string;
   createdAt: string;
 }
-const List = ({ id, title, imageUrl, content, createdAt }: ListProps) => {
+const List = ({ title, imageUrl, content, createdAt }: ListProps) => {
   return (
     <NewsDialog
       title={title}

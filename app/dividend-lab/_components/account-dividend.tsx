@@ -80,7 +80,9 @@ export const AccountDividend = ({ isPending, isSuccess, data }: Props) => {
     );
 
   let total = 0;
-  data.forEach((item) => (total += item.amount));
+  data.forEach((item) => {
+    if (new Date(item.createdAt).getFullYear() == 2024) total += item.amount;
+  });
   return (
     <Card className="border w-[600px] flex-shrink-0">
       <CardHeader className="flex flex-row items-center">
@@ -109,19 +111,22 @@ export const AccountDividend = ({ isPending, isSuccess, data }: Props) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className="font-medium opacity-80">
-                  {item.createdAt.substring(0, 10)}
-                </TableCell>
-                <TableCell className="font-medium opacity-80">
-                  {item.stockInfo.prdt_abrv_name}
-                </TableCell>
-                <TableCell className="font-medium opacity-80 text-right">
-                  {formatNumber(item.amount)}원
-                </TableCell>
-              </TableRow>
-            ))}
+            {data.map((item) => {
+              if (new Date(item.createdAt).getFullYear() == 2024)
+                return (
+                  <TableRow key={item.id}>
+                    <TableCell className="font-medium opacity-80">
+                      {item.createdAt.substring(0, 10)}
+                    </TableCell>
+                    <TableCell className="font-medium opacity-80">
+                      {item.stockInfo.prdt_abrv_name}
+                    </TableCell>
+                    <TableCell className="font-medium opacity-80 text-right">
+                      {formatNumber(item.amount)}원
+                    </TableCell>
+                  </TableRow>
+                );
+            })}
           </TableBody>
           <TableFooter>
             <TableRow>

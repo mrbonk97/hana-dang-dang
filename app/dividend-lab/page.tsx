@@ -22,6 +22,7 @@ import { useEffect } from "react";
 import { Chart3 } from "./_components/chart-3";
 
 const DividendLabPage = () => {
+  const year2024 = new Date("2024-01-01");
   const router = useRouter();
   const selector = createSelectors(store).use;
   const account = selector.account();
@@ -49,13 +50,65 @@ const DividendLabPage = () => {
 
   if (account == null || user == null) return <NotLoggedInPage />;
 
-  if (!user.isDividendCreated) {
+  if (
+    !user.isDividendCreated ||
+    mutate2.isPending ||
+    !mutate2.isSuccess ||
+    mutate2.data == undefined
+  ) {
     return (
       <main className="h-full flex2">
         <Spinner />
       </main>
     );
   }
+
+  let totalDividend = 0;
+
+  const chartData1 = [
+    { month: "1월", amount: 0 },
+    { month: "2월", amount: 0 },
+    { month: "3월", amount: 0 },
+    { month: "4월", amount: 0 },
+    { month: "5월", amount: 0 },
+    { month: "6월", amount: 0 },
+    { month: "7월", amount: 0 },
+    { month: "8월", amount: 0 },
+    { month: "9월", amount: 0 },
+    { month: "10월", amount: 0 },
+    { month: "11월", amount: 0 },
+    { month: "12월", amount: 0 },
+  ];
+
+  const chartData2 = [
+    { date: "2024-01-01", amount: 0, goal: user.dividendGoal },
+    { date: "2024-02-01", amount: 0, goal: user.dividendGoal },
+    { date: "2024-03-01", amount: 0, goal: user.dividendGoal },
+    { date: "2024-04-01", amount: 0, goal: user.dividendGoal },
+    { date: "2024-05-01", amount: 0, goal: user.dividendGoal },
+    { date: "2024-06-01", amount: 0, goal: user.dividendGoal },
+    { date: "2024-07-01", amount: 0, goal: user.dividendGoal },
+    { date: "2024-08-01", amount: 0, goal: user.dividendGoal },
+    { date: "2024-09-01", amount: 0, goal: user.dividendGoal },
+    { date: "2024-10-01", amount: 0, goal: user.dividendGoal },
+    { date: "2024-11-01", amount: 0, goal: user.dividendGoal },
+    { date: "2024-12-01", amount: 0, goal: user.dividendGoal },
+  ];
+
+  mutate2.data.forEach((item) => {
+    const date = new Date(item.createdAt);
+    if (date < year2024) return;
+    totalDividend += item.amount;
+    chartData1[date.getMonth() + 1].amount += item.amount;
+  });
+
+  for (let i = 0; i < 12; i++) {
+    for (let j = i; j < 12; j++) {
+      chartData2[j].amount += chartData1[i].amount;
+    }
+  }
+
+  const tdp = Math.round((totalDividend / user.dividendGoal) * 100);
 
   return (
     <main className="pt-14 pl-16 min-h-[800px] font-bold">
@@ -80,16 +133,16 @@ const DividendLabPage = () => {
             />
             <hgroup className="mb-5 text-lg space-y-1 text-primary-foreground">
               <p>축하드립니다.</p>
-              <p className="text-xl">벌써 목표치에 80% 도달했어요</p>
+              <p className="text-xl">벌써 목표치에 {tdp}% 도달했어요</p>
               <div className="pt-2 text-sm opacity-70 font-medium">
                 남은 기간동안 꾸준하게 배당금을 모아서 목표를 달성해보세요
               </div>
             </hgroup>
-            <Chart5 goal={user.dividendGoal} totalDividend={5760000} />
+            <Chart5 goal={user.dividendGoal} totalDividend={totalDividend} />
           </article>
           <div className="h-full w-full rounded-xl bg-secondary border" />
         </div>
-        <Chart4 />
+        <Chart4 data={chartData2} />
       </section>
       <section className="pt-0 p-5 w-full">
         <Chart2
@@ -108,7 +161,7 @@ const DividendLabPage = () => {
         <Chart1
           isPending={mutate2.isPending}
           isSuccess={mutate2.isSuccess}
-          data={mutate2.data}
+          data={chartData1}
         />
       </section>
       <section className="pt-0 p-5 w-full flex gap-5">
