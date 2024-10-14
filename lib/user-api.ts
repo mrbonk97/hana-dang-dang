@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 const BASE_URL = "https://www.our-memory.store/api";
 
 export const signInApi = (username: string, password: string) =>
