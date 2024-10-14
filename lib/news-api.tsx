@@ -1,5 +1,5 @@
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
+// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const BASE_URL = "http://34.172.159.135:8080/api";
 export type NewsType = {
   id: number;
   title: string;

@@ -17,8 +17,6 @@ import { StockListTable } from "./_component/stock-list-table";
 import { StockRankTable } from "./_component/stock-rank-table";
 
 const StockPage = async () => {
-  const isOpen = isMarketOpen();
-
   const bannerData = await getIndexListApi();
   const rankDefaultData = await getStockListRankApi("vol");
   const stockListDefaultData = await getStockListApi(0);
@@ -35,13 +33,8 @@ const StockPage = async () => {
         <hgroup className="flex items-center gap-4">
           <h1 className="mb-1 text-xl font-bold opacity-80">국내 증시</h1>
           <div className="flex items-center gap-2">
-            <div
-              className={`h-2 w-2 rounded-full
-                ${isOpen ? "bg-green-400" : "bg-rose-400"}`}
-            />
-            <span className="mb-0.5 font-medium opacity-60">
-              {isOpen ? "장 열림" : "장 닫힘"}
-            </span>
+            <div className={`h-2 w-2 rounded-fullbg-green-400`} />
+            <span className="mb-0.5 font-medium opacity-60">장 열림</span>
           </div>
         </hgroup>
         <div className="mt-5 h-48 flex justify-between gap-10">
