@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const BASE_URL = "http://34.172.159.135:8080/api";
+const BASE_URL = "https://www.our-memory.store/api";
 
 //prettier-ignore
 export const getStockInfoApi = async (code: string) =>
