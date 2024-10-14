@@ -119,7 +119,7 @@ export const HokaOrderCard = ({ code }: Props) => {
     return () => {
       clearInterval(fetchHoka);
     };
-  }, []);
+  }, [mutate]);
 
   return (
     <>

@@ -3,7 +3,6 @@ import { AccountCard } from "./_components/account-card";
 import { TransactionCard } from "./_components/transaction-card";
 import { MainSection } from "./_components/main-section";
 import { AccountStockCard } from "./_components/account-stock-card";
-import { AccountBalanceGraph } from "./_components/account-balance-graph";
 import createSelectors from "@/zustand/selectors";
 import store from "@/zustand/store";
 import { Footer } from "@/components/nav/footer";

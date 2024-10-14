@@ -67,7 +67,7 @@ const DiagnosisResultPage = ({ searchParams }: Props) => {
       c4: stockList[3].code,
       c5: stockList[4].code,
     });
-  }, [account, stockList]);
+  }, [account, stockList, mutate]);
 
   if (account == null) return <NotLoggedInCard />;
 

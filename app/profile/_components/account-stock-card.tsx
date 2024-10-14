@@ -102,7 +102,7 @@ export function AccountStockCard({ accountId }: Props) {
                   {formatNumber(item.quantity)}주
                 </TableCell>
                 <TableCell className="text-right">
-                  {formatNumber(item.price)}원
+                  {formatNumber(item.purchasePrice)}원
                 </TableCell>
                 <TableCell className="text-right">
                   {formatNumber(item.currentPrice)}원

@@ -46,7 +46,7 @@ const DividendLabPage = () => {
 
     mutate1.mutate(account.accountNo);
     mutate2.mutate(account.accountNo);
-  }, [user, router]);
+  }, [user, router, mutate1, mutate2]);
 
   if (account == null || user == null) return <NotLoggedInPage />;
 

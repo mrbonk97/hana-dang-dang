@@ -22,7 +22,7 @@ export function DividendCalendar() {
 
   React.useEffect(() => {
     mutate(date);
-  }, []);
+  }, [mutate, date]);
 
   return (
     <>

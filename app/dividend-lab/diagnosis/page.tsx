@@ -98,7 +98,7 @@ const DiagnosisPage = () => {
     if (account == null) return;
     mutation1.mutate(account.accountNo);
     mutation2.mutate(account.accountNo);
-  }, [account]);
+  }, [mutation1, mutation2, account]);
 
   useEffect(() => {
     const _chartData = [
@@ -134,7 +134,7 @@ const DiagnosisPage = () => {
     });
 
     setChartData(_chartData);
-  }, [stockList]);
+  }, [stockList, chartData]);
 
   if (account == null || user == null) return <NotLoggedInCard />;
 
