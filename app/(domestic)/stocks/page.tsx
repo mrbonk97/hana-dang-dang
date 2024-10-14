@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/card";
 import { BuyerChart } from "./_component/buyer-chart";
 import { KospiChart } from "./_component/kospi-chart";
-import { isMarketOpen } from "@/lib/utils";
 import { StockListTable } from "./_component/stock-list-table";
 import { StockRankTable } from "./_component/stock-rank-table";
 
